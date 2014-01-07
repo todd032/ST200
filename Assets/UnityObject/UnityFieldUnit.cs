@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class FieldUnit : MonoBehaviour {
+public class UnityFieldUnit : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
@@ -9,7 +9,6 @@ public class FieldUnit : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-	
 	}
 
     private string spineName;
