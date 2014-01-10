@@ -8,6 +8,7 @@ namespace WindGuardian
         public void Initialize()
         {
             lastTime = System.DateTime.UtcNow;
+            world.Initialize();
         }
         public void Update()
         {
@@ -17,9 +18,9 @@ namespace WindGuardian
             System.TimeSpan dt = currentTime - lastTime;
             lastTime = currentTime;
 
-            foreach(FieldUnit unit in fieldUnits)
+            foreach(UnityEngine.GameObject unit in fieldUnits)
             {
-                unit.Update(dt.TotalMilliseconds);
+                unit.GetComponent<FieldUnit>().Update(dt.TotalMilliseconds);
             }
         }
 

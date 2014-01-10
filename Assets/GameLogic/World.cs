@@ -15,7 +15,9 @@ namespace WindGuardian
 
         public void AddFieldUnit(FieldUnit unit)
         {
-            fieldUnits.Add(unit);
+            var obj = new UnityEngine.GameObject();
+            obj.AddComponent<FieldUnit>();
+            fieldUnits.Add(obj);
         }
         public ArrayList GetFieldUnits()
         {

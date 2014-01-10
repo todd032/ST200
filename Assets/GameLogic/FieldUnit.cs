@@ -1,8 +1,9 @@
 ﻿using System.Collections;
+using UnityEngine;
 
 namespace WindGuardian
 {
-    public class FieldUnit {
+    public class FieldUnit : MonoBehaviour{
         
         public void Update(double dt)
         {
