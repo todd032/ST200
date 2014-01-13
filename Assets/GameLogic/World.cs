@@ -7,11 +7,14 @@ namespace WindGuardian
         public void Initialize()
         {
             Destroy();
+
+            AddFieldUnit(new FieldUnit());
         }
         public void Destroy()
         {
             fieldUnits.Clear();
         }
+
 
         public void AddFieldUnit(FieldUnit unit)
         {

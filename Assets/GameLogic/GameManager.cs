@@ -1,9 +1,10 @@
 ﻿using System.Collections;
 using System.Timers;
+using UnityEngine;
 
 namespace WindGuardian
 {
-    public class GameManager
+    public class GameManager : MonoBehaviour
     {
         public void Initialize()
         {
@@ -20,7 +21,7 @@ namespace WindGuardian
 
             foreach(UnityEngine.GameObject unit in fieldUnits)
             {
-                unit.GetComponent<FieldUnit>().Update(dt.TotalMilliseconds);
+                unit.GetComponent<FieldUnit>().LogicUpdate(dt.TotalMilliseconds);
             }
         }
 

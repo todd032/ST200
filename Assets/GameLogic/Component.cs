@@ -1,6 +1,6 @@
 ﻿namespace WindGuardian
 {
-    public class Component
+    public abstract class GameComponent
     {
         public void OnEquip(FieldUnit unit)
         {
@@ -10,10 +10,7 @@
         {
             owner = null;
         }
-        public void OnUpdate(double dt)
-        {
-
-        }
+        public abstract void OnUpdate(double dt);
 
         protected FieldUnit owner;
     }
