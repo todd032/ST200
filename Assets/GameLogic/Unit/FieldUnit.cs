@@ -7,6 +7,7 @@ namespace WindGuardian
         private bool girlSkin;
         ACTION_STATE actionState;
         DIRECTION_STATE directionState;
+        bool onGround;
 
         private Vector2 moveSpeed;
 
@@ -16,7 +17,6 @@ namespace WindGuardian
             AS_WALK_LEFT,
             AS_WALK_RIGHT,
         }
-
         public enum DIRECTION_STATE
         {
             DS_LEFT,
@@ -28,6 +28,7 @@ namespace WindGuardian
             moveSpeed.Set(10, 0);
             actionState = ACTION_STATE.AS_STAND;
             directionState = DIRECTION_STATE.DS_RIGHT;
+            onGround = true;
         }
 
         public void OnMouseDown()
@@ -47,6 +48,12 @@ namespace WindGuardian
             {
                 skeletonAnimation.skeleton.SetAttachment("left hand item", "dagger");
             }
+        }
+
+        public void OnControllerColliderHit(ControllerColliderHit collision)
+        {
+            onGround = true;
+            GetComponent<Transform>().Rotate(0.0f, 180.0f, 0.0f);
         }
 
         public void LogicUpdate(double dt)
@@ -81,7 +88,11 @@ namespace WindGuardian
             }
             else if(Input.GetKeyDown("space"))
             {
-
+                if(onGround == true)
+                {
+                    GetComponent<CharacterController>().velocity.Set(0.0f, -900.8f, 0.0f);
+                    onGround = false;
+                }
             }
             // Keypress
             else if (Input.GetKey("right"))
