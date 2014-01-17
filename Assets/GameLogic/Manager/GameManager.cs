@@ -21,7 +21,6 @@ namespace WindGuardian
 
             foreach(UnityEngine.GameObject unit in fieldUnits)
             {
-                unit.GetComponent<FieldUnit>().LogicUpdate(dt.TotalMilliseconds);
             }
         }
 
