@@ -26,19 +26,20 @@ public class windparticle : MonoBehaviour {
 	void FixedUpdate()
 	{
 		ProcessMove();
+		ProcessCheckCollision();
 	}
 
-	void ProcessMove()
+	protected void ProcessMove()
 	{
 		m_Velocity *= windresis;
 		m_Velocity += m_Accel * Time.fixedDeltaTime;
 		transform.position += m_Velocity * Time.fixedDeltaTime;
 		m_Accel = Vector3.zero;
 
-		ProcessCheckCollision();
+		//ProcessCheckCollision();
 	}
 
-	void ProcessCheckCollision()
+	protected void ProcessCheckCollision()
 	{
 		float distancewithfloor = transform.position.y + 3.5f;
 		if(distancewithfloor < 0f && destroy)

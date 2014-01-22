@@ -25,11 +25,12 @@ public class windobject : MonoBehaviour {
 
 	void ProcessMove()
 	{
-		m_Velocity *= windresis;
+		rigidbody2D.velocity *= windresis;
+		//m_Velocity *= windresis;
 		//m_Velocity = FluidSimulation.Instance.GetVelocityAtPosition(transform.position)/m_Mass;// * Time.fixedDeltaTime;
-		m_Velocity += (m_Accel) * Time.fixedDeltaTime;
-		transform.position += m_Velocity * Time.fixedDeltaTime;// + FluidSimulation.Instance.GetVelocityAtPosition(transform.position)/m_Mass * Time.fixedDeltaTime;
-		m_Accel = Vector3.zero;
+		//m_Velocity += (m_Accel) * Time.fixedDeltaTime;
+		//transform.position += m_Velocity * Time.fixedDeltaTime;// + FluidSimulation.Instance.GetVelocityAtPosition(transform.position)/m_Mass * Time.fixedDeltaTime;
+		//m_Accel = Vector3.zero;
 	}
 
 	public void AddForce(Vector3 force)
@@ -42,7 +43,8 @@ public class windobject : MonoBehaviour {
 		}else
 		{
 			float mass = m_Mass/Mathf.Pow(factor,0.5f);
-			m_Accel += force/mass;
+			//m_Accel += force/mass;
+			rigidbody2D.AddForce(force/mass);
 		}
 	}
 }

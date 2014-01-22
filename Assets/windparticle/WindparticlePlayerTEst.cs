@@ -8,6 +8,7 @@ public class WindparticlePlayerTEst : MonoBehaviour {
 	public float m_Mass = 1f;
 	public float windresis = 0.99f;
 	public windparticle m_WindParticle;
+	public Object m_Windshoot;
 	// Use this for initialization
 	void Start () {
 	
@@ -27,6 +28,15 @@ public class WindparticlePlayerTEst : MonoBehaviour {
 		}else
 		{
 			m_WindParticle.collider2D.enabled = false;
+		}
+
+		if(Input.GetKeyDown(KeyCode.DownArrow))
+		{
+			windparticle_shoot shoot = (Instantiate(m_Windshoot) as GameObject).GetComponent<windparticle_shoot>();
+			windparticle_shoot shoot2 = (Instantiate(m_Windshoot) as GameObject).GetComponent<windparticle_shoot>();
+			shoot2.m_PushVelocity.x = -shoot2.m_PushVelocity.x;
+
+			shoot.transform.position = shoot2.transform.position = transform.position;
 		}
 	}
 
