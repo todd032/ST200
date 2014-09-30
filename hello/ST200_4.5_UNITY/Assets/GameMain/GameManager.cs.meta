@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 7f2930ff5b9ed1443a29583b74ed939f
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences:
+  - _readyGoAlertObjectGameObject: {instanceID: 0}
+  - boosterBgSprite: {instanceID: 0}
+  - boosterTimeParticle_Star_1: {fileID: 19800000, guid: 90f4e5438a17f3340b24ac33ada59b27,
+      type: 2}
+  - boosterTimeParticle_Star_2: {fileID: 19800000, guid: 7e61db9b6f01e494b9857183aee9f6fe,
+      type: 2}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
