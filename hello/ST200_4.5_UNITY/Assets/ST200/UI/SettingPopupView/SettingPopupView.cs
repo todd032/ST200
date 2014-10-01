@@ -191,8 +191,8 @@ public class SettingPopupView : MonoBehaviour {
 		#if UNITY_IPHONE && !UNITY_EDITOR
 
 		string strQnA_Url = "mailto:help2@polycube.co.kr";
-		string strQnA_Subject = "?subject=%EA%B2%8C%EC%9E%84%EB%AC%B8%EC%9D%98(" + KakaoLeaderBoard.Instance.gameMe.user_id + ")";
-		string strQnA_Body = "&body=%EA%B2%8C%EC%9E%84ID:" + KakaoLeaderBoard.Instance.gameMe.user_id;
+		string strQnA_Subject = "?subject=%EA%B2%8C%EC%9E%84%EB%AC%B8%EC%9D%98(" +  Managers.UserData.UserID + ")";
+		string strQnA_Body = "&body=%EA%B2%8C%EC%9E%84ID:" + Managers.UserData.UserID;
 
 		Application.OpenURL(strQnA_Url + strQnA_Subject + strQnA_Body);
 
