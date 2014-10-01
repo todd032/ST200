@@ -127,7 +127,7 @@ public class LogManager : MonoBehaviour {
 		}
 	}
 
-	private string m_LocalSaveKey = "ST110LOGDATA";
+	private string m_LocalSaveKey = "ST200LOGDATA";
 	private string m_ServerURL = "http://glog.polycube.co.kr/glog/put.php";
 	//real: "http://glog.polycube.co.kr/glog/put.php"
 	//test: "http://st110.polycube.co.kr/glog/put.php";

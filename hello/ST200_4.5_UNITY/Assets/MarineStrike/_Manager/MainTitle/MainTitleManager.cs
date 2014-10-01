@@ -1081,7 +1081,7 @@ public class MainTitleManager : MonoBehaviour {
 		
 		 //Debug.Log("ST110 MaintitleManager.Get_PostData_Push().strAdid = " + strAdid);
 		m_PostData_PushInfo.ADID = strAdid;
-		m_PostData_PushInfo.Service = "ST110K";
+		m_PostData_PushInfo.Service = "ST200";
 		m_PostData_PushInfo.Ostype = "1";
 		m_PostData_PushInfo.Mtype = "1";
 		m_PostData_PushInfo.Language = "ko";
