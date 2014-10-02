@@ -156,6 +156,7 @@ public class GameStageEnemyObject : MonoBehaviour {
 
 		if(m_TargetTransform != null)
 		{
+			//targetdirection = GamePathManager.Instance.GetTargetPos(m_TargetTransform.position, transform.position) - transform.position;
 			targetdirection = m_TargetTransform.position - transform.position;
 		}
 		targetdirection.z = 0f;
