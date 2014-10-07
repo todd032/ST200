@@ -130,6 +130,8 @@ public enum GamePlayerShipType
 	TURTLE_TYPE2 		= 4,
 	PANOKSEON3			= 5,
 	PANOKSEON4			= 6,
+	PANOKSEON5 			= 7,
+	TURTLE_GOLD			= 8,
 }
 
 public enum GamePlayerSubShipType

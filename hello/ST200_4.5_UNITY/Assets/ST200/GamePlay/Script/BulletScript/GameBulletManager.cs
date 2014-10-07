@@ -92,4 +92,5 @@ public enum GamePlayBulletType
 	ENEMY_BULLET 				= 2,
 	PLAYER_MINE					= 3,
 	PLAYER_ARROW 				= 4,
+	PLAYER_FIRE					= 5,
 }

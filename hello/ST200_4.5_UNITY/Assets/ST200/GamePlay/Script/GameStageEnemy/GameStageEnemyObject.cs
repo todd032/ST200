@@ -321,7 +321,7 @@ public class GameStageEnemyObject : MonoBehaviour {
 
 	public virtual void OnPlayerCrashEnter(PlayerShip _ship)
 	{
-		_ship.DoDamage(m_StageEnemyData.PlayerCrashDamage);
+		_ship.DoDamage(m_StageEnemyData.PlayerCrashDamage, Constant.ST200_GAMEPLAY_DAMAGE_TYPE_CRASH);
 	}
 
 	public virtual void OnPlayerSubShipCrashEnter(PlayerSubShip _ship)

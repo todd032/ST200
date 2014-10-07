@@ -566,7 +566,11 @@ public class PlayerShip : MonoBehaviour {
 			m_DamagedDelegate -= value;
 		}
 	}
-	public virtual void DoDamage(float _damage)
+
+	/// <summary>
+	/// Dos the damage.
+	/// </summary>
+	public virtual void DoDamage(float _damage, int _type)
 	{
 		//GameManager.Instance._cameraShakeScript.DoCameraShake(0.075f, 0.004f);
 		Managers.UserData.Vibrate();
@@ -604,6 +608,8 @@ public class PlayerShip : MonoBehaviour {
 
 	public virtual void CrashEnemyShip(GameStageEnemyObject _enemy)
 	{
+		GamePlayFXManager.Instance.StartParticleFX(GamePlayParticleFX_Type.ARROW_HIT_FX, _enemy.transform.position);
+		Managers.Audio.PlayFXSound(AudioManager.FX_SOUND.FX_ARROW_HIT, false);
 		_enemy.AddHitForce(transform.position, m_LookingVector * Mathf.Min(m_MoveSpeed.magnitude / m_ShipStatInfo.MaxMoveSpeed, 1f) * m_ShipStatInfo.PushForce);
 		_enemy.DoDamage(m_ShipStatInfo.PushDamage);
 		GameManager.Instance.PlayerCrashWithEnemyEvent();
@@ -616,6 +622,7 @@ public class PlayerShip : MonoBehaviour {
 
 	public virtual void CrashPlayerSubShip(PlayerSubShip _ship)
 	{
+		GamePlayFXManager.Instance.StartParticleFX(GamePlayParticleFX_Type.ARROW_HIT_FX, (transform.position + _ship.transform.position) / 2f);
 		_ship.AddHitForce(transform.position, m_LookingVector.normalized);// * Mathf.Min(m_MoveSpeed.magnitude / m_ShipStatInfo.MaxMoveSpeed, 1f) * m_ShipStatInfo.PushForce);
 		//_enemy.DoDamage(m_ShipStatInfo.PushDamage);
 	}

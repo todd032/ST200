@@ -7,7 +7,7 @@ public class Constant : MonoBehaviour {
 	/// CHEATING MODE ON/OFF
 	/// </summary>
 	/// 
-	public readonly static bool VALTEST1 = true;
+	public readonly static bool VALTEST1 = false;
     // 프로젝트 정보 ----------------------------------------------------------------------------------------------------------------
     public readonly static string AppVersionInfo = "1.2.0";
     public readonly static string DefalutAppName = "defalut_app_name" ;
@@ -23,10 +23,10 @@ public class Constant : MonoBehaviour {
 	public static readonly bool PROJECTMODE_OutDebugMessage = true; //상용시 false로..
 	public static readonly bool PROJECTMODE_IabTest = true; //상용시 false로..
 #else
-	public static readonly bool PROJECTMODE_Develop = true; //상용시 false로..
-	public static readonly bool PROJECTMODE_BalanceTest = true; //상용시 false, 테스트용 벨런스 데이터를 가지고 옴..
-	public static readonly bool PROJECTMODE_OutDebugMessage = true; //상용시 false로..
-	public static readonly bool PROJECTMODE_IabTest = true; //상용시 false로..
+	public static readonly bool PROJECTMODE_Develop = false; //상용시 false로..
+	public static readonly bool PROJECTMODE_BalanceTest = false; //상용시 false, 테스트용 벨런스 데이터를 가지고 옴..
+	public static readonly bool PROJECTMODE_OutDebugMessage = false; //상용시 false로..
+	public static readonly bool PROJECTMODE_IabTest = false; //상용시 false로..
 #endif
     
     // Scene ----------------------------------------------------------------------------------------------------------------
@@ -2148,6 +2148,8 @@ public class Constant : MonoBehaviour {
 
 	public readonly static int ST200_POPUP_MESSAGE_STAGE_LOCKED					= 6001;
 	public readonly static int ST200_POPUP_MESSAGE_SHIP4_LOCKED					= 6002;
+	public readonly static int ST200_POPUP_MESSAGE_SHIP3_LOCKED					= 6003;
+	public readonly static int ST200_POPUP_MESSAGE_SHIP8_LOCKED					= 6004;
 
 	public readonly static int ST200_POPUP_NICKNAME_INAPPROPRIATE_NAME			= 7001;
 	public readonly static int ST200_POPUP_NICKNAME_ALREADY_EXIST				= 7002;
@@ -2168,5 +2170,12 @@ public class Constant : MonoBehaviour {
 	public readonly static int ST200_ITEM_CHARACTER_STARTCODE					= 1000;
 	public readonly static int ST200_ITEM_SHIP_STARTCODE						= 2000;
 	public readonly static int ST200_ITEM_SUBSHIP_STARTCODE						= 3000;
+	#endregion
+
+	#region ST200 Gameplay constants
+	public readonly static int ST200_GAMEPLAY_DAMAGE_TYPE_BULLET 				= 1;
+	public readonly static int ST200_GAMEPLAY_DAMAGE_TYPE_CRASH 				= 2;
+	public readonly static int ST200_GAMEPLAY_DAMAGE_TYPE_NORETURN 				= 3;
+	public readonly static int ST200_GAMEPLAY_DAMAGE_TYPE_EXPLODE 				= 4;
 	#endregion
 }

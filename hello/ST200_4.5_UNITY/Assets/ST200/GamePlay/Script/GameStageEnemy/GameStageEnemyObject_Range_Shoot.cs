@@ -118,7 +118,7 @@ public class GameStageEnemyObject_Range_Shoot  : GameStageEnemyObject {
 		if(Vector2.Distance(transform.position, m_PlayerShip.transform.position) < m_StageEnemyData.SpecialEffectValue2)
 		{
 			m_PlayerShip.AddHitForce(transform.position, (m_PlayerShip.transform.position - transform.position).normalized * m_StageEnemyData.SpecialEffectValue3);
-			m_PlayerShip.DoDamage(m_StageEnemyData.SpecialEffectValue);
+			m_PlayerShip.DoDamage(m_StageEnemyData.SpecialEffectValue, Constant.ST200_GAMEPLAY_DAMAGE_TYPE_BULLET);
 		}else
 		{
 			for(int i = 0; i < m_PlayerSubShipList.Count; i++)

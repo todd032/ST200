@@ -3654,7 +3654,7 @@ public class GameManager : MonoBehaviour
 
 			if(ReturnToBattleTimer < 0f)
 			{
-				m_Player.DoDamage(m_Player.MaxHealth);
+				m_Player.DoDamage(m_Player.MaxHealth, Constant.ST200_GAMEPLAY_DAMAGE_TYPE_NORETURN);
 			}
 		}else
 		{

@@ -11,16 +11,6 @@ public class GameBulletObject : MonoBehaviour {
 	public float m_RemainTimer;
 	//public float 
 
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
-
 	public virtual void Init(Vector3 _worldpos, float _damage, Vector3 _movespeed, float _pushforce, float _sizeratio)
 	{
 		Vector3 newpos = _worldpos;

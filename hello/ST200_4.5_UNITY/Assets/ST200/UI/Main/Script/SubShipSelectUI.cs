@@ -24,6 +24,7 @@ public class SubShipSelectUI : MonoBehaviour {
 	{
 		UpdateUI();
 		m_SubShipScroll.ResetPosition();
+		m_SubShipScroll.SetScrollPointer(1f);
 	}
 
 	public void UpdateUI()

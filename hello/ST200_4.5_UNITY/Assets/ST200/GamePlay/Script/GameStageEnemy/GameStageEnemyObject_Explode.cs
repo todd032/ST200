@@ -43,7 +43,7 @@ public class GameStageEnemyObject_Explode : GameStageEnemyObject {
 		GamePlayFXManager.Instance.StartExplosionFX(GamePlayExplosionFX_Type.Explosion1, transform.position);
 		Managers.Audio.PlayFXSound(AudioManager.FX_SOUND.FX_BULLET_SHOOT_PLAYER, false);
 		_ship.AddHitForce(transform.position, (_ship.transform.position - transform.position).normalized * m_StageEnemyData.SpecialEffectValue2);
-		_ship.DoDamage(m_StageEnemyData.SpecialEffectValue);
+		_ship.DoDamage(m_StageEnemyData.SpecialEffectValue, Constant.ST200_GAMEPLAY_DAMAGE_TYPE_EXPLODE);
 		PlayDeadAnimation();
 	}
 

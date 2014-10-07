@@ -133,7 +133,7 @@ public class GameUIManager : MonoBehaviour {
 		m_MainUI.gameObject.SetActive(false);
 		//m_GameRankingManager.gameObject.SetActive(false);
 		m_GameShopManager.gameObject.SetActive(true);
-		m_StageSelectUI.gameObject.SetActive(false);
+		//m_StageSelectUI.gameObject.SetActive(false);
 
 		m_GameShopManager.UpdateUI();
 

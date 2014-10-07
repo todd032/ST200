@@ -14,7 +14,7 @@ public class GameBulletObject_Enemy1 : GameBulletObject {
 		GamePlayFXManager.Instance.StartExplosionFX(GamePlayExplosionFX_Type.Explosion3, _player.transform.position);
 		Managers.Audio.PlayFXSound(AudioManager.FX_SOUND.FX_BULLET_HIT_SOUND, false);
 		_player.AddHitForce(transform.position, m_MoveSpeed.normalized * m_PushForce);
-		_player.DoDamage(m_Damage);
+		_player.DoDamage(m_Damage, Constant.ST200_GAMEPLAY_DAMAGE_TYPE_BULLET);
 		GameManager.Instance.PlayerHitByBulletEvent();
 
 		if(m_BulletGoneDelegate != null)

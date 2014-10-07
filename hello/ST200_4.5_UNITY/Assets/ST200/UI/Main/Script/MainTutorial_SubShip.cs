@@ -17,6 +17,7 @@ public class MainTutorial_SubShip : MonoBehaviour {
 		m_ExplainLabel3.text = Constant.COLOR_WHITE + TextManager.Instance.GetString(204);
 		m_ExplainLabel4.text = Constant.COLOR_WHITE + TextManager.Instance.GetString(205);
 		m_Explain1.gameObject.SetActive(true);
+		//GameUIManager.Instance.m_MainUI.m_SubShipSelectUI.m_SubShipScroll.SetScrollPointer(0f);
 		m_Explain2.gameObject.SetActive(false);
 		m_Explain3.gameObject.SetActive(false);
 		m_Explain4.gameObject.SetActive(false);
@@ -25,12 +26,12 @@ public class MainTutorial_SubShip : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-
+		GameUIManager.Instance.m_MainUI.m_SubShipSelectUI.m_SubShipScroll.SetScrollPointer(0f);
 	}
 
 	// Update is called once per frame
 	void Update () {
-		if(m_Explain3.gameObject.activeSelf && m_Scroller.m_DestScrollPointer >= 1f)
+		if(m_Explain3.gameObject.activeSelf && m_Scroller.m_DestScrollPointer >= 2f)
 		{
 			m_Explain3.gameObject.SetActive (false);
 			m_Explain4.gameObject.SetActive (true);

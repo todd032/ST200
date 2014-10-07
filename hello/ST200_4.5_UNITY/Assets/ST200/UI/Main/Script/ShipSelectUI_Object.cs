@@ -148,7 +148,14 @@ public class ShipSelectUI_Object : MonoBehaviour {
 				if(selectshipdata.IndexNumber == 4)
 				{
 					GameUIManager.Instance.LoadUIRootAlertView(Constant.ST200_POPUP_MESSAGE_SHIP4_LOCKED);
+				}else if(selectshipdata.IndexNumber == 3)
+				{
+					GameUIManager.Instance.LoadUIRootAlertView(Constant.ST200_POPUP_MESSAGE_SHIP3_LOCKED);
+				}else if(selectshipdata.IndexNumber == 8)
+				{
+					GameUIManager.Instance.LoadUIRootAlertView(Constant.ST200_POPUP_MESSAGE_SHIP8_LOCKED);
 				}
+
 			}else if(!selectshipdata.IsPurchase){
 				
 				ShipStatInfo shipinfo = Managers.GameBalanceData.GetShipStatInfo(m_CurShipIndex, 1);

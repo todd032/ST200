@@ -16,6 +16,7 @@ public class ResultUI : MonoBehaviour {
 
 	public GameObject m_NewScore;
 	public TweenScale m_NewScoreAnimation;
+	public TweenScale m_DoubleCoinAnimation;
 	// Use this for initialization
 	void Start () {
 	
@@ -50,6 +51,14 @@ public class ResultUI : MonoBehaviour {
 
 		m_RewardAmountLabel_Coin.text = Constant.COLOR_RESULT_REWARD_AMOUNT + "x" + coingetstring;
 		m_RewardAmountLabel_Gold.text = Constant.COLOR_RESULT_REWARD_AMOUNT + "x" + goldgetstring;
+
+		if(Managers.UserData.GetCurrentGameCharacter().IndexNumber == 4)
+		{
+			m_DoubleCoinAnimation.Play(true);
+		}else
+		{
+			NGUITools.SetActive (m_DoubleCoinAnimation.gameObject, false);
+		}
 
 		StartCoroutine(NumberAnimation(_bestscore, m_ScoreAmountLabel, _score));
 		
