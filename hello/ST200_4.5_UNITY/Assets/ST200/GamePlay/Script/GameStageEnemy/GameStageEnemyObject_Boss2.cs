@@ -68,24 +68,32 @@ public class GameStageEnemyObject_Boss2 : GameStageEnemyObject {
 		                                       m_ShootTransform[0].position, 
 		                                       m_ShootTransform[0].up * m_StageEnemyData.SpecialEffectValue2, 
 		                                       m_StageEnemyData.SpecialEffectValue3, 
+		                                       1f,
+		                                       0,
 		                                       1f);
 		GameBulletManager.Instance.ShootBullet(GamePlayBulletType.ENEMY_BULLET, 
 		                                       m_StageEnemyData.SpecialEffectValue / 3f, 
 		                                       m_ShootTransform[1].position, 
 		                                       m_ShootTransform[1].up * m_StageEnemyData.SpecialEffectValue2/2f, 
 		                                       m_StageEnemyData.SpecialEffectValue3, 
+		                                       1f,
+		                                       0,
 		                                       1f);
 		GameBulletManager.Instance.ShootBullet(GamePlayBulletType.ENEMY_BULLET, 
 		                                       m_StageEnemyData.SpecialEffectValue / 3f, 
 		                                       m_ShootTransform[2].position, 
 		                                       m_ShootTransform[2].up * m_StageEnemyData.SpecialEffectValue2/2f, 
 		                                       m_StageEnemyData.SpecialEffectValue3, 
+		                                       1f,
+		                                       0,
 		                                       1f);
 		GameBulletManager.Instance.ShootBullet(GamePlayBulletType.ENEMY_BULLET, 
 		                                       m_StageEnemyData.SpecialEffectValue / 3f, 
 		                                       m_ShootTransform[3].position, 
 		                                       m_ShootTransform[3].up * m_StageEnemyData.SpecialEffectValue2/2f, 
 		                                       m_StageEnemyData.SpecialEffectValue3, 
+		                                       1f,
+		                                       0,
 		                                       1f);
 		
 		GameBulletManager.Instance.ShootBullet(GamePlayBulletType.ENEMY_BULLET, 
@@ -93,18 +101,24 @@ public class GameStageEnemyObject_Boss2 : GameStageEnemyObject {
 		                                       m_ShootTransform[4].position, 
 		                                       m_ShootTransform[4].up * m_StageEnemyData.SpecialEffectValue2/2f, 
 		                                       m_StageEnemyData.SpecialEffectValue3, 
+		                                       1f,
+		                                       0,
 		                                       1f);
 		GameBulletManager.Instance.ShootBullet(GamePlayBulletType.ENEMY_BULLET, 
 		                                       m_StageEnemyData.SpecialEffectValue / 3f, 
 		                                       m_ShootTransform[5].position, 
 		                                       m_ShootTransform[5].up * m_StageEnemyData.SpecialEffectValue2/2f, 
 		                                       m_StageEnemyData.SpecialEffectValue3, 
+		                                       1f,
+		                                       0,
 		                                       1f);
 		GameBulletManager.Instance.ShootBullet(GamePlayBulletType.ENEMY_BULLET, 
 		                                       m_StageEnemyData.SpecialEffectValue / 3f, 
 		                                       m_ShootTransform[6].position, 
 		                                       m_ShootTransform[6].up * m_StageEnemyData.SpecialEffectValue2/2f, 
 		                                       m_StageEnemyData.SpecialEffectValue3, 
+		                                       1f,
+		                                       0,
 		                                       1f);
 	}
 	

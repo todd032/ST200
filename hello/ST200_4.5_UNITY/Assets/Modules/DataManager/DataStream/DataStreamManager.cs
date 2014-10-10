@@ -860,6 +860,10 @@ public class DataStreamManager : MonoBehaviour {
 			//StartCoroutine(LuckyTestCode());
 			//Managers.UserData.SetPurchaseGameSubmarine(4);
 		}
+		//if(Input.GetKeyDown(KeyCode.LeftArrow))
+		//{
+		//	Managers.UserData.UpdateSequence--;
+		//}
 		#endif
 	}
 	
@@ -919,7 +923,7 @@ public class DataStreamManager : MonoBehaviour {
 	void testcodeinituserdata() {
 		
 		Managers.UserData.MakeUserData();
-
+		Managers.UserData.UpdateSequence++;
 		Network_SaveUserData_Input_1 (Managers.UserData.GetUserDataStruct ());
 
 	}
@@ -1829,12 +1833,9 @@ public class DataStreamManager : MonoBehaviour {
 		form.AddField("body", body);
 		form.AddField("check", check);
 		
-		if (Constant.PROJECTMODE_Develop) {
-			
-			m_strURL = Constant.URL_DEVELOP_Message;
-			
-		} else {
-			
+		if (Constant.PROJECTMODE_Develop) {			
+			m_strURL = Constant.URL_DEVELOP_Message;			
+		} else {			
 			m_strURL = Constant.URL_RELEASE_Message;
 		}
 		
@@ -3236,9 +3237,17 @@ public class DataStreamManager : MonoBehaviour {
 				}
 				
 			} else if (clsReturn.result == false) {
-				
-				if (_delegate_DataStreamManager_SaveUserData != null) {
-					_delegate_DataStreamManager_SaveUserData(Constant.NETWORK_RESULTCODE_Error_Result_False, "");
+
+				if(clsReturn.error_msg == Constant.NETWORK_RESULTCODE_Error_UserSequence_Message)
+				{
+					if (_delegate_DataStreamManager_SaveUserData != null) {
+						_delegate_DataStreamManager_SaveUserData(Constant.NETWORK_RESULTCODE_Error_UserSequence, "");
+					}
+				}else
+				{
+					if (_delegate_DataStreamManager_SaveUserData != null) {
+						_delegate_DataStreamManager_SaveUserData(Constant.NETWORK_RESULTCODE_Error_Result_False, "");
+					}
 				}
 			}
 			

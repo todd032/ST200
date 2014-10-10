@@ -70,6 +70,7 @@ public class LuckyPresentPopupView : MonoBehaviour {
 		Managers.DataStream.Event_Delegate_DataStreamManager_SaveUserData += null;
 
 		// 영어학원 쿠폰 주기 기능 추가 (by 최원석 14.05.27) ========= Start.
+		Managers.UserData.UpdateSequence++;
 		Managers.DataStream.Network_SaveUserData_Input_1(Managers.UserData.GetUserDataStruct());
 		// 영어학원 쿠폰 주기 기능 추가 (by 최원석 14.05.27) ========= End.
 

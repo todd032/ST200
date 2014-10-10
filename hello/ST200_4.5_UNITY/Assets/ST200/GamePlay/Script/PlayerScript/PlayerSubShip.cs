@@ -132,9 +132,11 @@ public class PlayerSubShip : MonoBehaviour {
 	public float m_RotationOuterForce;
 
 	protected int m_EquipIndex;
-	public virtual void Init(SubShipStatInfo _info, int _equipindex)
+	public int TeamIndex = 0;
+	public virtual void Init(SubShipStatInfo _info, int _equipindex, int _teamindex)
 	{
 		m_StatInfo = _info;
+		TeamIndex = _teamindex;
 		m_MaxHealth = m_StatInfo.Health;
 		m_CurHealth = m_MaxHealth;
 		m_PlayerShip = GamePlayerManager.Instance.m_CurrentPlayerShip;

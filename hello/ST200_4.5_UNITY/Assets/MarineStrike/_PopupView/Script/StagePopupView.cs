@@ -353,6 +353,7 @@ public class StagePopupView : MonoBehaviour {
 							if(Managers.UserData != null){
 								
 								Managers.DataStream.Event_Delegate_DataStreamManager_SaveUserData += null ;
+								Managers.UserData.UpdateSequence++;
 								UserDataManager.UserDataStruct userDataStruct = Managers.UserData.GetUserDataStruct() ;
 								
 								// 영어학원 쿠폰 주기 기능 추가 (by 최원석 14.05.27) ========= Start.
@@ -416,6 +417,7 @@ public class StagePopupView : MonoBehaviour {
 							if(Managers.UserData != null){
 								
 								Managers.DataStream.Event_Delegate_DataStreamManager_SaveUserData += null ;
+								Managers.UserData.UpdateSequence++;
 								UserDataManager.UserDataStruct userDataStruct = Managers.UserData.GetUserDataStruct() ;
 								
 								// 영어학원 쿠폰 주기 기능 추가 (by 최원석 14.05.27) ========= Start.

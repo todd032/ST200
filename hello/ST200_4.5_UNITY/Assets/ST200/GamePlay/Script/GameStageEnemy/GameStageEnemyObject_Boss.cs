@@ -63,24 +63,17 @@ public class GameStageEnemyObject_Boss : GameStageEnemyObject {
 		float soundratio = (Mathf.Max(maxdistance - Vector2.Distance(transform.position, m_PlayerShip.transform.position), 0f) / maxdistance);
 		Managers.Audio.PlayFXSound(AudioManager.FX_SOUND.FX_BULLET_SHOOT_ENEMY, false, soundratio);
 
-		GameBulletManager.Instance.ShootBullet(GamePlayBulletType.ENEMY_BULLET, 
-		                                       m_StageEnemyData.SpecialEffectValue, 
-		                                       m_ShootTransform[0].position, 
-		                                       m_LookingDirection.normalized * m_StageEnemyData.SpecialEffectValue2, 
-		                                       m_StageEnemyData.SpecialEffectValue3, 
-		                                       1f);
-		GameBulletManager.Instance.ShootBullet(GamePlayBulletType.ENEMY_BULLET, 
-		                                       m_StageEnemyData.SpecialEffectValue, 
-		                                       m_ShootTransform[1].position, 
-		                                       m_LookingDirection.normalized * m_StageEnemyData.SpecialEffectValue2, 
-		                                       m_StageEnemyData.SpecialEffectValue3, 
-		                                       1f);
-		GameBulletManager.Instance.ShootBullet(GamePlayBulletType.ENEMY_BULLET, 
-		                                       m_StageEnemyData.SpecialEffectValue, 
-		                                       m_ShootTransform[2].position, 
-		                                       m_LookingDirection.normalized * m_StageEnemyData.SpecialEffectValue2, 
-		                                       m_StageEnemyData.SpecialEffectValue3, 
-		                                       1f);
+		for(int i = 0; i < 3; i++)
+		{
+			GameBulletManager.Instance.ShootBullet(GamePlayBulletType.ENEMY_BULLET, 
+			                                       m_StageEnemyData.SpecialEffectValue, 
+			                                       m_ShootTransform[i].position, 
+			                                       m_LookingDirection.normalized * m_StageEnemyData.SpecialEffectValue2, 
+			                                       m_StageEnemyData.SpecialEffectValue3, 
+			                                       1f,
+			                                       0,
+			                                       1f);
+		}
 	}
 	
 	

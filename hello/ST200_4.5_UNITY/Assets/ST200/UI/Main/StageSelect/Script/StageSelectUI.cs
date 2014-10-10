@@ -151,6 +151,7 @@ public class StageSelectUI : MonoBehaviour {
 		}else
 		{
 			Managers.UserData.SelectedStageIndex = m_StageData.Index;
+			Managers.UserData.SelectedGameType = Constant.ST200_GAMEMODE_STAGE_NORMAL;
 			GameUIManager.Instance.SwitchToGameShopManager();
 		}
 	}

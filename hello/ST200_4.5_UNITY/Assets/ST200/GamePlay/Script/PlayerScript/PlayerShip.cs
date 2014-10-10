@@ -4,6 +4,11 @@ using System.Collections.Generic;
 
 public class PlayerShip : MonoBehaviour {
 
+	/// <summary>
+	/// Save things that will be target
+	/// </summary>
+	protected List<Transform> m_TargetList = new List<Transform>();
+
 	public GamePlayerShipType m_ShipType;
 
 	public List<GameShipBuff> m_BuffList = new List<GameShipBuff>();
@@ -189,11 +194,13 @@ public class PlayerShip : MonoBehaviour {
 	protected float MaxRowSpeed = 1f;
 	protected float RowDecreaseFactor = 0.99f;
 
+	public int TeamIndex = 0;
 	[HideInInspector]
 	public List<Transform> m_SubShipFollowList = new List<Transform>();
-	public virtual void Init(ShipStatInfo _info)
+	public virtual void Init(ShipStatInfo _info, int _team)
 	{
 		m_ShipStatInfo = _info;
+		TeamIndex = _team;
 		MaxHealth = m_ShipStatInfo.Health;
 		m_CurHealth = MaxHealth;
 
@@ -455,16 +462,8 @@ public class PlayerShip : MonoBehaviour {
 		
 		Vector3 moveforce = _force;//Mathf.Abs(Mathf.Cos(deltaangle * Mathf.Deg2Rad)) * 100f;
 		moveforce.z = 0f;
-		//float rotationforce = _force.magnitude * Mathf.Cos(deltaangle * Mathf.Deg2Rad) * 50f;
-		//if(crossvector.z > 0f)
-		//{
-		//	//moveforce = -moveforce;
-		//	rotationforce = -rotationforce;
-		//}
-		//Debug.Log("rotationforce: " + rotationforce);
-		
+
 		m_OuterForce += moveforce;
-		//m_RotationOuterForce += rotationforce;
 	}
 
 	public virtual void AddMoveForce(Vector3 _force)
@@ -619,6 +618,20 @@ public class PlayerShip : MonoBehaviour {
 	{
 		_enemy.AddHitForce(transform.position, (_enemy.transform.position - transform.position).normalized );
 	}
+	
+	public virtual void CrashPlayerShip(PlayerShip _player)
+	{
+		GamePlayFXManager.Instance.StartParticleFX(GamePlayParticleFX_Type.ARROW_HIT_FX, _player.transform.position);
+		Managers.Audio.PlayFXSound(AudioManager.FX_SOUND.FX_ARROW_HIT, false);
+		_player.AddHitForce(transform.position, m_LookingVector * Mathf.Min(m_MoveSpeed.magnitude / m_ShipStatInfo.MaxMoveSpeed, 1f) * m_ShipStatInfo.PushForce);
+		_player.DoDamage(m_ShipStatInfo.PushDamage, Constant.ST200_GAMEPLAY_DAMAGE_TYPE_CRASH);
+		//GameManager.Instance.PlayerCrashWithEnemyEvent();
+	}
+
+	public virtual void DragPlayerShip(PlayerShip _player)
+	{
+		_player.AddHitForce(transform.position, (_player.transform.position - transform.position).normalized );
+	}
 
 	public virtual void CrashPlayerSubShip(PlayerSubShip _ship)
 	{
@@ -658,7 +671,14 @@ public class PlayerShip : MonoBehaviour {
 			{
 				StageItem stageitem = _col.gameObject.GetComponent<StageItem>();
 				OnStageItemEnter(stageitem);
-			}			       
+			}else if(_col.gameObject.layer == LayerMask.NameToLayer("Player"))
+			{
+				PlayerShip playership = _col.gameObject.GetComponent<PlayerShip>();
+				if(playership)
+				{
+					CrashPlayerShip(playership);
+				}
+			}
 		}
 	}
 
@@ -711,5 +731,13 @@ public class PlayerShip : MonoBehaviour {
 	{
 		m_CurHealth = MaxHealth;
 		m_ShipAnimation.PlayIdleAnimation();
+	}
+
+	public void AddTarget(Transform _transform)
+	{
+		if(!m_TargetList.Contains(_transform))
+		{
+			m_TargetList.Add (_transform);
+		}
 	}
 }

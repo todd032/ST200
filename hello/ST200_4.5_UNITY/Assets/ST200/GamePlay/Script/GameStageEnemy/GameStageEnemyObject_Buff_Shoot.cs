@@ -68,18 +68,24 @@ public class GameStageEnemyObject_Buff_Shoot  : GameStageEnemyObject {
 		                                       transform.position, 
 		                                       m_LookingDirection * m_StageEnemyData.SpecialEffectValue2, 
 		                                       10f, 
+		                                       1f,
+		                                       0,
 		                                       1f);
 		GameBulletManager.Instance.ShootBullet(GamePlayBulletType.ENEMY_BULLET, 
 		                                       m_StageEnemyData.SpecialEffectValue, 
 		                                       transform.position, 
 		                                       Vector3.Cross(Vector3.forward, m_LookingDirection).normalized * m_StageEnemyData.SpecialEffectValue2, 
 		                                       10f, 
+		                                       1f,
+		                                       0,
 		                                       1f);
 		GameBulletManager.Instance.ShootBullet(GamePlayBulletType.ENEMY_BULLET, 
 		                                       m_StageEnemyData.SpecialEffectValue, 
 		                                       transform.position, 
 		                                       -Vector3.Cross(Vector3.forward, m_LookingDirection).normalized * m_StageEnemyData.SpecialEffectValue2, 
 		                                       10f, 
+		                                       1f,
+		                                       0,
 		                                       1f);
 	}
 	

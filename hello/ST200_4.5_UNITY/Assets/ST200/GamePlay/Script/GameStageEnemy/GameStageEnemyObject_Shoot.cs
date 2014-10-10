@@ -68,7 +68,9 @@ public class GameStageEnemyObject_Shoot : GameStageEnemyObject {
 		                                      transform.position, 
 		                                       m_LookingDirection * m_StageEnemyData.SpecialEffectValue2, 
 		                                       m_StageEnemyData.SpecialEffectValue3, 
-		                                      1f);
+		                                      1f,
+		                                       0,
+		                                       1f);
 	}
 	
 	

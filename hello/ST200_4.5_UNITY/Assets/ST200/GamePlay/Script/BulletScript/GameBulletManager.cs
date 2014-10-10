@@ -37,7 +37,7 @@ public class GameBulletManager : MonoBehaviour {
 		}
 	}
 
-	public void ShootBullet(GamePlayBulletType _type, float _damage, Vector3 _worldpos, Vector3 _speed, float _pushforce, float _sizeratio)
+	public void ShootBullet(GamePlayBulletType _type, float _damage, Vector3 _worldpos, Vector3 _speed, float _pushforce, float _sizeratio, int _teamindex, float _remaintime)
 	{
 		Vector3 newworldpos = _worldpos;
 		newworldpos.z = -1f;
@@ -73,7 +73,7 @@ public class GameBulletManager : MonoBehaviour {
 
 		//Debug.Log("SE: " + _type + " SELECTED: " + selectedbulletobject.m_Type);
 		selectedbulletobject.gameObject.SetActive (true);
-		selectedbulletobject.Init(_worldpos, _damage, _speed, _pushforce, _sizeratio);
+		selectedbulletobject.Init(_worldpos, _damage, _speed, _pushforce, _sizeratio, _teamindex, _remaintime);
 		m_ActiveGameBulletObjectList.Add(selectedbulletobject);
 		//Debug.Log("? WORKING?");
 	}
@@ -93,4 +93,5 @@ public enum GamePlayBulletType
 	PLAYER_MINE					= 3,
 	PLAYER_ARROW 				= 4,
 	PLAYER_FIRE					= 5,
+	ENEMY_MINE					= 6,
 }

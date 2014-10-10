@@ -119,13 +119,6 @@ public class BoastAlert_PopupView : MonoBehaviour {
 		}
 
 		gameObject.SetActive (false);
-
-		if(Managers.UserData.FriendMessageSent % 5 == 0)
-		{
-			GameManager.Instance.GUIManager.ShowLuckyCouponAlert();
-		}
-
-		GameManager.Instance.GUIManager.ShowLuckyCouponAlert();
 	}
 
 	private void Process_Kakao_ActionSendMessage(){

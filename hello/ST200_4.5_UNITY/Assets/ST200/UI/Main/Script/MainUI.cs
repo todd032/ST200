@@ -138,7 +138,10 @@ public class MainUI : MonoBehaviour {
 					//	_uiRootAlertView.LoadUIRootAlertView(11) ; // 통신상태가 불안정합니다. 다시 실행해 주세요.
 					//	_uiRootAlertView.UIRootAlertViewEvent += UIRootAlertViewDelegate ;
 						
-					}else {
+					}else if(intResult_Code_Input == Constant.NETWORK_RESULTCODE_Error_UserSequence)
+					{
+						GameUIManager.Instance.LoadUIRootAlertView(Constant.ST200_POPUP_ERROR_USERSEQUENCE_ERROR); 
+					} else {
 						
 					//	_uiRootAlertView.LoadUIRootAlertView(21) ; // 데이터가 올바르지 않습니다. 다시 실행해 주세요.
 					//	_uiRootAlertView.UIRootAlertViewEvent += UIRootAlertViewDelegate ;
@@ -146,7 +149,8 @@ public class MainUI : MonoBehaviour {
 					//Debug.Log("RESULT: " + intResult_Code_Input);
 					Managers.DataStream.Event_Delegate_DataStreamManager_SaveUserData += null;
 				};
-				
+
+				Managers.UserData.UpdateSequence++;
 				UserDataManager.UserDataStruct userDataStruct = Managers.UserData.GetUserDataStruct() ;
 				
 				Managers.DataStream.Network_SaveUserData_Input_1(userDataStruct);
@@ -291,6 +295,9 @@ public class MainUI : MonoBehaviour {
 				} else if (intNetworkResult_Input == Constant.NETWORK_RESULTCODE_Error_Network){
 					
 					GameUIManager.Instance.LoadUIRootAlertView(Constant.ST200_POPUP_MESSAGE_NETWORK_NOT_GOOD);
+				} else if(intNetworkResult_Input == Constant.NETWORK_RESULTCODE_Error_UserSequence)
+				{
+					GameUIManager.Instance.LoadUIRootAlertView(Constant.ST200_POPUP_ERROR_USERSEQUENCE_ERROR); 
 				} else {
 					
 					GameUIManager.Instance.LoadUIRootAlertView(Constant.ST200_POPUP_MESSAGE_INCORRECTDATA) ;

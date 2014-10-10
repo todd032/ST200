@@ -9,10 +9,10 @@ public class Constant : MonoBehaviour {
 	/// 
 	public readonly static bool VALTEST1 = false;
     // 프로젝트 정보 ----------------------------------------------------------------------------------------------------------------
-    public readonly static string AppVersionInfo = "1.2.0";
+    public readonly static string AppVersionInfo = "1.2.1";
     public readonly static string DefalutAppName = "defalut_app_name" ;
     
-    public readonly static string AppNameString = "28" ; //VersionCode...
+    public readonly static string AppNameString = "29" ; //VersionCode...
     public readonly static string CURRENT_MARKET = "2" ; // 2 : PlayStore   3 : TStore  4 : Naver.
 
     
@@ -146,10 +146,8 @@ public class Constant : MonoBehaviour {
     public static readonly int NETWORK_RESULTCODE_Error_Result_False = 142;
     public static readonly int NETWORK_RESULTCODE_Error_Result_Extend = 143;
     public static readonly int NETWORK_RESULTCODE_Error_Result_Data = 144;
-    
-    
-    
-    
+	public static readonly int NETWORK_RESULTCODE_Error_UserSequence = 145;    
+	public static readonly string NETWORK_RESULTCODE_Error_UserSequence_Message = "UPDATE_SEQUENCE_ERROR";
     
     public static readonly int ALLERTCODE_NetworkError = 11;
     public static readonly int ALLERTCODE_DataError = 21;
@@ -2128,6 +2126,7 @@ public class Constant : MonoBehaviour {
 	public readonly static int ST200_POPUP_MESSAGE_INCORRECTDATA 				= 1001;
 	public readonly static int ST200_POPUP_MESSAGE_NETWORK_NOT_GOOD				= 1002;
 	public readonly static int ST200_POPUP_MESSAGE_PACKAGE_NOT_CORRECT			= 1003;
+	public readonly static int ST200_POPUP_ERROR_USERSEQUENCE_ERROR 			= 1004;
 
 	public readonly static int ST200_POPUP_MESSAGE_INAPP_FAILED_TO_CALL			= 2001;//previous 21
 	public readonly static int ST200_POPUP_MESSAGE_INAPP_CANCELED				= 2002;
@@ -2177,5 +2176,10 @@ public class Constant : MonoBehaviour {
 	public readonly static int ST200_GAMEPLAY_DAMAGE_TYPE_CRASH 				= 2;
 	public readonly static int ST200_GAMEPLAY_DAMAGE_TYPE_NORETURN 				= 3;
 	public readonly static int ST200_GAMEPLAY_DAMAGE_TYPE_EXPLODE 				= 4;
+	#endregion
+
+	#region ST200 GAME MODE
+	public readonly static int ST200_GAMEMODE_STAGE_NORMAL						= 0;
+	public readonly static int ST200_GAMEMODE_PVP								= 1;
 	#endregion
 }

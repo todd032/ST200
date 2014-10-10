@@ -212,6 +212,7 @@ public class InboxPopupView : MonoBehaviour {
 							if (Managers.UserData != null){
 
 								Managers.DataStream.Event_Delegate_DataStreamManager_SaveUserData += null ;
+								Managers.UserData.UpdateSequence++;
 								UserDataManager.UserDataStruct userDataStruct = Managers.UserData.GetUserDataStruct() ;
 								
 								Managers.DataStream.Network_SaveUserData_Input_1(userDataStruct);
@@ -229,7 +230,7 @@ public class InboxPopupView : MonoBehaviour {
 						_inboxPopupViewDelegate(this, 1002) ;  // 1002 : Root Indicator Stop!!
 					}
 					
-				} else { //Fail
+				}else { //Fail
 
 					if (_inboxPopupViewDelegate != null){
 
@@ -239,7 +240,7 @@ public class InboxPopupView : MonoBehaviour {
 				GameUIManager.Instance.LoadGameGoldAndGameJewelInfo();
 			};
 
-			StartCoroutine(Managers.DataStream.Network_OpenMessage(inboxListCell.GetMessageListData.MsgSeq)) ;
+			StartCoroutine(Managers.DataStream.Network_OpenMessage(inboxListCell.GetMessageListData.MsgSeq));
 		}
 
 		UpdateNewMessage();
@@ -434,6 +435,7 @@ public class InboxPopupView : MonoBehaviour {
 				_inboxListPanel.DeleteAllInboxListGrid(true) ;
 
 				Managers.DataStream.Event_Delegate_DataStreamManager_SaveUserData += null ;
+				Managers.UserData.UpdateSequence++;
 				UserDataManager.UserDataStruct userDataStruct = Managers.UserData.GetUserDataStruct() ;
 
 				// 영어학원 쿠폰 주기 기능 추가 (by 최원석 14.05.27) ========= Start.
@@ -448,7 +450,7 @@ public class InboxPopupView : MonoBehaviour {
 					_inboxPopupViewDelegate(this, 1002) ;  // 1002 : Root Indicator Stop!!
 				}
 				
-			} else { //Fail
+			}else { //Fail
 				// Connect Indicator Stop..
 				if (_inboxPopupViewDelegate != null){
 

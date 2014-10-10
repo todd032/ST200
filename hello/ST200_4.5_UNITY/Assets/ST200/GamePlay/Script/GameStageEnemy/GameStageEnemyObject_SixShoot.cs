@@ -71,7 +71,9 @@ public class GameStageEnemyObject_SixShoot  : GameStageEnemyObject {
 			                                       m_ShootTransform[i].transform.position, 
 			                                       m_ShootTransform[i].transform.up * m_StageEnemyData.SpecialEffectValue2, 
 			                                       10f / 3f, 
-			                                       0.5f);
+			                                       0.5f,
+			                                       0,
+			                                       1f);
 		}
 	}
 	

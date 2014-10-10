@@ -104,7 +104,7 @@ public class AttendPopupView : MonoBehaviour {
 	public void OnClickButton_Confirm(){
 
 		SetUserData_AttendReward();
-
+		Managers.UserData.UpdateSequence++;
 		// 영어학원 쿠폰 주기 기능 추가 (by 최원석 14.05.27) ========= Start.
 		// 이벤트 정의 - SaveUserData 통신이 끝난 후 할 일.
 		Managers.DataStream.Event_Delegate_DataStreamManager_SaveUserData += (intResult_Code_Input, strResult_Extend_Input) => {
@@ -114,11 +114,11 @@ public class AttendPopupView : MonoBehaviour {
 				_delegate_AttendPopupView_NetworkResult(Constant.NETWORK_RESULTCODE_OK);
 			
 			} else if (intResult_Code_Input == Constant.NETWORK_RESULTCODE_Error_Network){
-
 				_delegate_AttendPopupView_NetworkResult(Constant.NETWORK_RESULTCODE_Error_Network);
-
+			} else if(intResult_Code_Input == Constant.NETWORK_RESULTCODE_Error_UserSequence)
+			{
+				_delegate_AttendPopupView_NetworkResult(Constant.NETWORK_RESULTCODE_Error_UserSequence);
 			} else {
-
 				_delegate_AttendPopupView_NetworkResult(Constant.NETWORK_RESULTCODE_Error_UserData);
 			}
 

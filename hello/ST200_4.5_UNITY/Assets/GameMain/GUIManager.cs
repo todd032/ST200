@@ -20,7 +20,7 @@ public class GUIManager : MonoBehaviour {
 	}
 		
 	public UIPanel _uiRootAlertViewObject ;
-	private UIRootAlertView _uiRootAlertView ;
+	public UIRootAlertView _uiRootAlertView ;
 	
 	//
 	public IndicatorPopupView _indicatorPopupView ;
@@ -687,8 +687,8 @@ public class GUIManager : MonoBehaviour {
 
 //		Debug.Log ("ST110 GUIManager.LoadResultGameUI_Network_SaveUserData().m_intTotalScore = " + m_intTotalScore.ToString());
 
+		Managers.UserData.UpdateSequence++;
 		UserDataManager.UserDataStruct userDataStruct = Managers.UserData.GetUserDataStruct();
-
 		Managers.DataStream.Event_Delegate_DataStreamManager_SaveUserData += (intResult_Code_Input, strResult_Extend_Input) => {
 			
 			_indicatorPopupView.RemoveIndicatorPopupView();
@@ -700,7 +700,10 @@ public class GUIManager : MonoBehaviour {
 				JSONNode jsonDataRoot = JSON.Parse(strResult_Extend_Input);
 
 				m_ResultUI.Init(_shipdestroyed,  _reward_coin, _reward_gold, _score, _newscore);
-			} else {
+			}else if(intResult_Code_Input == Constant.NETWORK_RESULTCODE_Error_UserSequence)
+			{
+				m_ResultUI.Init(_shipdestroyed,  _reward_coin, _reward_gold, _score, _newscore);
+			}else {
 				
 				m_ResultUI.Init(_shipdestroyed,  _reward_coin, _reward_gold, _score, _newscore);
 			}
@@ -892,6 +895,9 @@ public class GUIManager : MonoBehaviour {
 				
 				_uiRootAlertView.LoadUIRootAlertView(Constant.ST200_POPUP_MESSAGE_NETWORK_NOT_GOOD); 
 				
+			}else if(intNetworkReadUserDataResultCode_Input == Constant.NETWORK_RESULTCODE_Error_UserSequence)
+			{
+				_uiRootAlertView.LoadUIRootAlertView(Constant.ST200_POPUP_ERROR_USERSEQUENCE_ERROR); 
 			} else {
 				
 				_uiRootAlertView.LoadUIRootAlertView(Constant.ST200_POPUP_MESSAGE_INCORRECTDATA); 
@@ -909,31 +915,7 @@ public class GUIManager : MonoBehaviour {
 	}
 	
 	private bool m_ShowLuckyCouponGetWindow = false;
-	
-	// 영어학원 쿠폰 주기 기능 추가 (by 최원석 14.05.27) ========= Start.
-	public void ShowLuckyCouponAlert(){
 
-		if (m_ShowLuckyCouponGetWindow){
-
-			m_ShowLuckyCouponGetWindow = false;
-
-			m_LuckyCouponAlertView.Event_Delegate_LuckyCouponAlertView += (int intResultCode_Input) => {
-
-				if (intResultCode_Input == Constant.NETWORK_RESULTCODE_OK){
-
-					PopupView_AhaEnglishCoupon();
-				}
-
-				m_LuckyCouponAlertView.Event_Delegate_LuckyCouponAlertView += null;
-			};
-
-			m_LuckyCouponAlertView.ShowPopupView();
-			EmitFireWork();
-		} else {
-
-			PopupView_AhaEnglishCoupon();
-		}
-	}
 
 	private void PopupView_AhaEnglishCoupon(){
 
@@ -1006,7 +988,8 @@ public class GUIManager : MonoBehaviour {
 		if (Managers.DataStream != null) {
 			
 			if (Managers.UserData != null) {
-				
+
+				Managers.UserData.UpdateSequence++;
 				UserDataManager.UserDataStruct userDataStruct = Managers.UserData.GetUserDataStruct();
 				
 				int intExperienceMode = PlayerPrefs.GetInt(Constant.PREFKEY_ExperiencePopup_Mode_INT);
@@ -1031,6 +1014,9 @@ public class GUIManager : MonoBehaviour {
 							
 							_uiRootAlertView.LoadUIRootAlertView(Constant.ST200_POPUP_MESSAGE_NETWORK_NOT_GOOD); 
 							
+						}else if(intResult_Code_Input == Constant.NETWORK_RESULTCODE_Error_UserSequence)
+						{
+							_uiRootAlertView.LoadUIRootAlertView(Constant.ST200_POPUP_ERROR_USERSEQUENCE_ERROR); 
 						} else {
 							
 							_uiRootAlertView.LoadUIRootAlertView(Constant.ST200_POPUP_MESSAGE_INCORRECTDATA); 
@@ -1059,7 +1045,10 @@ public class GUIManager : MonoBehaviour {
 							
 							_uiRootAlertView.LoadUIRootAlertView(Constant.ST200_POPUP_MESSAGE_NETWORK_NOT_GOOD); 
 							
-						} else {
+						}else if(intNetworkResultCode_Input == Constant.NETWORK_RESULTCODE_Error_UserSequence)
+						{
+							_uiRootAlertView.LoadUIRootAlertView(Constant.ST200_POPUP_ERROR_USERSEQUENCE_ERROR); 
+						}  else {
 							
 							_uiRootAlertView.LoadUIRootAlertView(Constant.ST200_POPUP_MESSAGE_INCORRECTDATA); 
 						}
@@ -1137,7 +1126,8 @@ public class GUIManager : MonoBehaviour {
 		if (Managers.DataStream != null) {
 			
 			if (Managers.UserData != null) {
-				
+
+				Managers.UserData.UpdateSequence++;
 				UserDataManager.UserDataStruct userDataStruct = Managers.UserData.GetUserDataStruct();
 				
 				int intExperienceMode = PlayerPrefs.GetInt(Constant.PREFKEY_ExperiencePopup_Mode_INT);
@@ -1159,7 +1149,10 @@ public class GUIManager : MonoBehaviour {
 							
 							_uiRootAlertView.LoadUIRootAlertView(Constant.ST200_POPUP_MESSAGE_NETWORK_NOT_GOOD); 
 							
-						} else {
+						}else if(intResult_Code_Input == Constant.NETWORK_RESULTCODE_Error_UserSequence)
+						{
+							_uiRootAlertView.LoadUIRootAlertView(Constant.ST200_POPUP_ERROR_USERSEQUENCE_ERROR); 
+						}  else {
 							
 							_uiRootAlertView.LoadUIRootAlertView(Constant.ST200_POPUP_MESSAGE_INCORRECTDATA); 
 						}
@@ -1190,6 +1183,9 @@ public class GUIManager : MonoBehaviour {
 							
 							_uiRootAlertView.LoadUIRootAlertView(Constant.ST200_POPUP_MESSAGE_NETWORK_NOT_GOOD); 
 							
+						} else if(intNetworkResultCode_Input == Constant.NETWORK_RESULTCODE_Error_UserSequence)
+						{
+							_uiRootAlertView.LoadUIRootAlertView(Constant.ST200_POPUP_ERROR_USERSEQUENCE_ERROR); 
 						} else {
 							
 							_uiRootAlertView.LoadUIRootAlertView(Constant.ST200_POPUP_MESSAGE_INCORRECTDATA); 

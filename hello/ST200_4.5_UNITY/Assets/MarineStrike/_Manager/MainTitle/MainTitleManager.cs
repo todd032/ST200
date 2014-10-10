@@ -331,7 +331,10 @@ public class MainTitleManager : MonoBehaviour {
 				
 				_uiRootAlertView.LoadUIRootAlertView(Constant.ST200_POPUP_MESSAGE_NETWORK_NOT_GOOD) ;
 				
-			} else {
+			} else if(intNetworkResultCode_Input == Constant.NETWORK_RESULTCODE_Error_UserSequence)
+			{
+				_uiRootAlertView.LoadUIRootAlertView(Constant.ST200_POPUP_ERROR_USERSEQUENCE_ERROR) ; // 데이터가 올바르지 않습니다. 다시 실행해 주세요.
+			}else {
 				
 				_uiRootAlertView.LoadUIRootAlertView(Constant.ST200_POPUP_MESSAGE_INCORRECTDATA) ;
 			}
@@ -363,6 +366,9 @@ public class MainTitleManager : MonoBehaviour {
 				
 				_uiRootAlertView.LoadUIRootAlertView(Constant.ST200_POPUP_MESSAGE_NETWORK_NOT_GOOD) ;
 				
+			} else if(intNetworkResultCode_Input == Constant.NETWORK_RESULTCODE_Error_UserSequence)
+			{
+				_uiRootAlertView.LoadUIRootAlertView(Constant.ST200_POPUP_ERROR_USERSEQUENCE_ERROR) ; // 데이터가 올바르지 않습니다. 다시 실행해 주세요.
 			} else {
 				
 				_uiRootAlertView.LoadUIRootAlertView(Constant.ST200_POPUP_MESSAGE_INCORRECTDATA) ;

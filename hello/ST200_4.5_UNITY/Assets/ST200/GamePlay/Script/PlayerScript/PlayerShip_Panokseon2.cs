@@ -45,14 +45,18 @@ public class PlayerShip_Panokseon2 : PlayerShip {
 			                                       m_ShootTransform[0].position, 
 			                                       m_ShootTransform[0].transform.up * m_ShipStatInfo.BulletSpeed, 
 			                                       m_ShipStatInfo.BulletPushForce / 2f,
-			                                       0.5f);
+			                                       0.5f,
+			                                       TeamIndex,
+			                                       1f);
 			
 			GameBulletManager.Instance.ShootBullet(GamePlayBulletType.PLAYER_BULLET, 
 			                                       AttackDamage / 2f, 
 			                                       m_ShootTransform[1].position, 
 			                                       m_ShootTransform[1].transform.up * m_ShipStatInfo.BulletSpeed, 
 			                                       m_ShipStatInfo.BulletPushForce / 2f,
-			                                       0.5f);
+			                                       0.5f,
+			                                       TeamIndex,
+			                                       1f);
 		}
 		
 		if(shootright)
@@ -67,14 +71,18 @@ public class PlayerShip_Panokseon2 : PlayerShip {
 			                                       m_ShootTransform[2].position, 
 			                                       m_ShootTransform[2].transform.up * m_ShipStatInfo.BulletSpeed, 
 			                                       m_ShipStatInfo.BulletPushForce / 2f,
-			                                       0.5f);
+			                                       0.5f,
+			                                       TeamIndex,
+			                                       1f);
 			
 			GameBulletManager.Instance.ShootBullet(GamePlayBulletType.PLAYER_BULLET, 
 			                                       AttackDamage / 2f, 
 			                                       m_ShootTransform[3].position, 
 			                                       m_ShootTransform[3].transform.up * m_ShipStatInfo.BulletSpeed, 
 			                                       m_ShipStatInfo.BulletPushForce / 2f,
-			                                       0.5f);
+			                                       0.5f,
+			                                       TeamIndex,
+			                                       1f);
 		}
 		
 		if(shootright || shootleft)

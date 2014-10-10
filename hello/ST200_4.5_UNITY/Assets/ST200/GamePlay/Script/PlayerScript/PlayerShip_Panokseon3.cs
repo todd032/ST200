@@ -34,7 +34,9 @@ public class PlayerShip_Panokseon3 : PlayerShip {
 				                                       m_ShootTransform[i].position, 
 				                                       m_ShootTransform[i].transform.up * m_ShipStatInfo.BulletSpeed, 
 				                                       m_ShipStatInfo.BulletPushForce,
-				                                       0.3f);
+				                                       0.3f,
+				                                       TeamIndex,
+				                                       1f);
 			}
 			m_AttackTimer -= AttackMaxGauge;
 			Managers.Audio.PlayFXSound(AudioManager.FX_SOUND.FX_BULLET_SHOOT_PLAYER, false);

@@ -47,6 +47,8 @@ public class PlayerShip_Panokseon4 : PlayerShip {
 			                                       m_ShootTransform[0].position, 
 			                                       m_ShootTransform[0].transform.up * m_ShipStatInfo.BulletSpeed, 
 			                                       m_ShipStatInfo.BulletPushForce,
+			                                       1f,
+			                                       TeamIndex,
 			                                       1f);
 		}
 
@@ -111,6 +113,8 @@ public class PlayerShip_Panokseon4 : PlayerShip {
 				                                       m_ShootTransform[i].position, 
 				                                       movedirection * m_ShipStatInfo.BulletSpeed * m_ArrowDistanceFactor,
 				                                       0f,//m_ShipStatInfo.BulletPushForce / m_ArrowMaxGaugeFactor,
+				                                       1f,
+				                                       TeamIndex,
 				                                       1f);
 			}
 		}
@@ -127,6 +131,8 @@ public class PlayerShip_Panokseon4 : PlayerShip {
 				                                       m_ShootTransform[i].position, 
 				                                       movedirection * m_ShipStatInfo.BulletSpeed * m_ArrowDistanceFactor,
 				                                       0f,//m_ShipStatInfo.BulletPushForce / m_ArrowMaxGaugeFactor,
+				                                       1f,
+				                                       TeamIndex,
 				                                       1f);
 			}
 		}

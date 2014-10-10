@@ -3,8 +3,7 @@ using System.Collections;
 using System.Collections.Generic ;
 
 public class GameManager : MonoBehaviour
-{
-	
+{	
 	private float _baseParallaxMoveSpeed = 0f ;
 	private static GameManager instance ;
 	public static GameManager Instance
@@ -39,6 +38,13 @@ public class GameManager : MonoBehaviour
 		GameClear,
 		GameOver,
 		GameResult,
+
+		PVP_INIT,
+		PVP_READY,
+		PVP_PLAY,
+		PVP_CLEAR,
+		PVP_DEAD,
+		PVP_RESULT,
 	};
 
 	public Camera m_GamePlayCamera;
@@ -2048,89 +2054,6 @@ public class GameManager : MonoBehaviour
 		//m_SpecialAttackMissile.Reset(_gameSubmarine, Managers.GameBalanceData.MissileDamage);
 		//m_SpecialAttackLaser.Reset(_gameSubmarine, Managers.GameBalanceData.LaserDamage, Managers.GameBalanceData.LaserDurationTime);
 
-		//init player
-		//m_Player
-		GamePlayerManager.Instance.Init(Managers.UserData.GetCurrentUserShipData());
-		m_Player = GamePlayerManager.Instance.m_CurrentPlayerShip;
-		m_Player.ShootEvent += PlayerShootEvent;
-		m_Player.DamagedEvent += PlayerDamagedEvent;
-		_GameStageManager.EnemyShootEvent 				+= EnemyShootEvent;
-		_GameStageManager.DefendLinePassEvent 			+= EnemyDefendLinePassEvent;
-		_GameStageManager.EnemyDeadEvent				+= EnemyDeadEvent;
-
-		for(int i = 1 ; i <= Managers.GameBalanceData.SubShipEquipAvailableMaxCount; i++)
-		{
-			int shipindex = Managers.UserData.GetEquipedSubShipIndex(i);
-			if(shipindex != 0)
-			{
-				GamePlayerManager.Instance.SpawnSubShip (Managers.UserData.GetUserSubShipData(shipindex));
-			}
-		}
-
-		m_PlayerController.Init(m_Player);
-
-		//init effects
-		m_ShoutEffect.Init(20f);//m_Player.m_ShipStatInfo.PushForce 
-		m_SingijeonEffect.Init(m_Player.m_ShipStatInfo.BulletDamage * 2f);
-
-		CharacterNum = Managers.UserData.GetCurrentGameCharacter().IndexNumber;
-
-
-		//check character info and set buf
-		if(CharacterNum == 2)
-		{
-			GameShipBuff damagebuff = new GameShipBuff();
-			damagebuff.Init(GameShipBuffType.ATTACK_DAMAGE_BUFF, GameShipBuffRemainType.INFINITE, 
-			          1f, 
-			          Managers.GameBalanceData.GamePlayCharacter2DamageIncreaseRatio,
-			          1f,
-			          1f,
-			          1f);
-			m_Player.AddBuff(damagebuff);
-
-			GameShipBuff attackratebuff = new GameShipBuff();
-			attackratebuff.Init(GameShipBuffType.ATTACK_SPEED_BUFF, GameShipBuffRemainType.INFINITE,
-			                    1f,
-			                    Managers.GameBalanceData.GamePlayCharacter2AttackSpeedIncreaseRatio,
-			                    1f,
-			                    1f,
-			                    1f);
-			m_Player.AddBuff(attackratebuff);
-		}else if(CharacterNum == 3)
-		{
-			Debug.Log("INVINCIBLE POSSESS");
-			HaveInvincible = true;
-		}
-
-		//check item buff
-		if(HaveHealthUpItem)
-		{
-			GameShipBuff buff = new GameShipBuff();
-			buff.Init(GameShipBuffType.HEALTH_INCREASE, GameShipBuffRemainType.INFINITE,
-			          1f,
-			          Managers.GameBalanceData.HealthItemIncreaseRatio,
-			          1f,
-			          1f,
-			          1f);
-			m_Player.AddBuff(buff);
-			m_Player.m_CurHealth = m_Player.MaxHealth;
-			//m_Player.Heal(m_Player.MaxHealth);
-		}
-		if(HavePowerUpItem)
-		{
-			GameShipBuff buff = new GameShipBuff();
-			buff.Init(GameShipBuffType.ATTACK_DAMAGE_BUFF, GameShipBuffRemainType.INFINITE,
-			          1f,
-			          Managers.GameBalanceData.AttackItemDamageIncreaseRatio,
-			          1f,
-			          1f,
-			          1f);
-			m_Player.AddBuff(buff);
-		}
-
-		GamePathManager.Instance.InitPath(Managers.GameBalanceData.GamePlayReturnToBattleMaxDistance * 2f);
-		m_BackgroundManager.SetBackgroundObject(Managers.GameBalanceData.GetStageData(Managers.UserData.SelectedStageIndex).BackgroundType);
-		m_BackgroundManager.InitLineObstacle(Managers.GameBalanceData.GamePlayReturnToBattleMaxDistance);
 	}
 	
 	private void Start(){
@@ -2142,8 +2065,13 @@ public class GameManager : MonoBehaviour
 		_guiManager.InitItemButton(HaveShoutItem, HaveSingijeon, HaveInvincible);
 		//_guiManager.SetItemUseButton(HaveShoutItem, HaveSingijeon, HaveInvincible) ;
 		
-		
-		_gameState = GameState.GameInitialize ;	
+		if(Managers.UserData.SelectedGameType == Constant.ST200_GAMEMODE_STAGE_NORMAL)
+		{
+			_gameState = GameState.GameInitialize ;	
+		}else if(Managers.UserData.SelectedGameType == Constant.ST200_GAMEMODE_PVP)
+		{
+			_gameState = GameState.PVP_INIT;
+		}
 		StartCoroutine(_gameState.ToString()) ;
 		
 	}
@@ -2589,14 +2517,364 @@ public class GameManager : MonoBehaviour
 	}
 		
 	//------------------------------------------------------
-	
+
+	#region FSM IENUMERATOR
+	private IEnumerator PVP_INIT() {
+		
+		_guiManager.SetItemUseButtonDisable() ;
+		
+		yield return null ;
+		
+		while(_gameState == GameState.PVP_INIT) {		
+			
+			_gameState = GameState.GameReady ;
+			
+			yield return null ;			
+		}
+		
+		StartCoroutine(_gameState.ToString()) ;
+		
+	}
+
+	private IEnumerator PVP_READY() {
+		
+		_guiManager.SetItemUseButtonDisable() ;
+		
+		
+		// Submarine FSM
+		//_gameSubmarine.SetSubmarineStateReady() ;
+		//
+		
+		//_gameSubmarine.ChangeSubmarineSpeed(0.3f) ;
+		
+		//Vector3 startPosition = _gameSubmarine.ThisTransform.position ;
+		//Vector3 endPosition = new Vector3(_submarineStartPosition.x, _submarineStartPosition.y, startPosition.z) ;
+		
+		float t = 0f ;
+		bool isDone = false ;
+		
+		
+		yield return null ;
+		
+		while(_gameState == GameState.PVP_READY) {		
+			
+			if(!isDone){
+				t += (Time.deltaTime*1f) ;
+				//_gameSubmarine.ThisTransform.position = Vector3.Lerp(startPosition,endPosition,t) ;
+				
+				
+				if(t > 1f) {
+					
+					if(Managers.UserData != null){
+						
+						//_readyGoAlertObject.StartReadyGoAction() ;
+						//_guiManager.PlayCutInFxAnimation(1, CharacterNum);
+						_guiManager.PlayCutInFxAnimation_GO(CharacterNum);
+					}
+					
+					//_readyGoAlertObject.StartReadyGoAction() ;
+					isDone = true ;
+				}
+			}else
+			{
+				t += Time.fixedDeltaTime;
+				if(t > 3f)
+				{
+					_gameState = GameState.PVP_PLAY ;
+					if(Managers.UserData.GamePlayCount % 2 == 0)
+					{
+						if(Managers.Audio != null)
+						{
+							Managers.Audio.PlayBGMSound(AudioManager.BGM_SOUND.BGM_GAMEPLAY1,true);
+						}
+					}else
+					{
+						if(Managers.Audio != null)
+						{
+							Managers.Audio.PlayBGMSound(AudioManager.BGM_SOUND.BGM_GAMEPLAY2,true);
+						}
+					}
+				}
+			}
+			
+			yield return new WaitForFixedUpdate() ;			
+		}
+		//Debug.Log("READTY OUT");
+		
+		StartCoroutine(_gameState.ToString()) ;
+		
+	}
+
+	private IEnumerator PVP_PLAY() {
+		
+		_guiManager.GameUIAllButtonEnable();
+		_guiManager.SetItemUseButtonEnable(HaveShoutItem, HaveSingijeon, HaveInvincible) ;
+		_GameStageManager.ChangeGameSpeed(GameSpeed);
+		ReturnToBattleTimer = ReturnToBattleMaxTime;		
+		yield return null ;
+		
+		if(GameStage == 1)
+		{
+			m_TutorialManager.StartTutorial();
+		}
+		
+		while(_gameState == GameState.PVP_PLAY) {
+			float deltatime = Time.fixedDeltaTime;
+			
+			_guiManager.DisplayFeverGauge(InTheGameFeverGauge, FeverModeMaxGauge);
+			
+			if(!_guiManager.IsPlayingCutInAnimation() && !m_TutorialManager.IsPlaying())
+			{
+				GamePlayerManager.Instance.Process(deltatime);
+				//m_Player.Process(deltatime);
+				m_GameBulletObjectManager.Process(deltatime);
+				m_FeverEffect.Process(deltatime);
+				m_FeverEffect2.Process(deltatime);
+				ProcessGameStageManager(deltatime);
+				CheckPlayerBound(deltatime);
+				_guiManager.DisplayHealthGauge(m_Player.m_CurHealth, m_Player.MaxHealth);
+			}
+			//check game clear or fail
+			
+			// 스테이지 클리어 체크.
+			if (_GameStageManager.StageIsDone()){
+				
+				// Game 중지 상태 호출.
+				if (!_isGameOver && !_isTutorialMode){
+					
+					_guiManager.GameUIAllButtonDisable();
+					//_gameSubmarine.SetSubmarineStateIdle();
+					_gameState = GameState.PVP_CLEAR ;
+				}
+			}else if(m_Player.m_CurHealth <= 0)
+			{
+				if (!_isGameOver)
+				{
+					_guiManager.GameUIAllButtonDisable();
+					_gameState = GameState.GamePlayerDead;
+				}
+			}
+			yield return new WaitForFixedUpdate();
+		}
+		
+		
+		StartCoroutine(_gameState.ToString()) ;
+		
+	}
+
+	private IEnumerator PVP_CLEAR() 
+	{
+		_guiManager.PlayWinAnimation();
+		_guiManager.SetItemUseButtonDisable() ;
+		Managers.Torpedo.AddTorpedo(1);
+		//set user stage data
+		Managers.UserData.SetUserStageDataClear(Managers.UserData.SelectedStageIndex);
+		
+		yield return new WaitForSeconds(2f) ;
+		GameClearFlag = true;
+		_gameState = GameState.PVP_RESULT;
+		StartCoroutine(_gameState.ToString());
+		yield break;
+	}
+
+	private IEnumerator PVP_RESULT() {
+		if(PlayerPrefs.GetInt(Constant.PREFKEY_ExperiencePopup_Mode_INT) == Constant.INT_False)
+		{
+			Managers.UserData.GameClearCount++;
+			//Debug.Log("CLEAR COUNT: " + Managers.UserData.GameClearCount);
+			//if(Managers.UserData.GameClearCount % 10 == 0)
+			//{
+			//	Managers.UserData.AddLuckyCoupon(1);
+			//}
+		}
+		//
+		//_guiManager.SetResultData(InTheGameDistance, InTheGameGetCoin, InTheGameGetScore, AllKillCount) ;
+		//
+		
+		// Mission
+		CalculateMissionDataWithPlayTime() ;
+		//	
+		ST200KLogManager.Instance.SaveGameEnd(GameStage,
+		                                      Managers.UserData.GetCurrentUserShipData().IndexNumber,
+		                                      Managers.UserData.GetCurrentUserShipData().Level,
+		                                      Managers.UserData.GetUserSubShipData(Managers.UserData.GetEquipedSubShipIndex(1)).IndexNumber,
+		                                      Managers.UserData.GetUserSubShipData(Managers.UserData.GetEquipedSubShipIndex(1)).Level,
+		                                      Managers.UserData.GetUserSubShipData(Managers.UserData.GetEquipedSubShipIndex(2)).IndexNumber,
+		                                      Managers.UserData.GetUserSubShipData(Managers.UserData.GetEquipedSubShipIndex(2)).Level,
+		                                      Managers.UserData.GetUserSubShipData(Managers.UserData.GetEquipedSubShipIndex(3)).IndexNumber,
+		                                      Managers.UserData.GetUserSubShipData(Managers.UserData.GetEquipedSubShipIndex(3)).Level,
+		                                      Managers.UserData.GetUserSubShipData(Managers.UserData.GetEquipedSubShipIndex(4)).IndexNumber,
+		                                      Managers.UserData.GetUserSubShipData(Managers.UserData.GetEquipedSubShipIndex(4)).Level,
+		                                      Managers.UserData.GetCurrentGameCharacter().IndexNumber,
+		                                      PlayerHitCount,
+		                                      EnemyKillCount,
+		                                      PlayerCrashCount);
+		
+		float t =0f ;
+		
+		yield return null ;
+		
+		while(_gameState == GameState.PVP_RESULT) {		
+			
+			t += Time.deltaTime ;
+			
+			if(t > 1.5f && !_isGameOver){
+				
+				_isGameOver = true ;
+				
+				StageData stagedata = Managers.GameBalanceData.GetStageData(GameStage);
+				UserStageData data = Managers.UserData.GetUserStageData(GameStage);
+				bool newscore = false;
+				int gaincoin = 0;
+				InTheGameGetScore += Mathf.Max(0, (int)(m_Player.m_CurHealth * 10f));
+				if(GameClearFlag)
+				{
+					if(data.MaxScore < InTheGameGetScore)
+					{
+						newscore = true;
+					}
+					data.MaxScore = InTheGameGetScore;
+					Managers.UserData.SetUserStageData(data);
+					gaincoin = stagedata.WinCoinGetAmount;
+				}else
+				{
+					gaincoin = stagedata.LoseCoinGetAmount;
+				}
+				
+				int killgaincoin = (int)EnemyKillCount * (int)Managers.GameBalanceData.GamePlayKillGainCoinAmount;
+				if(Managers.UserData.GetCurrentGameCharacter().IndexNumber == 4)
+				{
+					killgaincoin *= 2;
+				}
+				gaincoin += killgaincoin;
+				gaincoin += CoinItemGet;
+				
+				Managers.UserData.SetGainGold(gaincoin);
+				Managers.UserData.SetGainJewel(GoldItemGet);
+				
+				_guiManager.LoadResultGameUI(EnemyKillCount, gaincoin, GoldItemGet, InTheGameGetScore, newscore );
+				
+				//save worldrank
+				int totalscore = 0;
+				for(int i = 0; i < Managers.UserData.m_UserStageDataList.Count; i++)
+				{
+					UserStageData userdata = Managers.UserData.m_UserStageDataList[i];
+					totalscore += userdata.MaxScore;
+				}
+				int maxstageopenindex = 0;
+				for(int i = 0; i < Managers.UserData.m_UserStageDataList.Count; i++)
+				{
+					UserStageData userstagedata = Managers.UserData.m_UserStageDataList[i];
+					if(userstagedata.IsOpen)
+					{
+						if(userstagedata.IndexNumber > maxstageopenindex)
+						{
+							maxstageopenindex = userstagedata.IndexNumber;
+						}
+					}
+				}
+				WorldRankManager.Instance.SaveWorldRanking(Managers.UserData.UserID,
+				                                           Managers.UserData.UserNickName,
+				                                           totalscore,
+				                                           maxstageopenindex,
+				                                           Managers.UserData.GetCurrentGameCharacter().IndexNumber.ToString());
+			}
+			
+			yield return null ;			
+		}
+		
+	}
 	//
 	// GameManager FSM
 	//------------------------------------
 	private IEnumerator GameInitialize() {
 				
 		_guiManager.SetItemUseButtonDisable() ;
+
+		//init player
+		//m_Player
+		GamePlayerManager.Instance.Init(Managers.UserData.GetCurrentUserShipData());
+		m_Player = GamePlayerManager.Instance.m_CurrentPlayerShip;
+		m_Player.ShootEvent += PlayerShootEvent;
+		m_Player.DamagedEvent += PlayerDamagedEvent;
+		_GameStageManager.EnemyShootEvent 				+= EnemyShootEvent;
+		_GameStageManager.DefendLinePassEvent 			+= EnemyDefendLinePassEvent;
+		_GameStageManager.EnemyDeadEvent				+= EnemyDeadEvent;
 		
+		for(int i = 1 ; i <= Managers.GameBalanceData.SubShipEquipAvailableMaxCount; i++)
+		{
+			int shipindex = Managers.UserData.GetEquipedSubShipIndex(i);
+			if(shipindex != 0)
+			{
+				GamePlayerManager.Instance.SpawnSubShip (Managers.UserData.GetUserSubShipData(shipindex));
+			}
+		}
+		
+		m_PlayerController.Init(m_Player);
+		
+		//init effects
+		m_ShoutEffect.Init(20f);//m_Player.m_ShipStatInfo.PushForce 
+		m_SingijeonEffect.Init(m_Player.m_ShipStatInfo.BulletDamage * 2f);
+		
+		CharacterNum = Managers.UserData.GetCurrentGameCharacter().IndexNumber;
+		
+		
+		//check character info and set buf
+		if(CharacterNum == 2)
+		{
+			GameShipBuff damagebuff = new GameShipBuff();
+			damagebuff.Init(GameShipBuffType.ATTACK_DAMAGE_BUFF, GameShipBuffRemainType.INFINITE, 
+			                1f, 
+			                Managers.GameBalanceData.GamePlayCharacter2DamageIncreaseRatio,
+			                1f,
+			                1f,
+			                1f);
+			m_Player.AddBuff(damagebuff);
+			
+			GameShipBuff attackratebuff = new GameShipBuff();
+			attackratebuff.Init(GameShipBuffType.ATTACK_SPEED_BUFF, GameShipBuffRemainType.INFINITE,
+			                    1f,
+			                    Managers.GameBalanceData.GamePlayCharacter2AttackSpeedIncreaseRatio,
+			                    1f,
+			                    1f,
+			                    1f);
+			m_Player.AddBuff(attackratebuff);
+		}else if(CharacterNum == 3)
+		{
+			Debug.Log("INVINCIBLE POSSESS");
+			HaveInvincible = true;
+		}
+		
+		//check item buff
+		if(HaveHealthUpItem)
+		{
+			GameShipBuff buff = new GameShipBuff();
+			buff.Init(GameShipBuffType.HEALTH_INCREASE, GameShipBuffRemainType.INFINITE,
+			          1f,
+			          Managers.GameBalanceData.HealthItemIncreaseRatio,
+			          1f,
+			          1f,
+			          1f);
+			m_Player.AddBuff(buff);
+			m_Player.m_CurHealth = m_Player.MaxHealth;
+			//m_Player.Heal(m_Player.MaxHealth);
+		}
+		if(HavePowerUpItem)
+		{
+			GameShipBuff buff = new GameShipBuff();
+			buff.Init(GameShipBuffType.ATTACK_DAMAGE_BUFF, GameShipBuffRemainType.INFINITE,
+			          1f,
+			          Managers.GameBalanceData.AttackItemDamageIncreaseRatio,
+			          1f,
+			          1f,
+			          1f);
+			m_Player.AddBuff(buff);
+		}
+		
+		//GamePathManager.Instance.InitPath(Managers.GameBalanceData.GamePlayReturnToBattleMaxDistance * 2f);
+		m_BackgroundManager.SetBackgroundObject(Managers.GameBalanceData.GetStageData(Managers.UserData.SelectedStageIndex).BackgroundType);
+		m_BackgroundManager.InitLineObstacle(Managers.GameBalanceData.GamePlayReturnToBattleMaxDistance);
+
 		yield return null ;
 		
 		while(_gameState == GameState.GameInitialize) {		
@@ -3066,6 +3344,7 @@ public class GameManager : MonoBehaviour
 		}
 		
 	}
+	#endregion
 	
 	//-----------------------------------
 	private void CalculateMissionDataWithGameDataWithDistance(int currentDistance, int currentGainDistance){

@@ -367,6 +367,8 @@ public class GameShopManager : MonoBehaviour {
 							if(Managers.UserData != null){
 								
 								Managers.DataStream.Event_Delegate_DataStreamManager_SaveUserData += null ;
+
+								Managers.UserData.UpdateSequence++;
 								UserDataManager.UserDataStruct userDataStruct = Managers.UserData.GetUserDataStruct() ;
 								
 								// 영어학원 쿠폰 주기 기능 추가 (by 최원석 14.05.27) ========= Start.
@@ -405,6 +407,7 @@ public class GameShopManager : MonoBehaviour {
 							if(Managers.UserData != null){
 								
 								Managers.DataStream.Event_Delegate_DataStreamManager_SaveUserData += null ;
+								Managers.UserData.UpdateSequence++;
 								UserDataManager.UserDataStruct userDataStruct = Managers.UserData.GetUserDataStruct() ;
 								
 								// 영어학원 쿠폰 주기 기능 추가 (by 최원석 14.05.27) ========= Start.
@@ -507,14 +510,19 @@ public class GameShopManager : MonoBehaviour {
 							Managers.Torpedo.AddTorpedo(1);
 							GameUIManager.Instance.LoadUIRootAlertView(Constant.ST200_POPUP_MESSAGE_NETWORK_NOT_GOOD) ; // 통신상태가 불안정합니다. 다시 실행해 주세요.
 							
-						} else {
-							
+						}else if(intResult_Code_Input == Constant.NETWORK_RESULTCODE_Error_UserSequence)
+						{
+							NGUITools.SetActive(_dontTouchPanel.gameObject, false) ;
+							Managers.Torpedo.AddTorpedo(1);
+							GameUIManager.Instance.LoadUIRootAlertView(Constant.ST200_POPUP_ERROR_USERSEQUENCE_ERROR) ; // 데이터가 올바르지 않습니다. 다시 실행해 주세요.
+						}else 
+						{						
 							NGUITools.SetActive(_dontTouchPanel.gameObject, false) ;
 							Managers.Torpedo.AddTorpedo(1);
 							GameUIManager.Instance.LoadUIRootAlertView(Constant.ST200_POPUP_MESSAGE_NETWORK_NOT_GOOD) ; // 데이터가 올바르지 않습니다. 다시 실행해 주세요.
 						}
 					};
-					
+					Managers.UserData.UpdateSequence++;
 					UserDataManager.UserDataStruct userDataStruct = Managers.UserData.GetUserDataStruct() ;
 					
 					Managers.DataStream.Network_SaveUserData_Input_1(userDataStruct);
@@ -537,15 +545,21 @@ public class GameShopManager : MonoBehaviour {
 						} else if (intResult_Code_Input == Constant.NETWORK_RESULTCODE_Error_Network){
 							
 							GameUIManager.Instance.LoadUIRootAlertView(Constant.ST200_POPUP_MESSAGE_NETWORK_NOT_GOOD) ; // 통신상태가 불안정합니다. 다시 실행해 주세요.
-							
-						} else {
+							Managers.Torpedo.AddTorpedo(1);
+						} else if(intResult_Code_Input == Constant.NETWORK_RESULTCODE_Error_UserSequence)
+						{
+							NGUITools.SetActive(_dontTouchPanel.gameObject, false) ;
+							Managers.Torpedo.AddTorpedo(1);
+							GameUIManager.Instance.LoadUIRootAlertView(Constant.ST200_POPUP_ERROR_USERSEQUENCE_ERROR) ; // 데이터가 올바르지 않습니다. 다시 실행해 주세요.
+						}else {
 							
 							NGUITools.SetActive(_dontTouchPanel.gameObject, false) ;
-							
+							Managers.Torpedo.AddTorpedo(1);
 							GameUIManager.Instance.LoadUIRootAlertView(Constant.ST200_POPUP_MESSAGE_NETWORK_NOT_GOOD) ; // 데이터가 올바르지 않습니다. 다시 실행해 주세요.
 						}
 					};
-					
+
+					Managers.UserData.UpdateSequence++;
 					UserDataManager.UserDataStruct userDataStruct = Managers.UserData.GetUserDataStruct() ;
 					
 					Managers.DataStream.Network_SaveUserData_Input_1(userDataStruct);

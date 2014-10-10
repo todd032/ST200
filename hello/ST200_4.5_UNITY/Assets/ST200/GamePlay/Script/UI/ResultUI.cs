@@ -117,6 +117,7 @@ public class ResultUI : MonoBehaviour {
 			
 			if (Managers.UserData != null) {
 				ST200AdmobManager.Instance.ShowInterstitial();
+				Managers.UserData.UpdateSequence++;
 				UserDataManager.UserDataStruct userDataStruct = Managers.UserData.GetUserDataStruct();
 				
 				int intExperienceMode = PlayerPrefs.GetInt(Constant.PREFKEY_ExperiencePopup_Mode_INT);
@@ -139,6 +140,9 @@ public class ResultUI : MonoBehaviour {
 							
 							//_uiRootAlertView.LoadUIRootAlertView(11); 
 							
+						} else if(intResult_Code_Input == Constant.NETWORK_RESULTCODE_Error_UserSequence)
+						{
+							GameManager.Instance.GUIManager._uiRootAlertView.LoadUIRootAlertView(Constant.ST200_POPUP_ERROR_USERSEQUENCE_ERROR); 
 						} else {
 							
 							//_uiRootAlertView.LoadUIRootAlertView(21); 
@@ -164,6 +168,9 @@ public class ResultUI : MonoBehaviour {
 							
 							//_uiRootAlertView.LoadUIRootAlertView(11); 
 							
+						} else if(intNetworkResultCode_Input == Constant.NETWORK_RESULTCODE_Error_UserSequence)
+						{
+							GameManager.Instance.GUIManager._uiRootAlertView.LoadUIRootAlertView(Constant.ST200_POPUP_ERROR_USERSEQUENCE_ERROR); 
 						} else {
 
 							//_uiRootAlertView.LoadUIRootAlertView(21); 

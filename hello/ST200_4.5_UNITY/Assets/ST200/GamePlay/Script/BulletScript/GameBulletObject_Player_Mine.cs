@@ -20,7 +20,7 @@ public class GameBulletObject_Player_Mine : GameBulletObject {
 	public override void OnBorderHit()
 	{
 		base.OnBorderHit();
-		
+		Debug.Log("does it disappear?");
 		GamePlayFXManager.Instance.StartAttackFX(GamePlayAttackFX_Type.FX_Attack_Miss, transform.position);
 	}
 	

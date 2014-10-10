@@ -65,14 +65,18 @@ public class PlayerShip_Turtle_Gold : PlayerShip {
 			                                       m_ShootTransform[1].position, 
 			                                       m_ShootTransform[1].transform.up * m_ShipStatInfo.BulletSpeed, 
 			                                       m_ShipStatInfo.BulletPushForce / 2f,
-			                                       0.5f);
+			                                       0.5f,
+			                                       TeamIndex,
+			                                       1f);
 			
 			GameBulletManager.Instance.ShootBullet(GamePlayBulletType.PLAYER_BULLET, 
 			                                       AttackDamage / 2f, 
 			                                       m_ShootTransform[2].position, 
 			                                       m_ShootTransform[2].transform.up * m_ShipStatInfo.BulletSpeed, 
 			                                       m_ShipStatInfo.BulletPushForce / 2f,
-			                                       0.5f);
+			                                       0.5f,
+			                                       TeamIndex,
+			                                       1f);
 		}
 		
 		if(shootright)
@@ -87,14 +91,18 @@ public class PlayerShip_Turtle_Gold : PlayerShip {
 			                                       m_ShootTransform[3].position, 
 			                                       m_ShootTransform[3].transform.up * m_ShipStatInfo.BulletSpeed, 
 			                                       m_ShipStatInfo.BulletPushForce / 2f,
-			                                       0.5f);
+			                                       0.5f,
+			                                       TeamIndex,
+			                                       1f);
 			
 			GameBulletManager.Instance.ShootBullet(GamePlayBulletType.PLAYER_BULLET, 
 			                                       AttackDamage / 2f, 
 			                                       m_ShootTransform[4].position, 
 			                                       m_ShootTransform[4].transform.up * m_ShipStatInfo.BulletSpeed, 
 			                                       m_ShipStatInfo.BulletPushForce / 2f,
-			                                       0.5f);
+			                                       0.5f,
+			                                       TeamIndex,
+			                                       1f);
 		}
 		
 		if(shootright || shootleft)
@@ -138,7 +146,9 @@ public class PlayerShip_Turtle_Gold : PlayerShip {
 			                                       m_ShootTransform[5].position, 
 			                                       Vector3.zero, 
 			                                       m_ShipStatInfo.BulletPushForce,
-			                                       1f);
+			                                       1f,
+			                                       TeamIndex
+			                                       ,10f);
 			m_MineTimer = 0f;
 		}
 	}
@@ -173,6 +183,8 @@ public class PlayerShip_Turtle_Gold : PlayerShip {
 			                                       m_ShootTransform[0].position, 
 			                                       m_ShootTransform[0].transform.up * m_ShipStatInfo.BulletSpeed, 
 			                                       m_ShipStatInfo.BulletPushForce / 5f,
+			                                       1f,
+			                                       TeamIndex,
 			                                       1f);
 			m_FireTimer = 0f;
 		}

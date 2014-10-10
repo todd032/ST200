@@ -348,6 +348,9 @@ public class GameUIManager : MonoBehaviour {
 		{
 			//set purchase 
 			Event_Recharge_Heart();
+		}else if(alertType == Constant.ST200_POPUP_ERROR_USERSEQUENCE_ERROR)
+		{
+			Application.Quit();
 		}
 	}
 
@@ -371,6 +374,7 @@ public class GameUIManager : MonoBehaviour {
 				
 				if(Managers.DataStream != null){
 					if(Managers.UserData != null){
+						Managers.UserData.UpdateSequence++;
 						UserDataManager.UserDataStruct userDataStruct = Managers.UserData.GetUserDataStruct() ;								
 						Managers.DataStream.Network_SaveUserData_Input_1(userDataStruct);
 						// 영어학원 쿠폰 주기 기능 추가 (by 최원석 14.05.27) ========= End.
@@ -411,6 +415,7 @@ public class GameUIManager : MonoBehaviour {
 				
 				if(Managers.DataStream != null){
 					if(Managers.UserData != null){
+						Managers.UserData.UpdateSequence++;
 						UserDataManager.UserDataStruct userDataStruct = Managers.UserData.GetUserDataStruct() ;								
 						Managers.DataStream.Network_SaveUserData_Input_1(userDataStruct);
 						// 영어학원 쿠폰 주기 기능 추가 (by 최원석 14.05.27) ========= End.
@@ -449,6 +454,7 @@ public class GameUIManager : MonoBehaviour {
 				
 				if(Managers.DataStream != null){
 					if(Managers.UserData != null){
+						Managers.UserData.UpdateSequence++;
 						UserDataManager.UserDataStruct userDataStruct = Managers.UserData.GetUserDataStruct() ;								
 						Managers.DataStream.Network_SaveUserData_Input_1(userDataStruct);
 						// 영어학원 쿠폰 주기 기능 추가 (by 최원석 14.05.27) ========= End.
@@ -486,6 +492,7 @@ public class GameUIManager : MonoBehaviour {
 				
 				if(Managers.DataStream != null){
 					if(Managers.UserData != null){
+						Managers.UserData.UpdateSequence++;
 						UserDataManager.UserDataStruct userDataStruct = Managers.UserData.GetUserDataStruct() ;								
 						Managers.DataStream.Network_SaveUserData_Input_1(userDataStruct);
 						// 영어학원 쿠폰 주기 기능 추가 (by 최원석 14.05.27) ========= End.

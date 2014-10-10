@@ -200,6 +200,7 @@ public class GameStageManager : MonoBehaviour{
 				return m_StageData.SpawnShipIndexList[i];
 			}
 		}
+
 		return m_StageData.SpawnShipIndexList[0];
 	}
 
@@ -252,7 +253,7 @@ public class GameStageManager : MonoBehaviour{
 			{
 				if(m_EnemyObjectList[i].m_Type == _stageenemydata.EnemyType)
 				{
-					//Debug.Log("FOUND index: " + i);
+					//Debug.Log("FOUND index: " + i + " WTF>....??: " + m_EnemyObjectList[i].m_Type);
 					GameObject go = Instantiate(m_EnemyObjectList[i].gameObject) as GameObject;
 					GameStageEnemyObject enemyobject = go.GetComponent<GameStageEnemyObject>();
 					selectedenemyobject = enemyobject;

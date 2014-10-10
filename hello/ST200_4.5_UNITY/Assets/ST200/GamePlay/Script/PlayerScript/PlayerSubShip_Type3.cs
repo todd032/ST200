@@ -6,9 +6,9 @@ public class PlayerSubShip_Type3 : PlayerSubShip {
 	public GamePlayRangeDisplayer m_RangeDisplayer;
 
 
-	public override void Init (SubShipStatInfo _info, int _equipindex)
+	public override void Init (SubShipStatInfo _info, int _equipindex, int _teamindex)
 	{
-		base.Init (_info, _equipindex);
+		base.Init (_info, _equipindex, _teamindex);
 		m_RangeDisplayer.Init(m_StatInfo.SpecialEffectValue2);
 	}
 

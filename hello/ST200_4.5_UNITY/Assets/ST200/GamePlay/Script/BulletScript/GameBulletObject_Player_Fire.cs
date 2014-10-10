@@ -7,9 +7,9 @@ public class GameBulletObject_Player_Fire : GameBulletObject {
 	protected List<GameStageEnemyObject> m_HitEnemyObject = new List<GameStageEnemyObject>();
 	protected float m_AnimTimer = 0f;
 
-	public override void Init (Vector3 _worldpos, float _damage, Vector3 _movespeed, float _pushforce, float _sizeratio)
+	public override void Init (Vector3 _worldpos, float _damage, Vector3 _movespeed, float _pushforce, float _sizeratio, int _teamindex, float _remaintime)
 	{
-		base.Init (_worldpos, _damage, _movespeed, _pushforce, _sizeratio);
+		base.Init (_worldpos, _damage, _movespeed, _pushforce, _sizeratio, _teamindex, _remaintime);
 		m_AnimTimer = 0f;
 	}
 

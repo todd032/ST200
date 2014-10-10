@@ -9,10 +9,13 @@ public class GameBulletObject : MonoBehaviour {
 	public float m_PushForce;
 	public tk2dSprite m_BulletSprite;
 	public float m_RemainTimer;
+	public int TeamIndex;
 	//public float 
 
-	public virtual void Init(Vector3 _worldpos, float _damage, Vector3 _movespeed, float _pushforce, float _sizeratio)
+	public virtual void Init(Vector3 _worldpos, float _damage, Vector3 _movespeed, float _pushforce, float _sizeratio, int _teamindex, float _remaintime)
 	{
+		TeamIndex = _teamindex;
+
 		Vector3 newpos = _worldpos;
 		newpos.z = Constant.ST200_GameObjectLayer_FX;
 		transform.position = newpos;
@@ -23,6 +26,8 @@ public class GameBulletObject : MonoBehaviour {
 		m_BulletSprite.scale = Vector3.one * _sizeratio;
 		processedtimer = 0f;
 		transform.up = m_MoveSpeed.normalized;
+		m_RemainTimer = _remaintime;
+
 	}
 
 	protected float processedtimer = 0f;

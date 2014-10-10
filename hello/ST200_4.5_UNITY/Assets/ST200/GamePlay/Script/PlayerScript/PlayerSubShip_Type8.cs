@@ -132,6 +132,8 @@ public class PlayerSubShip_Type8 : PlayerSubShip {
 				                                       m_ShootTransform[i].position, 
 				                                       movedirection * m_StatInfo.SpecialEffectValue2, 
 				                                       0f,
+				                                       1f,
+				                                       TeamIndex,
 				                                       1f);
 			}
 		}
@@ -148,6 +150,8 @@ public class PlayerSubShip_Type8 : PlayerSubShip {
 				                                       m_ShootTransform[i].position, 
 				                                       movedirection * m_StatInfo.SpecialEffectValue2, 
 				                                       0f,
+				                                       1f,
+				                                       TeamIndex,
 				                                       1f);
 			}
 		}

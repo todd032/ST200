@@ -137,7 +137,7 @@ public class PaymentPopupView : MonoBehaviour {
 					
 					if ( Managers.Audio != null) Managers.Audio.PlayFXSound(AudioManager.FX_SOUND.FX_Etc_Gain,false);
 					
-					_paymentPopupAlertView.LoadPaymentPopupAlertView(1) ;
+					_paymentPopupAlertView.LoadPaymentPopupAlertView(Constant.ST200_POPUP_PURCHASE_OK) ;
 					
 					
 					if(Managers.DataStream != null)
@@ -146,6 +146,7 @@ public class PaymentPopupView : MonoBehaviour {
 						if(Managers.UserData != null){
 
 							Managers.DataStream.Event_Delegate_DataStreamManager_SaveUserData += null ;
+							Managers.UserData.UpdateSequence++;
 							UserDataManager.UserDataStruct userDataStruct = Managers.UserData.GetUserDataStruct() ;
 							
 							// 영어학원 쿠폰 주기 기능 추가 (by 최원석 14.05.27) ========= Start.
@@ -199,13 +200,14 @@ public class PaymentPopupView : MonoBehaviour {
 					
 					if ( Managers.Audio != null) Managers.Audio.PlayFXSound(AudioManager.FX_SOUND.FX_Etc_Gain,false);
 					
-					_paymentPopupAlertView.LoadPaymentPopupAlertView(1) ;
+					_paymentPopupAlertView.LoadPaymentPopupAlertView(Constant.ST200_POPUP_PURCHASE_OK) ;
 					
 					if(Managers.DataStream != null){
 
 						if(Managers.UserData != null){
 
 							Managers.DataStream.Event_Delegate_DataStreamManager_SaveUserData += null ;
+							Managers.UserData.UpdateSequence++;
 							UserDataManager.UserDataStruct userDataStruct = Managers.UserData.GetUserDataStruct() ;
 							
 							// 영어학원 쿠폰 주기 기능 추가 (by 최원석 14.05.27) ========= Start.
@@ -238,7 +240,7 @@ public class PaymentPopupView : MonoBehaviour {
 					
 				}else{
 					// Pop Up Payment Window...	
-					_paymentPopupAlertView.LoadPaymentPopupAlertView(2) ;
+					_paymentPopupAlertView.LoadPaymentPopupAlertView(Constant.ST200_POPUP_RECHARGE_COIN) ;
 				}
 					
 			}
@@ -281,13 +283,14 @@ public class PaymentPopupView : MonoBehaviour {
 					
 					if ( Managers.Audio != null) Managers.Audio.PlayFXSound(AudioManager.FX_SOUND.FX_Etc_Gain,false);
 					
-					_paymentPopupAlertView.LoadPaymentPopupAlertView(1) ;
+					_paymentPopupAlertView.LoadPaymentPopupAlertView(Constant.ST200_POPUP_PURCHASE_OK) ;
 					
 					if(Managers.DataStream != null){
 
 						if(Managers.UserData != null){
 
 							Managers.DataStream.Event_Delegate_DataStreamManager_SaveUserData += null ;
+							Managers.UserData.UpdateSequence++;
 							UserDataManager.UserDataStruct userDataStruct = Managers.UserData.GetUserDataStruct() ;
 							
 							// 영어학원 쿠폰 주기 기능 추가 (by 최원석 14.05.27) ========= Start.
@@ -322,13 +325,14 @@ public class PaymentPopupView : MonoBehaviour {
 					
 					if ( Managers.Audio != null) Managers.Audio.PlayFXSound(AudioManager.FX_SOUND.FX_Etc_Gain,false);
 					
-					_paymentPopupAlertView.LoadPaymentPopupAlertView(1) ;
+					_paymentPopupAlertView.LoadPaymentPopupAlertView(Constant.ST200_POPUP_PURCHASE_OK) ;
 					
 					if(Managers.DataStream != null){
 
 						if(Managers.UserData != null){
 
 							Managers.DataStream.Event_Delegate_DataStreamManager_SaveUserData += null ;
+							Managers.UserData.UpdateSequence++;
 							UserDataManager.UserDataStruct userDataStruct = Managers.UserData.GetUserDataStruct() ;
 							
 							// 영어학원 쿠폰 주기 기능 추가 (by 최원석 14.05.27) ========= Start.
@@ -340,7 +344,7 @@ public class PaymentPopupView : MonoBehaviour {
 					
 				}else{
 					// Pop Up Payment Window...	
-					_paymentPopupAlertView.LoadPaymentPopupAlertView(2) ;
+					_paymentPopupAlertView.LoadPaymentPopupAlertView(Constant.ST200_POPUP_RECHARGE_COIN) ;
 				}
 					
 				if(_paymentPopupViewDelegate != null) {
@@ -395,6 +399,7 @@ public class PaymentPopupView : MonoBehaviour {
 			if(Managers.UserData != null){
 				
 				Managers.DataStream.Event_Delegate_DataStreamManager_SaveUserData += null ;
+				Managers.UserData.UpdateSequence++;
 				UserDataManager.UserDataStruct userDataStruct = Managers.UserData.GetUserDataStruct() ;
 				
 				// 영어학원 쿠폰 주기 기능 추가 (by 최원석 14.05.27) ========= Start.
@@ -469,6 +474,7 @@ public class PaymentPopupView : MonoBehaviour {
 						if(Managers.UserData != null){
 							
 							Managers.DataStream.Event_Delegate_DataStreamManager_SaveUserData += null ;
+							Managers.UserData.UpdateSequence++;
 							UserDataManager.UserDataStruct userDataStruct = Managers.UserData.GetUserDataStruct() ;
 							
 							// 영어학원 쿠폰 주기 기능 추가 (by 최원석 14.05.27) ========= Start.
@@ -506,7 +512,7 @@ public class PaymentPopupView : MonoBehaviour {
 					
 					if ( Managers.Audio != null) Managers.Audio.PlayFXSound(AudioManager.FX_SOUND.FX_Etc_Gain,false);
 					
-					_paymentPopupAlertView.LoadPaymentPopupAlertView(1) ;
+					_paymentPopupAlertView.LoadPaymentPopupAlertView(Constant.ST200_POPUP_PURCHASE_OK) ;
 					
 					//Save Log...
 					///Connect
@@ -533,6 +539,7 @@ public class PaymentPopupView : MonoBehaviour {
 						if(Managers.UserData != null){
 							
 							Managers.DataStream.Event_Delegate_DataStreamManager_SaveUserData += null ;
+							Managers.UserData.UpdateSequence++;
 							UserDataManager.UserDataStruct userDataStruct = Managers.UserData.GetUserDataStruct() ;
 							
 							// 영어학원 쿠폰 주기 기능 추가 (by 최원석 14.05.27) ========= Start.
@@ -543,7 +550,7 @@ public class PaymentPopupView : MonoBehaviour {
 					}
 				}else{
 					// Pop Up Payment Window...	
-					_paymentPopupAlertView.LoadPaymentPopupAlertView(2) ;
+					_paymentPopupAlertView.LoadPaymentPopupAlertView(Constant.ST200_POPUP_RECHARGE_COIN) ;
 				}
 					
 			}
@@ -873,6 +880,7 @@ public class PaymentPopupView : MonoBehaviour {
 					if(Managers.UserData != null){
 						
 						Managers.DataStream.Event_Delegate_DataStreamManager_SaveUserData += null ;
+						Managers.UserData.UpdateSequence++;
 						UserDataManager.UserDataStruct userDataStruct = Managers.UserData.GetUserDataStruct() ;
 						
 						Managers.DataStream.Network_SaveUserData_Input_1(userDataStruct);
@@ -948,7 +956,7 @@ public class PaymentPopupView : MonoBehaviour {
 				if ( Managers.Audio != null) Managers.Audio.PlayFXSound(AudioManager.FX_SOUND.FX_Etc_Gain,false);
 				_indicatorPopupView.RemoveIndicatorPopupView() ;
 				
-				_paymentPopupAlertView.LoadPaymentPopupAlertView(100);
+				_paymentPopupAlertView.LoadPaymentPopupAlertView(Constant.ST200_POPUP_MESSAGE_INAPP_SUCCESS);
 
 			}else{
 				
@@ -968,6 +976,7 @@ public class PaymentPopupView : MonoBehaviour {
 				if(Managers.UserData != null){
 					
 					Managers.DataStream.Event_Delegate_DataStreamManager_SaveUserData += null ;
+					Managers.UserData.UpdateSequence++;
 					UserDataManager.UserDataStruct userDataStruct = Managers.UserData.GetUserDataStruct() ;
 					
 					// 영어학원 쿠폰 주기 기능 추가 (by 최원석 14.05.27) ========= Start.
@@ -1084,6 +1093,7 @@ public class PaymentPopupView : MonoBehaviour {
 						if (Managers.UserData != null){
 							
 							Managers.DataStream.Event_Delegate_DataStreamManager_SaveUserData += null ;
+							Managers.UserData.UpdateSequence++;
 							UserDataManager.UserDataStruct userDataStruct = Managers.UserData.GetUserDataStruct() ;
 							Managers.DataStream.Network_SaveUserData_Input_1(userDataStruct);
 						}
@@ -1129,7 +1139,7 @@ public class PaymentPopupView : MonoBehaviour {
 			_indicatorPopupView.RemoveIndicatorPopupView() ;
 			
 			//2: 결제가 취소 되었습니다.	
-			_paymentPopupAlertView.LoadPaymentPopupAlertView(31) ;
+			_paymentPopupAlertView.LoadPaymentPopupAlertView(Constant.ST200_POPUP_MESSAGE_INAPP_CANCELED) ;
 			
 		}
 
@@ -1170,6 +1180,7 @@ public class PaymentPopupView : MonoBehaviour {
 						if (Managers.UserData != null){
 							
 							Managers.DataStream.Event_Delegate_DataStreamManager_SaveUserData += null ;
+							Managers.UserData.UpdateSequence++;
 							UserDataManager.UserDataStruct userDataStruct = Managers.UserData.GetUserDataStruct() ;
 							Managers.DataStream.Network_SaveUserData_Input_1(userDataStruct);
 						}
@@ -1198,7 +1209,7 @@ public class PaymentPopupView : MonoBehaviour {
 			_indicatorPopupView.RemoveIndicatorPopupView() ;
 			
 			//2: 결제가 취소 되었습니다.	
-			_paymentPopupAlertView.LoadPaymentPopupAlertView(31) ;
+			_paymentPopupAlertView.LoadPaymentPopupAlertView(Constant.ST200_POPUP_MESSAGE_INAPP_CANCELED) ;
 			
 		}
 

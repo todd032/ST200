@@ -45,7 +45,7 @@ public class GamePlayerManager : MonoBehaviour {
 
 		GameObject go = Instantiate(selectedObject.gameObject) as GameObject;
 		m_CurrentPlayerShip = go.GetComponent<PlayerShip>();
-		m_CurrentPlayerShip.Init(Managers.GameBalanceData.GetShipStatInfo(_info.IndexNumber, _info.Level));
+		m_CurrentPlayerShip.Init(Managers.GameBalanceData.GetShipStatInfo(_info.IndexNumber, _info.Level), 1);
 		Vector3 spawnpos = SpawnTransformList[0].transform.position;
 		spawnpos.z = Constant.ST200_GameObjectLayer_PlayerShip;
 
@@ -69,7 +69,7 @@ public class GamePlayerManager : MonoBehaviour {
 
 		GameObject go = Instantiate(selectedObject.gameObject) as GameObject;
 		PlayerSubShip subship = go.GetComponent<PlayerSubShip>();
-		subship.Init(Managers.GameBalanceData.GetSubShipStatInfo(_info.IndexNumber, _info.Level), _info.IsSelect);
+		subship.Init(Managers.GameBalanceData.GetSubShipStatInfo(_info.IndexNumber, _info.Level), _info.IsSelect, 1);
 		m_SubShipList.Add(subship);
 
 		Vector3 spawnpos = subship.transform.position;

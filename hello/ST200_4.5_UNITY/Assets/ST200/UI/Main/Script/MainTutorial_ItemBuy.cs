@@ -174,7 +174,8 @@ public class MainTutorial_ItemBuy : MonoBehaviour {
 							GameUIManager.Instance.LoadUIRootAlertView(Constant.ST200_POPUP_MESSAGE_NETWORK_NOT_GOOD) ; // 데이터가 올바르지 않습니다. 다시 실행해 주세요.
 						}
 					};
-					
+
+					Managers.UserData.UpdateSequence++;
 					UserDataManager.UserDataStruct userDataStruct = Managers.UserData.GetUserDataStruct() ;
 					
 					Managers.DataStream.Network_SaveUserData_Input_1(userDataStruct);
@@ -205,7 +206,8 @@ public class MainTutorial_ItemBuy : MonoBehaviour {
 							GameUIManager.Instance.LoadUIRootAlertView(Constant.ST200_POPUP_MESSAGE_NETWORK_NOT_GOOD) ; // 데이터가 올바르지 않습니다. 다시 실행해 주세요.
 						}
 					};
-					
+
+					Managers.UserData.UpdateSequence++;
 					UserDataManager.UserDataStruct userDataStruct = Managers.UserData.GetUserDataStruct() ;
 					
 					Managers.DataStream.Network_SaveUserData_Input_1(userDataStruct);

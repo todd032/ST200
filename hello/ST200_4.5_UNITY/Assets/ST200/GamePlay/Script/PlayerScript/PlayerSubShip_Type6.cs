@@ -124,7 +124,9 @@ public class PlayerSubShip_Type6 : PlayerSubShip {
 				                                       m_ShootTransform[i].position, 
 				                                       m_ShootTransform[i].transform.up * m_StatInfo.SpecialEffectValue2, 
 				                                       m_StatInfo.SpecialEffectValue3,
-				                                       0.5f);
+				                                       0.5f,
+				                                       TeamIndex,
+				                                       1f);
 			}
 		}
 		

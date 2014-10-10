@@ -615,7 +615,7 @@ public class InvitationPopupView : MonoBehaviour {
 		Managers.UserData.InviteFriend_Num = m_intInviteTotalNum;
 
 		SetUserdata_InviteReward (m_intInviteTotalNum);
-
+		Managers.UserData.UpdateSequence++;
 		Managers.DataStream.Network_SaveUserData_Input_1(Managers.UserData.GetUserDataStruct());
 		// 영어학원 쿠폰 주기 기능 추가 (by 최원석 14.05.27) ========= End.
 	}

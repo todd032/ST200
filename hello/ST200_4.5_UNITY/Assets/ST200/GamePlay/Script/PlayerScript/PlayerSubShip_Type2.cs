@@ -119,7 +119,9 @@ public class PlayerSubShip_Type2 : PlayerSubShip {
 			                                       m_ShootTransform[0].position, 
 			                                       m_ShootTransform[0].transform.up * m_StatInfo.SpecialEffectValue2, 
 			                                       m_StatInfo.SpecialEffectValue3,
-			                                       0.5f);
+			                                       0.5f,
+			                                       TeamIndex,
+			                                       1f);
 		}
 		
 		if(shootright)
@@ -132,7 +134,9 @@ public class PlayerSubShip_Type2 : PlayerSubShip {
 			                                       m_ShootTransform[1].position, 
 			                                       m_ShootTransform[1].transform.up * m_StatInfo.SpecialEffectValue2, 
 			                                       m_StatInfo.SpecialEffectValue3,
-			                                       0.5f);
+			                                       0.5f,
+			                                       TeamIndex,
+			                                       1f);
 		}
 		
 		if(shootright || shootleft)
