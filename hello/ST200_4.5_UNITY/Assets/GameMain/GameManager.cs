@@ -2061,8 +2061,7 @@ public class GameManager : MonoBehaviour
 		_GameStageManager.InitStageData(Managers.GameBalanceData.GetStageData(GameStage));
 
 		_isWorkingDropItem = true ;
-		
-		_guiManager.InitItemButton(HaveShoutItem, HaveSingijeon, HaveInvincible);
+
 		//_guiManager.SetItemUseButton(HaveShoutItem, HaveSingijeon, HaveInvincible) ;
 		
 		if(Managers.UserData.SelectedGameType == Constant.ST200_GAMEMODE_STAGE_NORMAL)
@@ -2875,6 +2874,8 @@ public class GameManager : MonoBehaviour
 		m_BackgroundManager.SetBackgroundObject(Managers.GameBalanceData.GetStageData(Managers.UserData.SelectedStageIndex).BackgroundType);
 		m_BackgroundManager.InitLineObstacle(Managers.GameBalanceData.GamePlayReturnToBattleMaxDistance);
 
+		
+		_guiManager.InitItemButton(HaveShoutItem, HaveSingijeon, HaveInvincible);
 		yield return null ;
 		
 		while(_gameState == GameState.GameInitialize) {		

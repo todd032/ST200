@@ -343,7 +343,7 @@ public class GUIManager : MonoBehaviour {
 		{
 			m_ShoutSprite.color = Color.gray;
 			m_ShoutButton.collider.enabled = false;
-			m_ShoutSprite.spriteName = "skill_none";
+			//m_ShoutSprite.spriteName = "skill_none";
 		}
 		
 		if(_singijeon)
@@ -354,7 +354,7 @@ public class GUIManager : MonoBehaviour {
 		{
 			m_SingijeonSprite.color = Color.gray;
 			m_SingijeonButton.collider.enabled = false;
-			m_SingijeonSprite.spriteName = "skill_none";
+			//m_SingijeonSprite.spriteName = "skill_none";
 		}
 		
 		if(_characterinvincible)

@@ -9,10 +9,28 @@ public class PlayerShip_Panokseon : PlayerShip {
 		
 		Vector3 frontdirection = m_LookingVector;
 
+
+		
+		//for(int i = 0; i < m_TargetList.Count; i++)
+		//{
+		//	Transform enemy = m_TargetList[i].transform;
+		//	
+		//	if(enemy.gameObject.activeSelf && Vector2.Distance(enemy.transform.position, transform.position) < m_ShipStatInfo.BulletSpeed)
+		//	{
+		//		if(!shootfront)
+		//		{
+		//			if(Vector2.Angle(frontdirection, enemy.transform.position - transform.position) < 10f)
+		//			{
+		//				shootfront = true;
+		//			}
+		//		}
+		//	}
+		//}
+
 		for(int i = 0; i < GameStageManager.Instance.m_ActiveEnemyList.Count; i++)
 		{
 			GameStageEnemyObject enemy = GameStageManager.Instance.m_ActiveEnemyList[i];
-
+		
 			if(Vector2.Distance(enemy.transform.position, transform.position) < m_ShipStatInfo.BulletSpeed)
 			{
 				if(!shootfront)
