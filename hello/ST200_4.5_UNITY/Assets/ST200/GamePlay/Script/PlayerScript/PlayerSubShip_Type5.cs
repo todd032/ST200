@@ -33,23 +33,28 @@ public class PlayerSubShip_Type5 : PlayerSubShip {
 			if(!followplayership)
 			{
 				//find enemy ship in range if not found, follow player ship
-				GameStageEnemyObject targetenemy = null;
+				Transform targetenemy = null;
 				float prevdistance = 0f;
-				for(int i = 0; i < GameStageManager.Instance.m_ActiveEnemyList.Count; i++)
+				for(int i = 0; i < m_TargetList.Count; i++)
 				{
-					GameStageEnemyObject curenemy = GameStageManager.Instance.m_ActiveEnemyList[i];
+					Transform curenemy = m_TargetList[i];
 					float curdistance = Vector2.Distance(transform.position, curenemy.transform.position);
-					
-					if(targetenemy == null)
+					if(curenemy.gameObject.activeSelf)
 					{
-						targetenemy = curenemy;
-						prevdistance = Vector2.Distance(transform.position, curenemy.transform.position);
-					}else
-					{
-						if(curdistance < prevdistance)
+						if(targetenemy == null)
 						{
-							targetenemy = curenemy;
-							prevdistance = curdistance;
+							if(curdistance < m_StatInfo.SpecialEffectValue2)
+							{
+								targetenemy = curenemy;
+								prevdistance = Vector2.Distance(transform.position, curenemy.transform.position);
+							}
+						}else
+						{
+							if(curdistance < prevdistance)
+							{
+								targetenemy = curenemy;
+								prevdistance = curdistance;
+							}
 						}
 					}
 				}

@@ -30,12 +30,13 @@ public class PlayerShip_Turtle_Gold : PlayerShip {
 		Vector3 leftdirection = Vector3.Cross(Vector3.forward, m_LookingVector);
 		Vector3 rightdirection = -leftdirection;
 		
-		for(int i = 0; i < GameStageManager.Instance.m_ActiveEnemyList.Count; i++)
-		{
-			GameStageEnemyObject enemy = GameStageManager.Instance.m_ActiveEnemyList[i];
-			if(Vector2.Distance(enemy.transform.position, transform.position) < m_ShipStatInfo.BulletSpeed)
-			{
 
+		for(int i = 0; i < m_TargetList.Count; i++)
+		{
+			Transform enemy = m_TargetList[i];
+			if(enemy.gameObject.activeSelf && Vector2.Distance(enemy.transform.position, transform.position) < m_ShipStatInfo.BulletSpeed)
+			{
+				
 				if(!shootleft)
 				{
 					if(Vector2.Angle(leftdirection, enemy.transform.position - transform.position) < 10f)
@@ -52,6 +53,28 @@ public class PlayerShip_Turtle_Gold : PlayerShip {
 				}
 			}
 		}
+		//for(int i = 0; i < GameStageManager.Instance.m_ActiveEnemyList.Count; i++)
+		//{
+		//	GameStageEnemyObject enemy = GameStageManager.Instance.m_ActiveEnemyList[i];
+		//	if(Vector2.Distance(enemy.transform.position, transform.position) < m_ShipStatInfo.BulletSpeed)
+		//	{
+		//
+		//		if(!shootleft)
+		//		{
+		//			if(Vector2.Angle(leftdirection, enemy.transform.position - transform.position) < 10f)
+		//			{
+		//				shootleft = true;
+		//			}
+		//		}
+		//		if(!shootright)
+		//		{
+		//			if(Vector2.Angle(rightdirection, enemy.transform.position - transform.position) < 10f)
+		//			{
+		//				shootright = true;
+		//			}
+		//		}
+		//	}
+		//}
 		
 		if(shootleft)
 		{
@@ -123,10 +146,10 @@ public class PlayerShip_Turtle_Gold : PlayerShip {
 		bool fire = false;
 		Vector3 direction = -m_LookingVector;
 		
-		for(int i = 0; i < GameStageManager.Instance.m_ActiveEnemyList.Count; i++)
+		for(int i = 0; i < m_TargetList.Count; i++)
 		{
-			GameStageEnemyObject enemy = GameStageManager.Instance.m_ActiveEnemyList[i];
-			if(Vector2.Distance(enemy.transform.position, transform.position) < m_ShipStatInfo.BulletSpeed)
+			Transform enemy = m_TargetList[i];
+			if(enemy.gameObject.activeSelf && Vector2.Distance(enemy.transform.position, transform.position) < m_ShipStatInfo.BulletSpeed)
 			{
 				if(!fire)
 				{
@@ -138,6 +161,22 @@ public class PlayerShip_Turtle_Gold : PlayerShip {
 				//fire = true;
 			}
 		}
+
+		//for(int i = 0; i < GameStageManager.Instance.m_ActiveEnemyList.Count; i++)
+		//{
+		//	GameStageEnemyObject enemy = GameStageManager.Instance.m_ActiveEnemyList[i];
+		//	if(Vector2.Distance(enemy.transform.position, transform.position) < m_ShipStatInfo.BulletSpeed)
+		//	{
+		//		if(!fire)
+		//		{
+		//			if(Vector2.Angle(direction, enemy.transform.position - transform.position) < 30f)
+		//			{
+		//				fire = true;
+		//			}
+		//		}
+		//		//fire = true;
+		//	}
+		//}
 
 		if(fire)
 		{
@@ -157,10 +196,10 @@ public class PlayerShip_Turtle_Gold : PlayerShip {
 	{
 		bool fire = false;
 		Vector3 direction = m_LookingVector;
-		for(int i = 0; i < GameStageManager.Instance.m_ActiveEnemyList.Count; i++)
+		for(int i = 0; i < m_TargetList.Count; i++)
 		{
-			GameStageEnemyObject enemy = GameStageManager.Instance.m_ActiveEnemyList[i];
-			if(Vector2.Distance(enemy.transform.position, transform.position) < m_ShipStatInfo.BulletSpeed)
+			Transform enemy = m_TargetList[i];
+			if(enemy.gameObject.activeSelf && Vector2.Distance(enemy.transform.position, transform.position) < m_ShipStatInfo.BulletSpeed)
 			{
 				if(!fire)
 				{
@@ -172,6 +211,21 @@ public class PlayerShip_Turtle_Gold : PlayerShip {
 				//fire = true;
 			}
 		}
+		//for(int i = 0; i < GameStageManager.Instance.m_ActiveEnemyList.Count; i++)
+		//{
+		//	GameStageEnemyObject enemy = GameStageManager.Instance.m_ActiveEnemyList[i];
+		//	if(Vector2.Distance(enemy.transform.position, transform.position) < m_ShipStatInfo.BulletSpeed)
+		//	{
+		//		if(!fire)
+		//		{
+		//			if(Vector2.Angle(direction, enemy.transform.position - transform.position) < 30f)
+		//			{
+		//				fire = true;
+		//			}
+		//		}
+		//		//fire = true;
+		//	}
+		//}
 
 		if(fire)
 		{

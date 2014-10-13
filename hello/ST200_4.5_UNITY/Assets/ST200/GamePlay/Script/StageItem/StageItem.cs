@@ -21,6 +21,18 @@ public class StageItem : MonoBehaviour {
 		Vector3 newpos = _worldpos;
 		transform.position = newpos;
 	}
+
+	protected void OnTriggerStay2D(Collider2D _col)
+	{
+		//Debug.Log ("NALE>:" + _col.gameObject.name);
+		if(_col.gameObject.layer == LayerMask.NameToLayer("Obstacle"))
+		{
+			Vector3 movedirection = (transform.position - _col.transform.position);
+			movedirection.z = 0f;
+			movedirection.Normalize();
+			transform.position += movedirection * Time.deltaTime * 5f;
+		}
+	}
 }
 
 public enum StageItemType

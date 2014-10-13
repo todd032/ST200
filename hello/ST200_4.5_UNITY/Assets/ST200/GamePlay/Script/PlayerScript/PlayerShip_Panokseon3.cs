@@ -7,10 +7,11 @@ public class PlayerShip_Panokseon3 : PlayerShip {
 	{
 		bool shoot = false;		
 		Vector3 frontdirection = m_LookingVector;		
-		for(int i = 0; i < GameStageManager.Instance.m_ActiveEnemyList.Count; i++)
+
+		for(int i = 0; i < m_TargetList.Count; i++)
 		{
-			GameStageEnemyObject enemy = GameStageManager.Instance.m_ActiveEnemyList[i];
-			if(Vector2.Distance(enemy.transform.position, transform.position) < m_ShipStatInfo.BulletSpeed)
+			Transform enemy = m_TargetList[i];
+			if(enemy.gameObject.activeSelf && Vector2.Distance(enemy.transform.position, transform.position) < m_ShipStatInfo.BulletSpeed)
 			{
 				if(!shoot)
 				{
@@ -21,6 +22,20 @@ public class PlayerShip_Panokseon3 : PlayerShip {
 				}
 			}
 		}
+		//for(int i = 0; i < GameStageManager.Instance.m_ActiveEnemyList.Count; i++)
+		//{
+		//	GameStageEnemyObject enemy = GameStageManager.Instance.m_ActiveEnemyList[i];
+		//	if(Vector2.Distance(enemy.transform.position, transform.position) < m_ShipStatInfo.BulletSpeed)
+		//	{
+		//		if(!shoot)
+		//		{
+		//			if(Vector2.Angle(frontdirection, enemy.transform.position - transform.position) < 40f)
+		//			{
+		//				shoot = true;
+		//			}
+		//		}
+		//	}
+		//}
 
 		if(shoot)
 		{

@@ -6,6 +6,8 @@ public class PlayerSubShip : MonoBehaviour {
 	
 	public GamePlayerSubShipType m_ShipType;
 
+	protected List<Transform> m_TargetList = new List<Transform>();
+
 	public PlayerShip m_PlayerShip;
 	public List<GameShipBuff> m_BuffList = new List<GameShipBuff>();
 
@@ -133,13 +135,13 @@ public class PlayerSubShip : MonoBehaviour {
 
 	protected int m_EquipIndex;
 	public int TeamIndex = 0;
-	public virtual void Init(SubShipStatInfo _info, int _equipindex, int _teamindex)
+	public virtual void Init(SubShipStatInfo _info, int _equipindex, int _teamindex, PlayerShip _playership)
 	{
 		m_StatInfo = _info;
 		TeamIndex = _teamindex;
 		m_MaxHealth = m_StatInfo.Health;
 		m_CurHealth = m_MaxHealth;
-		m_PlayerShip = GamePlayerManager.Instance.m_CurrentPlayerShip;
+		m_PlayerShip = _playership;
 
 		m_EquipIndex = _equipindex;
 
@@ -555,5 +557,13 @@ public class PlayerSubShip : MonoBehaviour {
 		gameObject.SetActive(true);
 		m_CurHealth = m_MaxHealth;
 		m_ShipAnimation.PlayIdleAnimation();
+	}
+
+	public void AddTarget(Transform _target)
+	{
+		if(!m_TargetList.Contains(_target))
+		{
+			m_TargetList.Add(_target);
+		}
 	}
 }

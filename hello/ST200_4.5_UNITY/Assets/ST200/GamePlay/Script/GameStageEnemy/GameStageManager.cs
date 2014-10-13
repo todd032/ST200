@@ -290,6 +290,8 @@ public class GameStageManager : MonoBehaviour{
 		selectedenemyobject.SetSubShipList(GamePlayerManager.Instance.m_SubShipList);
 
 		m_ActiveEnemyList.Add(selectedenemyobject);
+
+		GameManager.Instance.EnemySpawnEvent(selectedenemyobject);
 	}
 
 	public StageEnemyData GetStageEnemyData(int _index)

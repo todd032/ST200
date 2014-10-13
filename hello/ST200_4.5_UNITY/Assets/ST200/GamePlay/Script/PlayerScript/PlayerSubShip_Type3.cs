@@ -6,9 +6,9 @@ public class PlayerSubShip_Type3 : PlayerSubShip {
 	public GamePlayRangeDisplayer m_RangeDisplayer;
 
 
-	public override void Init (SubShipStatInfo _info, int _equipindex, int _teamindex)
+	public override void Init (SubShipStatInfo _info, int _equipindex, int _teamindex, PlayerShip _playership)
 	{
-		base.Init (_info, _equipindex, _teamindex);
+		base.Init (_info, _equipindex, _teamindex, _playership);
 		m_RangeDisplayer.Init(m_StatInfo.SpecialEffectValue2);
 	}
 
@@ -42,7 +42,17 @@ public class PlayerSubShip_Type3 : PlayerSubShip {
 		for(int i = 0; i < GamePlayerManager.Instance.m_SubShipList.Count; i++)
 		{
 			PlayerSubShip ship = GamePlayerManager.Instance.m_SubShipList[i];
-			if(Vector2.Distance(ship.transform.position, transform.position) < m_StatInfo.SpecialEffectValue2)
+			if(ship.TeamIndex == TeamIndex && Vector2.Distance(ship.transform.position, transform.position) < m_StatInfo.SpecialEffectValue2)
+			{
+				ship.Heal(SpecialValue1);
+				GamePlayFXManager.Instance.StartParticleFX(GamePlayParticleFX_Type.HEAL_FX, ship.transform.position);
+			}
+		}
+
+		for(int i = 0; i < GamePlayerManager.Instance.m_OppSubShipList.Count; i++)
+		{
+			PlayerSubShip ship = GamePlayerManager.Instance.m_OppSubShipList[i];
+			if(ship.TeamIndex == TeamIndex && Vector2.Distance(ship.transform.position, transform.position) < m_StatInfo.SpecialEffectValue2)
 			{
 				ship.Heal(SpecialValue1);
 				GamePlayFXManager.Instance.StartParticleFX(GamePlayParticleFX_Type.HEAL_FX, ship.transform.position);

@@ -53,6 +53,35 @@ public class GameBulletObject_Player_Fire : GameBulletObject {
 		//	m_HitEnemyObject.Add(_enemyobject);
 		//}
 	}
+	public void OnPlayerShipHit(PlayerShip _playership)
+	{
+		if(_playership.TeamIndex != TeamIndex)
+		{
+			Managers.Audio.PlayFXSound(AudioManager.FX_SOUND.FX_ARROW_HIT, false);
+			_playership.AddHitForce(transform.position, m_MoveSpeed.normalized * m_PushForce);
+			_playership.DoDamage(m_Damage, Constant.ST200_GAMEPLAY_DAMAGE_TYPE_BULLET);
+			
+			if(m_BulletGoneDelegate != null)
+			{
+				m_BulletGoneDelegate(this);
+			}
+		}
+	}
+	
+	public void OnPlayerSubShipHit(PlayerSubShip _ship)
+	{
+		if(_ship.TeamIndex != TeamIndex)
+		{
+			Managers.Audio.PlayFXSound(AudioManager.FX_SOUND.FX_ARROW_HIT, false);
+			_ship.AddHitForce(transform.position, m_MoveSpeed.normalized * m_PushForce);
+			_ship.DoDamage(m_Damage);
+			
+			if(m_BulletGoneDelegate != null)
+			{
+				m_BulletGoneDelegate(this);
+			}
+		}
+	}
 
 	protected void OnEnemyShipExit(GameStageEnemyObject _enemyobject)
 	{
@@ -88,6 +117,12 @@ public class GameBulletObject_Player_Fire : GameBulletObject {
 		}else if(_col.gameObject.layer == LayerMask.NameToLayer("Obstacle"))
 		{
 			OnObstacleCrash();
+		}else if(_col.gameObject.layer == LayerMask.NameToLayer("Player"))
+		{
+			OnPlayerShipHit(_col.gameObject.GetComponent<PlayerShip>());
+		}else if(_col.gameObject.layer == LayerMask.NameToLayer("Player_Sub"))
+		{
+			OnPlayerSubShipHit(_col.gameObject.GetComponent<PlayerSubShip>());
 		}
 	}
 

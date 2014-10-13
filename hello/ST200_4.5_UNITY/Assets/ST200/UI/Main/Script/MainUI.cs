@@ -318,4 +318,11 @@ public class MainUI : MonoBehaviour {
 		}
 		
 	}
+
+	public void OnClickPVPStartButton()
+	{
+		if ( Managers.Audio != null) Managers.Audio.PlayFXSound(AudioManager.FX_SOUND.FX_Button_Common,false);
+		Managers.UserData.SelectedGameType = Constant.ST200_GAMEMODE_PVP;
+		Application.LoadLevel(Constant.SCENE_GameMainLoadingScene);
+	}
 }

@@ -13,10 +13,11 @@ public class PlayerShip_Turtle1 : PlayerShip {
 		Vector3 leftdirection = Vector3.Cross(Vector3.forward, m_LookingVector);
 		Vector3 rightdirection = -leftdirection;
 		
-		for(int i = 0; i < GameStageManager.Instance.m_ActiveEnemyList.Count; i++)
+
+		for(int i = 0; i < m_TargetList.Count; i++)
 		{
-			GameStageEnemyObject enemy = GameStageManager.Instance.m_ActiveEnemyList[i];
-			if(Vector2.Distance(enemy.transform.position, transform.position) < m_ShipStatInfo.BulletSpeed)
+			Transform enemy = m_TargetList[i];
+			if(enemy.gameObject.activeSelf && Vector2.Distance(enemy.transform.position, transform.position) < m_ShipStatInfo.BulletSpeed)
 			{
 				if(!shootfront)
 				{
@@ -41,6 +42,34 @@ public class PlayerShip_Turtle1 : PlayerShip {
 				}
 			}
 		}
+		//for(int i = 0; i < GameStageManager.Instance.m_ActiveEnemyList.Count; i++)
+		//{
+		//	GameStageEnemyObject enemy = GameStageManager.Instance.m_ActiveEnemyList[i];
+		//	if(Vector2.Distance(enemy.transform.position, transform.position) < m_ShipStatInfo.BulletSpeed)
+		//	{
+		//		if(!shootfront)
+		//		{
+		//			if(Vector2.Angle(frontdirection, enemy.transform.position - transform.position) < 10f)
+		//			{
+		//				shootfront = true;
+		//			}
+		//		}
+		//		if(!shootleft)
+		//		{
+		//			if(Vector2.Angle(leftdirection, enemy.transform.position - transform.position) < 10f)
+		//			{
+		//				shootleft = true;
+		//			}
+		//		}
+		//		if(!shootright)
+		//		{
+		//			if(Vector2.Angle(rightdirection, enemy.transform.position - transform.position) < 10f)
+		//			{
+		//				shootright = true;
+		//			}
+		//		}
+		//	}
+		//}
 		
 		if(shootfront)
 		{

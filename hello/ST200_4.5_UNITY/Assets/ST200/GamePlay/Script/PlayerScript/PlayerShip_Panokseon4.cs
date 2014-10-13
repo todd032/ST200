@@ -22,10 +22,10 @@ public class PlayerShip_Panokseon4 : PlayerShip {
 		
 		Vector3 frontdirection = m_LookingVector;
 		
-		for(int i = 0; i < GameStageManager.Instance.m_ActiveEnemyList.Count; i++)
+		for(int i = 0; i < m_TargetList.Count; i++)
 		{
-			GameStageEnemyObject enemy = GameStageManager.Instance.m_ActiveEnemyList[i];
-			if(Vector2.Distance(enemy.transform.position, transform.position) < m_ShipStatInfo.BulletSpeed)
+			Transform enemy = m_TargetList[i];
+			if(enemy.gameObject.activeSelf && Vector2.Distance(enemy.transform.position, transform.position) < m_ShipStatInfo.BulletSpeed)
 			{
 				if(!shootfront)
 				{
@@ -36,6 +36,20 @@ public class PlayerShip_Panokseon4 : PlayerShip {
 				}
 			}
 		}
+		//for(int i = 0; i < GameStageManager.Instance.m_ActiveEnemyList.Count; i++)
+		//{
+		//	GameStageEnemyObject enemy = GameStageManager.Instance.m_ActiveEnemyList[i];
+		//	if(Vector2.Distance(enemy.transform.position, transform.position) < m_ShipStatInfo.BulletSpeed)
+		//	{
+		//		if(!shootfront)
+		//		{
+		//			if(Vector2.Angle(frontdirection, enemy.transform.position - transform.position) < 10f)
+		//			{
+		//				shootfront = true;
+		//			}
+		//		}
+		//	}
+		//}
 		
 		if(shootfront)
 		{
@@ -77,10 +91,11 @@ public class PlayerShip_Panokseon4 : PlayerShip {
 
 		Transform m_LeftTarget = null;
 		Transform m_RightTarget = null;
-		for(int i = 0; i < GameStageManager.Instance.m_ActiveEnemyList.Count; i++)
+
+		for(int i = 0; i < m_TargetList.Count; i++)
 		{
-			GameStageEnemyObject enemy = GameStageManager.Instance.m_ActiveEnemyList[i];
-			if(Vector2.Distance(enemy.transform.position, transform.position) < m_ShipStatInfo.BulletSpeed * m_ArrowDistanceFactor)
+			Transform enemy = m_TargetList[i];
+			if(enemy.gameObject.activeSelf && Vector2.Distance(enemy.transform.position, transform.position) < m_ShipStatInfo.BulletSpeed * m_ArrowDistanceFactor)
 			{				
 				if(!shootleft)
 				{
@@ -100,6 +115,29 @@ public class PlayerShip_Panokseon4 : PlayerShip {
 				}
 			}
 		}
+		//for(int i = 0; i < GameStageManager.Instance.m_ActiveEnemyList.Count; i++)
+		//{
+		//	GameStageEnemyObject enemy = GameStageManager.Instance.m_ActiveEnemyList[i];
+		//	if(Vector2.Distance(enemy.transform.position, transform.position) < m_ShipStatInfo.BulletSpeed * m_ArrowDistanceFactor)
+		//	{				
+		//		if(!shootleft)
+		//		{
+		//			if(Vector2.Angle(leftdirection, enemy.transform.position - transform.position) < 32.5f)
+		//			{
+		//				shootleft = true;
+		//				m_LeftTarget = enemy.transform;
+		//			}
+		//		}
+		//		if(!shootright)
+		//		{
+		//			if(Vector2.Angle(rightdirection, enemy.transform.position - transform.position) < 32.5f)
+		//			{
+		//				shootright = true;
+		//				m_RightTarget = enemy.transform;
+		//			}
+		//		}
+		//	}
+		//}
 		
 		if(shootleft)
 		{

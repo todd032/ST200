@@ -2183,6 +2183,11 @@ public class GameManager : MonoBehaviour
 
 	}
 
+	public void PlayerSubShipSpawnEvent(PlayerSubShip _subship)
+	{
+		//m_Player.AddTarget(_subship.transform);
+	}
+
 	public void EnemyDefendLinePassEvent(GameStageEnemyObject _enemy)
 	{
 		//m_Player.DoDamage(10f);
@@ -2210,6 +2215,15 @@ public class GameManager : MonoBehaviour
 			//spawn item
 			//StageItemManager.Instance.TrySpawnItem(_enemy.m_StageEnemyData.ItemSpawnIndex, _enemy.transform.position);
 			StageItemManager.Instance.TrySpawnItem(_enemy.m_StageEnemyData.ItemSpawnIndex, _enemy.transform.position);
+		}
+	}
+
+	public void EnemySpawnEvent(GameStageEnemyObject _enemy)
+	{
+		m_Player.AddTarget(_enemy.transform);
+		for(int i = 0; i < GamePlayerManager.Instance.m_SubShipList.Count; i++)
+		{
+			GamePlayerManager.Instance.m_SubShipList[i].AddTarget(_enemy.transform);
 		}
 	}
 
@@ -2522,11 +2536,124 @@ public class GameManager : MonoBehaviour
 		
 		_guiManager.SetItemUseButtonDisable() ;
 		
+		//init player
+		//m_Player
+		GamePlayerManager.Instance.SpawnPlayer(Managers.UserData.GetCurrentUserShipData());
+		m_Player = GamePlayerManager.Instance.m_CurrentPlayerShip;
+		m_Player.ShootEvent += PlayerShootEvent;
+		m_Player.DamagedEvent += PlayerDamagedEvent;
+		_GameStageManager.EnemyShootEvent 				+= EnemyShootEvent;
+		_GameStageManager.DefendLinePassEvent 			+= EnemyDefendLinePassEvent;
+		_GameStageManager.EnemyDeadEvent				+= EnemyDeadEvent;
+		
+		for(int i = 1 ; i <= Managers.GameBalanceData.SubShipEquipAvailableMaxCount; i++)
+		{
+			int shipindex = Managers.UserData.GetEquipedSubShipIndex(i);
+			if(shipindex != 0)
+			{
+				GamePlayerManager.Instance.SpawnSubShip (Managers.UserData.GetUserSubShipData(shipindex));
+			}
+		}
+		
+		m_PlayerController.Init(m_Player);
+
+		//spawn opponent
+		GamePlayerManager.Instance.OppSpawnPlayer(Managers.UserData.GetCurrentUserShipData());
+		for(int i = 1 ; i <= Managers.GameBalanceData.SubShipEquipAvailableMaxCount; i++)
+		{
+			int shipindex = Managers.UserData.GetEquipedSubShipIndex(i);
+			if(shipindex != 0)
+			{
+				GamePlayerManager.Instance.OppSpawnSubShip(Managers.UserData.GetUserSubShipData(shipindex));
+			}
+		}
+		GamePlayerManager.Instance.m_OppPlayerShip.gameObject.AddComponent<PlayerShipAINormal>();
+
+		GamePlayerManager.Instance.m_CurrentPlayerShip.AddTarget(GamePlayerManager.Instance.m_OppPlayerShip.transform);
+		for(int i = 0; i < GamePlayerManager.Instance.m_SubShipList.Count; i++)
+		{
+			PlayerSubShip curplayersubship = GamePlayerManager.Instance.m_SubShipList[i];
+			curplayersubship.AddTarget(GamePlayerManager.Instance.m_OppPlayerShip.transform);
+			GamePlayerManager.Instance.m_OppPlayerShip.AddTarget(curplayersubship.transform);
+			for(int j = 0; j < GamePlayerManager.Instance.m_OppSubShipList.Count; j++)
+			{
+				PlayerSubShip oppsubship = GamePlayerManager.Instance.m_OppSubShipList[j];
+				oppsubship.AddTarget(GamePlayerManager.Instance.m_CurrentPlayerShip.transform);
+				curplayersubship.AddTarget(oppsubship.transform);
+				oppsubship.AddTarget(curplayersubship.transform);
+				GamePlayerManager.Instance.m_CurrentPlayerShip.AddTarget(oppsubship.transform);
+			}
+		}
+		//init effects
+		m_ShoutEffect.Init(20f);//m_Player.m_ShipStatInfo.PushForce 
+		m_SingijeonEffect.Init(m_Player.m_ShipStatInfo.BulletDamage * 2f);
+		
+		CharacterNum = Managers.UserData.GetCurrentGameCharacter().IndexNumber;
+		
+		
+		//check character info and set buf
+		if(CharacterNum == 2)
+		{
+			GameShipBuff damagebuff = new GameShipBuff();
+			damagebuff.Init(GameShipBuffType.ATTACK_DAMAGE_BUFF, GameShipBuffRemainType.INFINITE, 
+			                1f, 
+			                Managers.GameBalanceData.GamePlayCharacter2DamageIncreaseRatio,
+			                1f,
+			                1f,
+			                1f);
+			m_Player.AddBuff(damagebuff);
+			
+			GameShipBuff attackratebuff = new GameShipBuff();
+			attackratebuff.Init(GameShipBuffType.ATTACK_SPEED_BUFF, GameShipBuffRemainType.INFINITE,
+			                    1f,
+			                    Managers.GameBalanceData.GamePlayCharacter2AttackSpeedIncreaseRatio,
+			                    1f,
+			                    1f,
+			                    1f);
+			m_Player.AddBuff(attackratebuff);
+		}else if(CharacterNum == 3)
+		{
+			//Debug.Log("INVINCIBLE POSSESS");
+			HaveInvincible = true;
+		}
+		
+		//check item buff
+		if(HaveHealthUpItem)
+		{
+			GameShipBuff buff = new GameShipBuff();
+			buff.Init(GameShipBuffType.HEALTH_INCREASE, GameShipBuffRemainType.INFINITE,
+			          1f,
+			          Managers.GameBalanceData.HealthItemIncreaseRatio,
+			          1f,
+			          1f,
+			          1f);
+			m_Player.AddBuff(buff);
+			m_Player.m_CurHealth = m_Player.MaxHealth;
+			//m_Player.Heal(m_Player.MaxHealth);
+		}
+		if(HavePowerUpItem)
+		{
+			GameShipBuff buff = new GameShipBuff();
+			buff.Init(GameShipBuffType.ATTACK_DAMAGE_BUFF, GameShipBuffRemainType.INFINITE,
+			          1f,
+			          Managers.GameBalanceData.AttackItemDamageIncreaseRatio,
+			          1f,
+			          1f,
+			          1f);
+			m_Player.AddBuff(buff);
+		}
+		
+		//GamePathManager.Instance.InitPath(Managers.GameBalanceData.GamePlayReturnToBattleMaxDistance * 2f);
+		m_BackgroundManager.SetBackgroundObject(Managers.GameBalanceData.GetStageData(Managers.UserData.SelectedStageIndex).BackgroundType);
+		m_BackgroundManager.InitLineObstacle(Managers.GameBalanceData.GamePlayReturnToBattleMaxDistance);
+		
+		
+		_guiManager.InitItemButton(HaveShoutItem, HaveSingijeon, HaveInvincible);
 		yield return null ;
 		
 		while(_gameState == GameState.PVP_INIT) {		
 			
-			_gameState = GameState.GameReady ;
+			_gameState = GameState.PVP_READY ;
 			
 			yield return null ;			
 		}
@@ -2612,11 +2739,6 @@ public class GameManager : MonoBehaviour
 		ReturnToBattleTimer = ReturnToBattleMaxTime;		
 		yield return null ;
 		
-		if(GameStage == 1)
-		{
-			m_TutorialManager.StartTutorial();
-		}
-		
 		while(_gameState == GameState.PVP_PLAY) {
 			float deltatime = Time.fixedDeltaTime;
 			
@@ -2625,11 +2747,11 @@ public class GameManager : MonoBehaviour
 			if(!_guiManager.IsPlayingCutInAnimation() && !m_TutorialManager.IsPlaying())
 			{
 				GamePlayerManager.Instance.Process(deltatime);
+				GamePlayerManager.Instance.ProcessOpp(deltatime);
 				//m_Player.Process(deltatime);
 				m_GameBulletObjectManager.Process(deltatime);
 				m_FeverEffect.Process(deltatime);
 				m_FeverEffect2.Process(deltatime);
-				ProcessGameStageManager(deltatime);
 				CheckPlayerBound(deltatime);
 				_guiManager.DisplayHealthGauge(m_Player.m_CurHealth, m_Player.MaxHealth);
 			}
@@ -2792,7 +2914,7 @@ public class GameManager : MonoBehaviour
 
 		//init player
 		//m_Player
-		GamePlayerManager.Instance.Init(Managers.UserData.GetCurrentUserShipData());
+		GamePlayerManager.Instance.SpawnPlayer(Managers.UserData.GetCurrentUserShipData());
 		m_Player = GamePlayerManager.Instance.m_CurrentPlayerShip;
 		m_Player.ShootEvent += PlayerShootEvent;
 		m_Player.DamagedEvent += PlayerDamagedEvent;
@@ -2908,7 +3030,7 @@ public class GameManager : MonoBehaviour
 	
 	private void ReadyGoAlertObjectEvent(){
 		_gameState = GameState.GamePlayMode ;
-
+		Debug.Log ("?? CALLED?:");
 		_GameStageManager.ResumeStage(1.5f);
 	}
 	

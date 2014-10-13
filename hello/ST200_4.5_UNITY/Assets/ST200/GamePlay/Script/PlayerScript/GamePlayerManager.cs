@@ -31,7 +31,10 @@ public class GamePlayerManager : MonoBehaviour {
 
 	public List<PlayerSubShip> m_SubShipList = new List<PlayerSubShip>();
 
-	public void Init(UserShipData _info)
+	public List<Transform> OppSpawnTransformList = new List<Transform>(); 
+	public PlayerShip m_OppPlayerShip;
+	public List<PlayerSubShip> m_OppSubShipList = new List<PlayerSubShip>();
+	public void SpawnPlayer(UserShipData _info)
 	{
 		PlayerShip selectedObject = null;
 		for(int i = 0; i < m_PlayerShipObjectList.Count; i++)
@@ -54,6 +57,27 @@ public class GamePlayerManager : MonoBehaviour {
 		m_GamePlayCamera.m_TargetTransform = m_CurrentPlayerShip.transform;
 	}
 
+	public void OppSpawnPlayer(UserShipData _info)
+	{
+		PlayerShip selectedObject = null;
+		for(int i = 0; i < m_PlayerShipObjectList.Count; i++)
+		{
+			if((int)m_PlayerShipObjectList[i].m_ShipType == _info.IndexNumber)
+			{
+				selectedObject = m_PlayerShipObjectList[i];
+				break;
+			}
+		}
+		
+		GameObject go = Instantiate(selectedObject.gameObject) as GameObject;
+		m_OppPlayerShip = go.GetComponent<PlayerShip>();
+		m_OppPlayerShip.Init(Managers.GameBalanceData.GetShipStatInfo(_info.IndexNumber, _info.Level), 2);
+		Vector3 spawnpos = OppSpawnTransformList[0].transform.position;
+		spawnpos.z = Constant.ST200_GameObjectLayer_PlayerShip;
+		
+		go.transform.position = spawnpos;
+	}
+
 	public void SpawnSubShip(UserSubShipData _info)
 	{
 		//Debug.Log("SPAWN SUBSHIP: " + _info.IndexNumber);
@@ -69,13 +93,41 @@ public class GamePlayerManager : MonoBehaviour {
 
 		GameObject go = Instantiate(selectedObject.gameObject) as GameObject;
 		PlayerSubShip subship = go.GetComponent<PlayerSubShip>();
-		subship.Init(Managers.GameBalanceData.GetSubShipStatInfo(_info.IndexNumber, _info.Level), _info.IsSelect, 1);
+		subship.Init(Managers.GameBalanceData.GetSubShipStatInfo(_info.IndexNumber, _info.Level), _info.IsSelect, 1, m_CurrentPlayerShip);
 		m_SubShipList.Add(subship);
 
 		Vector3 spawnpos = subship.transform.position;
 		spawnpos.z = Constant.ST200_GameObjectLayer_PlayerShip;
 		
 		go.transform.position = spawnpos;
+
+		GameManager.Instance.PlayerSubShipSpawnEvent(subship);
+	}
+
+	public void OppSpawnSubShip(UserSubShipData _info)
+	{
+		//Debug.Log("SPAWN SUBSHIP: " + _info.IndexNumber);
+		PlayerSubShip selectedObject = null;
+		for(int i = 0; i < m_PlayerSubShipObjectList.Count; i++)
+		{
+			if((int)m_PlayerSubShipObjectList[i].m_ShipType == _info.IndexNumber)
+			{
+				selectedObject = m_PlayerSubShipObjectList[i];
+				break;
+			}
+		}
+		
+		GameObject go = Instantiate(selectedObject.gameObject) as GameObject;
+		PlayerSubShip subship = go.GetComponent<PlayerSubShip>();
+		subship.Init(Managers.GameBalanceData.GetSubShipStatInfo(_info.IndexNumber, _info.Level), _info.IsSelect, 2, m_OppPlayerShip);
+		m_OppSubShipList.Add(subship);
+		
+		Vector3 spawnpos = subship.transform.position;
+		spawnpos.z = Constant.ST200_GameObjectLayer_PlayerShip;
+		
+		go.transform.position = spawnpos;
+		
+		//GameManager.Instance.PlayerSubShipSpawnEvent(subship);
 	}
 
 	public void Process(float _timer)
@@ -84,6 +136,15 @@ public class GamePlayerManager : MonoBehaviour {
 		for(int i = 0; i < m_SubShipList.Count; i++)
 		{
 			m_SubShipList[i].Process(_timer);
+		}
+	}
+
+	public void ProcessOpp(float _timer)
+	{
+		m_OppPlayerShip.Process(_timer);
+		for(int i = 0; i < m_OppSubShipList.Count; i++)
+		{
+			m_OppSubShipList[i].Process(_timer);
 		}
 	}
 
