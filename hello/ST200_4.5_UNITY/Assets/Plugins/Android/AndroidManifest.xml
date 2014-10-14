@@ -103,6 +103,17 @@
         <!-- Android GCM Plugin -->
 		<activity android:name="com.prime31.GoogleIABProxyActivity" android:configChanges="orientation"></activity>
 		
+		<activity android:name="com.kakao.sample.kakaolink.KakaoLinkMainActivity">
+			<intent-filter>
+				<action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data android:scheme="@string/kakao_scheme" android:host="@string/kakaolink_host" />
+ 			</intent-filter>
+ 		</activity>
+ 		
+ 		<meta-data android:name="com.kakao.sdk.AppKey" android:value="@string/kakao_app_key"/>
+		
 	<!--- TStore plugin 
 		<meta-data
             android:name="iap:api_version"
