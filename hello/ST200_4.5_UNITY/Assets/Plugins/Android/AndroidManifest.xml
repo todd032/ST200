@@ -5,6 +5,7 @@
 	android:theme="@android:style/Theme.NoTitleBar"
     android:versionCode="6"
     android:versionName="1.0.1" >
+    
 
     <uses-sdk
         android:minSdkVersion="9"
@@ -19,11 +20,13 @@
 
 	<!--<uses-feature android:name="android.hardware.telephony" android:required="false" /> -->
 	
-    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.INTERNET" /><!-- Tnk -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /><!-- Tnk -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="com.android.vending.BILLING"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 	
 	<!-- Android GCM Plugin -->
     <!-- Rewite app package name! -->
@@ -112,8 +115,17 @@
  			</intent-filter>
  		</activity>
  		
+ 		<activity android:name="com.tnkfactory.ad.AdWallActivity" android:screenOrientation="portrait"/><!-- Tnk -->
+        <activity android:name="com.tnkfactory.ad.AdMediaActivity" android:screenOrientation="landscape"/><!-- Tnk -->
+ 		
  		<meta-data android:name="com.kakao.sdk.AppKey" android:value="@string/kakao_app_key"/>
-		
+ 		<meta-data android:name="tnkad_app_id" android:value="f0d070a0-d091-5438-8345-190d080e0a06" /><!-- Tnk -->
+ 		
+ 		<meta-data android:name="unityplayer.UnityActivity" android:value="true" /> <!-- Tnk -->
+        <meta-data android:name="unityplayer.ForwardNativeEventsToDalvik" android:value="true" /> <!-- set true --><!-- Tnk -->
+        
+        <!-- Tnk -->
+        		
 	<!--- TStore plugin 
 		<meta-data
             android:name="iap:api_version"
