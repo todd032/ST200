@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class PlayerShip_Turtle1 : PlayerShip {
 	
@@ -149,5 +150,56 @@ public class PlayerShip_Turtle1 : PlayerShip {
 			}
 		}
 	}
-	
+
+	public override bool IsInAttackAngle (Vector3 _worldposition)
+	{
+		bool isinangle = false;
+		Vector3 frontdirection = m_LookingVector;
+		if(Vector2.Angle(frontdirection, _worldposition - transform.position) < 10f)
+		{
+			isinangle = true;
+		}
+		
+		Vector3 leftdirection = Vector3.Cross(Vector3.forward, m_LookingVector);
+		Vector3 rightdirection = -leftdirection;
+		
+		if(Vector2.Angle(leftdirection, _worldposition - transform.position) < 10f)
+		{
+			isinangle = true;
+		}
+		if(Vector2.Angle(rightdirection, _worldposition - transform.position) < 10f)
+		{
+			isinangle = true;
+		}
+		
+		return isinangle;
+	}
+
+	public override System.Collections.Generic.List<Vector3> GetDeadAngleDirectionList ()
+	{
+		List<Vector3> deadangledirectionlist = new List<Vector3>();
+		//deadangledirectionlist.Add(new Vector3(0f,1f,0f));
+		deadangledirectionlist.Add(new Vector3(1f,1f,0f));
+		//deadangledirectionlist.Add(new Vector3(1f,0f,0f));
+		deadangledirectionlist.Add(new Vector3(1f,-1f,0f));
+		deadangledirectionlist.Add(new Vector3(0f,-1f,0f));
+		deadangledirectionlist.Add(new Vector3(-1f,-1f,0f));
+		//deadangledirectionlist.Add(new Vector3(-1f,0f,0f));
+		deadangledirectionlist.Add(new Vector3(-1f,1f,0f));
+		return deadangledirectionlist;
+	}
+
+	public override List<Vector3> GetAttackDirectionList()
+	{
+		List<Vector3> directionlist = new List<Vector3>();
+		directionlist.Add(new Vector3(0f,1f,0f));
+		//directionlist.Add(new Vector3(1f,1f,0f));
+		directionlist.Add(new Vector3(1f,0f,0f));
+		//directionlist.Add(new Vector3(1f,-1f,0f));
+		//directionlist.Add(new Vector3(0f,-1f,0f));
+		//directionlist.Add(new Vector3(-1f,-1f,0f));
+		directionlist.Add(new Vector3(-1f,0f,0f));
+		//directionlist.Add(new Vector3(-1f,1f,0f));
+		return directionlist;
+	}
 }

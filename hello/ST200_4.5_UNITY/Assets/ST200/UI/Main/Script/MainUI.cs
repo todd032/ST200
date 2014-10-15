@@ -28,6 +28,8 @@ public class MainUI : MonoBehaviour {
 
 	public AttendPopupView m_AttendPopupView;
 	public EventPopupView m_EventPopupView;
+
+	public MainUI_ModeSelect m_ModeSelectUI;
 	// Use this for initialization
 	void Start () {
 	
@@ -105,6 +107,9 @@ public class MainUI : MonoBehaviour {
 			}else if(m_SubShipSelectUI.OnEscapePress())
 			{
 				return true;
+			}else if(m_ModeSelectUI.OnEscapePress())
+			{
+				return true;
 			}
 		}
 
@@ -115,50 +120,7 @@ public class MainUI : MonoBehaviour {
 		
 		if ( Managers.Audio != null) Managers.Audio.PlayFXSound(AudioManager.FX_SOUND.FX_Button_GameReady,false);
 		
-		// Connect Icon Start!!!!
-		//_indicatorPopupView.LoadIndicatorPopupView();
-		Managers.UserData.ExperienceIndex = 0;
-		//
-		
-		if (Managers.DataStream != null){
-			
-			if (Managers.UserData != null){
-				
-				// 영어학원 쿠폰 주기 기능 추가 (by 최원석 14.05.27) ========= Start.
-				Managers.DataStream.Event_Delegate_DataStreamManager_SaveUserData += (intResult_Code_Input, strResult_Extend_Input) => {
-					
-					//_indicatorPopupView.RemoveIndicatorPopupView() ;
-					
-					if (intResult_Code_Input == Constant.NETWORK_RESULTCODE_OK){
-						
-					//	_indicatorPopupView.RemoveIndicatorPopupView() ;
-						GameUIManager.Instance.SwitchToStageSelectManager();
-					} else if (intResult_Code_Input == Constant.NETWORK_RESULTCODE_Error_Network){
-						
-					//	_uiRootAlertView.LoadUIRootAlertView(11) ; // 통신상태가 불안정합니다. 다시 실행해 주세요.
-					//	_uiRootAlertView.UIRootAlertViewEvent += UIRootAlertViewDelegate ;
-						
-					}else if(intResult_Code_Input == Constant.NETWORK_RESULTCODE_Error_UserSequence)
-					{
-						GameUIManager.Instance.LoadUIRootAlertView(Constant.ST200_POPUP_ERROR_USERSEQUENCE_ERROR); 
-					} else {
-						
-					//	_uiRootAlertView.LoadUIRootAlertView(21) ; // 데이터가 올바르지 않습니다. 다시 실행해 주세요.
-					//	_uiRootAlertView.UIRootAlertViewEvent += UIRootAlertViewDelegate ;
-					}
-					//Debug.Log("RESULT: " + intResult_Code_Input);
-					Managers.DataStream.Event_Delegate_DataStreamManager_SaveUserData += null;
-				};
-
-				Managers.UserData.UpdateSequence++;
-				UserDataManager.UserDataStruct userDataStruct = Managers.UserData.GetUserDataStruct() ;
-				
-				Managers.DataStream.Network_SaveUserData_Input_1(userDataStruct);
-				// 영어학원 쿠폰 주기 기능 추가 (by 최원석 14.05.27) ========= End.
-			}
-		}
-
-		//Debug.Log("click game ready");
+		m_ModeSelectUI.ShowUI();
 	}
 
 	public void OnClickMailButton() {
@@ -206,6 +168,11 @@ public class MainUI : MonoBehaviour {
 		m_SubShipSelectUI.UpdateUI();
 	}
 
+	public void OnClickKakaoButton()
+	{
+		if ( Managers.Audio != null) Managers.Audio.PlayFXSound(AudioManager.FX_SOUND.FX_Button_Common,false);
+		ST200KakaoLink.g_Instance.SendKakaoLinkMessage();
+	}
 
 	/// <summary>
 	/// [_selected]
@@ -319,10 +286,4 @@ public class MainUI : MonoBehaviour {
 		
 	}
 
-	public void OnClickPVPStartButton()
-	{
-		if ( Managers.Audio != null) Managers.Audio.PlayFXSound(AudioManager.FX_SOUND.FX_Button_Common,false);
-		Managers.UserData.SelectedGameType = Constant.ST200_GAMEMODE_PVP;
-		Application.LoadLevel(Constant.SCENE_GameMainLoadingScene);
-	}
 }

@@ -315,18 +315,30 @@ public class PlayerShip : MonoBehaviour {
 		m_MoveSpeed = curmovespeed;
 	}
 
+	protected float m_RotateAnimationSmoothTimer = 0f;
+	protected float m_RotateAnimationSmoothTime = 0.5f;
 	public virtual void ProcessRotation(float _timer)
 	{
 		float currotationspeed = RotationMaxSpeed * TurnRotationInput;
 		if(currotationspeed > RotationMaxSpeed * 0.5f)
 		{
+			m_RotateAnimationSmoothTimer = 0f;
 			m_ShipAnimation.PlayMoveLeftAnimation();
+			//Debug.Log ("1");
 		}else if(currotationspeed < -RotationMaxSpeed * 0.5f)
 		{
+			m_RotateAnimationSmoothTimer = 0f;
 			m_ShipAnimation.PlayMoveRightAnimation();
+			//Debug.Log ("2");
 		}else
 		{
-			m_ShipAnimation.PlayIdleAnimation();
+			m_RotateAnimationSmoothTimer += _timer;
+			if(m_RotateAnimationSmoothTimer > m_RotateAnimationSmoothTime)
+			{
+				m_RotateAnimationSmoothTimer = 0f;
+				m_ShipAnimation.PlayIdleAnimation();
+				//Debug.Log ("3");
+			}
 		}
 		
 		float maxrotationspeed = RotationMaxSpeed;
@@ -547,11 +559,6 @@ public class PlayerShip : MonoBehaviour {
 	
 	}
 
-	public virtual void StayIdle()
-	{
-		m_ShipAnimation.PlayIdleAnimation();
-	}
-
 	public delegate void DamagedDelegate(PlayerShip _player, float _damage);
 	protected DamagedDelegate m_DamagedDelegate;
 	public event DamagedDelegate DamagedEvent
@@ -739,5 +746,24 @@ public class PlayerShip : MonoBehaviour {
 		{
 			m_TargetList.Add (_transform);
 		}
+	}
+
+	public virtual bool IsInAttackAngle(Vector3 _worldposition)
+	{
+		return false;
+	}
+
+	public virtual List<Vector3> GetDeadAngleDirectionList()
+	{
+		List<Vector3> deadangledirectionlist = new List<Vector3>();
+
+		return deadangledirectionlist;
+	}
+
+	public virtual List<Vector3> GetAttackDirectionList()
+	{
+		List<Vector3> directionlist = new List<Vector3>();
+		
+		return directionlist;
 	}
 }

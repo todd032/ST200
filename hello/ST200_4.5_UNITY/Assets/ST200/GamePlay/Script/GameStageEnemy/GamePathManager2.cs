@@ -97,7 +97,7 @@ public class GamePathManager2 : MonoBehaviour {
 		return targetpos;
 	}
 
-	protected bool CollideWithLine(Vector3 _startpos, Vector3 _targetpos)
+	public bool CollideWithLine(Vector3 _startpos, Vector3 _targetpos)
 	{
 		// two points (sx, sy) , (tx, ty)
 		// function that connects two vetices 

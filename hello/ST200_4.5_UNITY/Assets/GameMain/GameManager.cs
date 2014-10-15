@@ -79,6 +79,7 @@ public class GameManager : MonoBehaviour
 
 	public PlayerShip m_Player;
 	public PlayerController m_PlayerController;
+	public PlayerShipAI m_OppAI;
 
 	public FeverEffect m_FeverEffect;
 	public FeverEffect m_FeverEffect2;
@@ -2567,9 +2568,13 @@ public class GameManager : MonoBehaviour
 				GamePlayerManager.Instance.OppSpawnSubShip(Managers.UserData.GetUserSubShipData(shipindex));
 			}
 		}
-		GamePlayerManager.Instance.m_OppPlayerShip.gameObject.AddComponent<PlayerShipAINormal>();
+		GamePlayerManager.Instance.m_OppPlayerShip.gameObject.AddComponent<PlayerShipAI>();
+		PlayerShipAI oppshipai = GamePlayerManager.Instance.m_OppPlayerShip.gameObject.GetComponent<PlayerShipAI>();
+		oppshipai.Init(GamePlayerManager.Instance.m_OppPlayerShip, GamePlayerManager.Instance.m_CurrentPlayerShip);
+		m_OppAI = oppshipai;
 
 		GamePlayerManager.Instance.m_CurrentPlayerShip.AddTarget(GamePlayerManager.Instance.m_OppPlayerShip.transform);
+		GamePlayerManager.Instance.m_OppPlayerShip.AddTarget(GamePlayerManager.Instance.m_CurrentPlayerShip.transform);
 		for(int i = 0; i < GamePlayerManager.Instance.m_SubShipList.Count; i++)
 		{
 			PlayerSubShip curplayersubship = GamePlayerManager.Instance.m_SubShipList[i];
@@ -2581,6 +2586,7 @@ public class GameManager : MonoBehaviour
 				oppsubship.AddTarget(GamePlayerManager.Instance.m_CurrentPlayerShip.transform);
 				curplayersubship.AddTarget(oppsubship.transform);
 				oppsubship.AddTarget(curplayersubship.transform);
+				oppsubship.SetUseTactic(true);
 				GamePlayerManager.Instance.m_CurrentPlayerShip.AddTarget(oppsubship.transform);
 			}
 		}
@@ -2748,6 +2754,7 @@ public class GameManager : MonoBehaviour
 			{
 				GamePlayerManager.Instance.Process(deltatime);
 				GamePlayerManager.Instance.ProcessOpp(deltatime);
+				m_OppAI.Process(deltatime);
 				//m_Player.Process(deltatime);
 				m_GameBulletObjectManager.Process(deltatime);
 				m_FeverEffect.Process(deltatime);

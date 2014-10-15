@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Runtime.InteropServices;
 
-public class ST200KakaoLink : MonoBehaviour {
+public class ST200KakaoLink {
 
 	private static ST200KakaoLink _instance;
 	private AndroidJavaClass pluginClass;
@@ -21,11 +21,10 @@ public class ST200KakaoLink : MonoBehaviour {
 			return _instance;
 		}
 	}
-	
-	#if UNITY_ANDROID
-	
+
 	public ST200KakaoLink()
 	{
+#if UNITY_ANDROID && !UNITY_EDITOR
 		pluginClass = new AndroidJavaClass( "com.kakao.sample.kakaolink.KakaoLinkMainActivity" );
 
 		if (pluginClass == null)
@@ -38,15 +37,21 @@ public class ST200KakaoLink : MonoBehaviour {
 
 			pluginClass.CallStatic( "InitKakaoLink", m_ImageUrl, m_LinkText );
 		}
-
+#endif
 	}
-	
+
+	public void InitLink(string _imageurl, string _text)
+	{
+		m_ImageUrl = _imageurl;
+		m_LinkText = _text;
+	}
+
 	public void SendKakaoLinkMessage()
 	{
 		Debug.Log( "Click KakaoLink" );
-
+#if UNITY_ANDROID && !UNITY_EDITOR
 		pluginClass.CallStatic( "SendKakaoLinkMessage");
+#endif
 	}
-	
-	#endif
+
 }

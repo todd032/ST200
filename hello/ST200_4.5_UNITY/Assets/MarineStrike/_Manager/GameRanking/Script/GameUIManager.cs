@@ -182,7 +182,7 @@ public class GameUIManager : MonoBehaviour {
 		}		
 	}
 
-	public TorpedoDisplayer m_TorpedoDisplayer;
+	public TorpedoDisplayerNumber m_TorpedoDisplayer;
 	
 	public UILabel _displayTorpedoLabel ;
 	public UILabel _displayTorpedoTimeLabel ;
@@ -295,6 +295,16 @@ public class GameUIManager : MonoBehaviour {
 		}
 		
 		_paymentPopupView.LoadPaymentPopupView(Constant.ST200_POPUP_RECHARGE_JEWEL) ;
+	}
+
+	public void OnClickFreeGoldButton() {
+		
+		//if ( Managers.Audio != null) Managers.Audio.PlayFXSound(AudioManager.FX_SOUND.FX_Button_Common,false);
+		if ( Managers.Audio != null){
+			Managers.Audio.PlayAllFXSoundStop() ;
+			Managers.Audio.PlayFXSound(AudioManager.FX_SOUND.FX_Button_Common,false);
+		}
+
 	}
 	
 	//--Delegate
