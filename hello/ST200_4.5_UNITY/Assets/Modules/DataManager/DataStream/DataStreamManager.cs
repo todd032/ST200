@@ -1293,7 +1293,7 @@ public class DataStreamManager : MonoBehaviour {
 	
 	
 	// 데이터 체크섬 문자열 생성..
-	private string getParameterCheckSum(string str) {
+	public string getParameterCheckSum(string str) {
 		
 		return Md5Sum(str + Constant.CHECKSUM_Key);
 	}
