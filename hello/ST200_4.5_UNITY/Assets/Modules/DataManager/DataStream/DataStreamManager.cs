@@ -380,7 +380,30 @@ public class DataStreamManager : MonoBehaviour {
 	#endif
 	private string gameCode = "ST200"; //R100, ST100.
 	private string codeName = Constant.AppNameString ; //VersionCode..
-	
+
+	public string OsType
+	{
+		get
+		{
+			return osType;
+		}
+	}
+
+	public string MType
+	{
+		get
+		{
+			return mType;
+		}
+	}
+
+	public string GameCode
+	{
+		get
+		{
+			return gameCode;
+		}
+	}
 	//---------------------------------------------
 	// Member
 	//---------------------------------------------
