@@ -27,7 +27,6 @@ namespace TnkAd {
 		public Plugin()
 		{
 			pluginClass = new AndroidJavaClass("com.tnkfactory.ad.unity.TnkUnityPlugin");
-			setUserName( m_UserID );
 		}
 
 		public void prepareInterstitialAdForPPI()

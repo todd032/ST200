@@ -608,8 +608,11 @@ public class PlayerShip : MonoBehaviour {
 
 	public virtual void PlayDeadAnimation()
 	{
+		collider2D.enabled = false;
 		GamePlayFXManager.Instance.StartExplosionFX(GamePlayExplosionFX_Type.Explosion2, transform.position);
 		m_ShipAnimation.PlayDeadAnimation();
+		m_HealthGauge.gameObject.SetActive(false);
+		m_SpecialGauge.gameObject.SetActive(false);
 	}
 
 	public virtual void CrashEnemyShip(GameStageEnemyObject _enemy)
@@ -738,6 +741,9 @@ public class PlayerShip : MonoBehaviour {
 	{
 		m_CurHealth = MaxHealth;
 		m_ShipAnimation.PlayIdleAnimation();
+		collider2D.enabled = true;
+		m_HealthGauge.gameObject.SetActive(true);
+		m_SpecialGauge.gameObject.SetActive(true);
 	}
 
 	public void AddTarget(Transform _transform)

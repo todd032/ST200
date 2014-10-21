@@ -57,12 +57,12 @@ public class GamePlayerManager : MonoBehaviour {
 		m_GamePlayCamera.m_TargetTransform = m_CurrentPlayerShip.transform;
 	}
 
-	public void OppSpawnPlayer(UserShipData _info)
+	public void OppSpawnPlayer(int _index, int _level)
 	{
 		PlayerShip selectedObject = null;
 		for(int i = 0; i < m_PlayerShipObjectList.Count; i++)
 		{
-			if((int)m_PlayerShipObjectList[i].m_ShipType == _info.IndexNumber)
+			if((int)m_PlayerShipObjectList[i].m_ShipType == _index)
 			{
 				selectedObject = m_PlayerShipObjectList[i];
 				break;
@@ -71,7 +71,7 @@ public class GamePlayerManager : MonoBehaviour {
 		
 		GameObject go = Instantiate(selectedObject.gameObject) as GameObject;
 		m_OppPlayerShip = go.GetComponent<PlayerShip>();
-		m_OppPlayerShip.Init(Managers.GameBalanceData.GetShipStatInfo(_info.IndexNumber, _info.Level), 2);
+		m_OppPlayerShip.Init(Managers.GameBalanceData.GetShipStatInfo(_index, _level), 2);
 		Vector3 spawnpos = OppSpawnTransformList[0].transform.position;
 		spawnpos.z = Constant.ST200_GameObjectLayer_PlayerShip;
 		
@@ -104,13 +104,13 @@ public class GamePlayerManager : MonoBehaviour {
 		GameManager.Instance.PlayerSubShipSpawnEvent(subship);
 	}
 
-	public void OppSpawnSubShip(UserSubShipData _info)
+	public void OppSpawnSubShip(int _index, int _level, int _selectindex)
 	{
 		//Debug.Log("SPAWN SUBSHIP: " + _info.IndexNumber);
 		PlayerSubShip selectedObject = null;
 		for(int i = 0; i < m_PlayerSubShipObjectList.Count; i++)
 		{
-			if((int)m_PlayerSubShipObjectList[i].m_ShipType == _info.IndexNumber)
+			if((int)m_PlayerSubShipObjectList[i].m_ShipType == _index)
 			{
 				selectedObject = m_PlayerSubShipObjectList[i];
 				break;
@@ -119,7 +119,7 @@ public class GamePlayerManager : MonoBehaviour {
 		
 		GameObject go = Instantiate(selectedObject.gameObject) as GameObject;
 		PlayerSubShip subship = go.GetComponent<PlayerSubShip>();
-		subship.Init(Managers.GameBalanceData.GetSubShipStatInfo(_info.IndexNumber, _info.Level), _info.IsSelect, 2, m_OppPlayerShip);
+		subship.Init(Managers.GameBalanceData.GetSubShipStatInfo(_index, _level), _selectindex, 2, m_OppPlayerShip);
 		m_OppSubShipList.Add(subship);
 		
 		Vector3 spawnpos = subship.transform.position;
@@ -180,6 +180,31 @@ public class GamePlayerManager : MonoBehaviour {
 			}
 		}
 		return false;
+	}
+
+	public int GetOpponentAlive()
+	{
+		int alivecount = 0;
+		for(int i = 0; i < m_OppSubShipList.Count; i++)
+		{
+			if(m_OppSubShipList[i].m_CurHealth > 0f)
+			{
+				alivecount++;
+			}
+		}
+
+		if(m_OppPlayerShip.m_CurHealth > 0f)
+		{
+			alivecount++;
+		}
+
+		return alivecount;
+	}
+	public int GetOpponentTotal()
+	{
+		int count = 1 + m_OppSubShipList.Count;
+		
+		return count;
 	}
 }
 

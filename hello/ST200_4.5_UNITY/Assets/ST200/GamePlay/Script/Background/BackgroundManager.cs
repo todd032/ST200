@@ -34,6 +34,11 @@ public class BackgroundManager : MonoBehaviour {
 		m_BackgroundObjectList[_type].gameObject.SetActive(true);
 	}
 
+	public void SetRandomBackgroundObject()
+	{
+		m_BackgroundObjectList[Random.Range(0, m_BackgroundObjectList.Count)].gameObject.SetActive(true);
+	}
+
 	public void InitBackground(int _type)
 	{
 		if(_type == 1)

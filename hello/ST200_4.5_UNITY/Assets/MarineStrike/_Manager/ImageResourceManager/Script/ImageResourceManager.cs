@@ -152,6 +152,12 @@ public class ImageResourceManager : MonoBehaviour {
 		return name;
 	}
 
+	public string GetPVPRankImage(int _rank)
+	{
+		string name = "rank_medal_" + _rank.ToString();
+		return name;
+	}
+
 	public string GetWorldRankingCharacterImage(string _character)
 	{
 		string name = "rank_cha_" + _character; 
@@ -178,6 +184,26 @@ public class ImageResourceManager : MonoBehaviour {
 		{
 			return "main_top_bottom_bg";
 		}
-		return "main_top_bar";
+		return "main_top_bottom_bg";
+		//return "main_top_bar";
+	}
+
+	public string GetPVPCharacterImageName(int _index)
+	{
+		return "pvp_info_char" + _index;
+	}
+
+	public string GetPVPRankRewardImage(int _type)
+	{
+		string imagename = "";
+		if(_type == 1)
+		{
+			imagename = "pvp_rank_gold_3";
+		}else
+		{
+			imagename = "pvp_rank_coin_500";
+		}
+
+		return imagename;
 	}
 }

@@ -234,10 +234,10 @@ public class PlayerShip_Turtle_Gold : PlayerShip {
 			//GamePlayFXManager.Instance.StartAttackFX(GamePlayAttackFX_Type.FX_Attack_Smoke, m_ShootTransform[0].position);
 			
 			GameBulletManager.Instance.ShootBullet(GamePlayBulletType.PLAYER_FIRE, 
-			                                       AttackDamage / 5f, 
+			                                       AttackDamage / 8f, 
 			                                       m_ShootTransform[0].position, 
 			                                       m_ShootTransform[0].transform.up * m_ShipStatInfo.BulletSpeed, 
-			                                       m_ShipStatInfo.BulletPushForce / 5f,
+			                                       m_ShipStatInfo.BulletPushForce / 10f,
 			                                       1f,
 			                                       TeamIndex,
 			                                       1f);

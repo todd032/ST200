@@ -7,12 +7,12 @@ public class Constant : MonoBehaviour {
 	/// CHEATING MODE ON/OFF
 	/// </summary>
 	/// 
-	public readonly static bool VALTEST1 = true;
+	public readonly static bool VALTEST1 = false;
     // 프로젝트 정보 ----------------------------------------------------------------------------------------------------------------
-    public readonly static string AppVersionInfo = "1.2.3";
+    public readonly static string AppVersionInfo = "1.2.5";
     public readonly static string DefalutAppName = "defalut_app_name" ;
     
-    public readonly static string AppNameString = "31" ; //VersionCode...
+    public readonly static string AppNameString = "33" ; //VersionCode...
     public readonly static string CURRENT_MARKET = "2" ; // 2 : PlayStore   3 : TStore  4 : Naver.
 
     
@@ -26,7 +26,7 @@ public class Constant : MonoBehaviour {
 	public static readonly bool PROJECTMODE_Develop = true; //상용시 false로..
 	public static readonly bool PROJECTMODE_BalanceTest = true; //상용시 false, 테스트용 벨런스 데이터를 가지고 옴..
 	public static readonly bool PROJECTMODE_OutDebugMessage = true; //상용시 false로..
-	public static readonly bool PROJECTMODE_IabTest = true; //상용시 false로..
+	public static readonly bool PROJECTMODE_IabTest = false; //상용시 false로..
 #endif
     
     // Scene ----------------------------------------------------------------------------------------------------------------
@@ -2034,6 +2034,7 @@ public class Constant : MonoBehaviour {
 	public readonly static string COLOR_BLACK 									= "[000000]";
 	public readonly static string COLOR_BLUE 									= "[0000ff]";
 	public readonly static string COLOR_WHITE 									= "[ffffff]";
+	public readonly static string COLOR_GOLD 									= "[f0c96e]";
 	public readonly static string COLOR_STAGESELECT_ACTIVE						= "[ffd0a3]";
 	public readonly static string COLOR_STAGESELECT_INACTIVE					= "[aeb6be]";
 
@@ -2080,6 +2081,8 @@ public class Constant : MonoBehaviour {
 	public readonly static string COLOR_RESULT_SCORE_TITLE			 			= "[FFFFFF]";
 	public readonly static string COLOR_RESULT_SCORE_AMOUNT			 			= "[FFFFFF]";
 	public readonly static string COLOR_RESULT_BUTTON				 			= "[FFF2C1]";
+
+	public readonly static string COLOR_PVPRESULT_DESCRIPTION		 			= "[FFF2C1]";
 
 	public readonly static string COLOR_SETTING_TITLE				 			= "[431111]";
 	public readonly static string COLOR_SETTING_OPTION				 			= "[182B57]";

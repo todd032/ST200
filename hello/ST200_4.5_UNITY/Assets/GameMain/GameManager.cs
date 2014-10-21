@@ -351,6 +351,38 @@ public class GameManager : MonoBehaviour
 		}
 	}
 
+	private string m_PVPResultFlag;
+	public bool PVPResultFlag {
+		set { 
+			string encryptString = LoadingWindows.NextE(value.ToString(),Constant.DefalutAppName) ;
+			m_PVPResultFlag = encryptString ;
+		}
+		get {
+			if(m_PVPResultFlag == null || m_PVPResultFlag.Equals("")){
+				return false ;	
+			}
+			string decryptString = LoadingWindows.NextD(m_PVPResultFlag,Constant.DefalutAppName) ;
+			bool decryptFloat = bool.Parse(decryptString) ;
+			return decryptFloat;
+		}
+	}
+
+	private string m_PVPRemainTimer ;
+	private float PVPRemainTimer {
+		set { 
+			string encryptString = LoadingWindows.NextE(value.ToString(),Constant.DefalutAppName) ;
+			m_PVPRemainTimer = encryptString ;
+		}
+		get {
+			if(m_PVPRemainTimer == null || m_PVPRemainTimer.Equals("")){
+				return 300f;	
+			}
+			string decryptString = LoadingWindows.NextD(m_PVPRemainTimer,Constant.DefalutAppName) ;
+			float decryptFloat = float.Parse(decryptString) ;
+			return decryptFloat;
+		}
+	}
+
 	private string _deadEnabled;
 	public bool DeadEnabled {
 		set { 
@@ -2067,13 +2099,14 @@ public class GameManager : MonoBehaviour
 		
 		if(Managers.UserData.SelectedGameType == Constant.ST200_GAMEMODE_STAGE_NORMAL)
 		{
-			_gameState = GameState.GameInitialize ;	
+			_gameState = GameState.GameInitialize ;
 		}else if(Managers.UserData.SelectedGameType == Constant.ST200_GAMEMODE_PVP)
 		{
 			_gameState = GameState.PVP_INIT;
 		}
 		StartCoroutine(_gameState.ToString()) ;
-		
+
+		_guiManager.InitUI(Managers.UserData.SelectedGameType);
 	}
 	
 	
@@ -2254,9 +2287,7 @@ public class GameManager : MonoBehaviour
 			if(Managers.UserData != null){
 				useGameItemState = Managers.UserData.SetUseGameItem(Constant.ST200_ITEM_REVIVE,1) ;
 			}
-			
-			_guiManager.RemoveReviveGameUI() ;
-			
+
 			if(useGameItemState == 1){
 				
 				// Mission
@@ -2271,9 +2302,7 @@ public class GameManager : MonoBehaviour
 			}
 			
 		}else if(state == 102) { //State 102: No Revive!! 
-			
-			_guiManager.RemoveReviveGameUI() ;
-			
+
 			if(_isLoadBoss){
 
 				
@@ -2559,13 +2588,16 @@ public class GameManager : MonoBehaviour
 		m_PlayerController.Init(m_Player);
 
 		//spawn opponent
-		GamePlayerManager.Instance.OppSpawnPlayer(Managers.UserData.GetCurrentUserShipData());
-		for(int i = 1 ; i <= Managers.GameBalanceData.SubShipEquipAvailableMaxCount; i++)
+		UserInfoData oppuserinfo = PVPDataManager.Instance.m_SelectedPVPUserInfo;
+		GamePlayerManager.Instance.OppSpawnPlayer(oppuserinfo.ShipIndex, oppuserinfo.ShipLevel);
+		for(int i = 0 ; i < oppuserinfo.SubShipIndexList.Length; i++)
 		{
-			int shipindex = Managers.UserData.GetEquipedSubShipIndex(i);
+			int shipindex = oppuserinfo.SubShipIndexList[i];
+			int shiplevel = oppuserinfo.SubShipLevelList[i];
+			int selectindex = i + 1;
 			if(shipindex != 0)
 			{
-				GamePlayerManager.Instance.OppSpawnSubShip(Managers.UserData.GetUserSubShipData(shipindex));
+				GamePlayerManager.Instance.OppSpawnSubShip(shipindex, shiplevel, selectindex);
 			}
 		}
 		GamePlayerManager.Instance.m_OppPlayerShip.gameObject.AddComponent<PlayerShipAI>();
@@ -2650,11 +2682,17 @@ public class GameManager : MonoBehaviour
 		}
 		
 		//GamePathManager.Instance.InitPath(Managers.GameBalanceData.GamePlayReturnToBattleMaxDistance * 2f);
-		m_BackgroundManager.SetBackgroundObject(Managers.GameBalanceData.GetStageData(Managers.UserData.SelectedStageIndex).BackgroundType);
+		m_BackgroundManager.SetRandomBackgroundObject();
 		m_BackgroundManager.InitLineObstacle(Managers.GameBalanceData.GamePlayReturnToBattleMaxDistance);
-		
-		
+				
 		_guiManager.InitItemButton(HaveShoutItem, HaveSingijeon, HaveInvincible);
+
+		int remainopp = GamePlayerManager.Instance.GetOpponentAlive();
+		int totalopp = GamePlayerManager.Instance.GetOpponentTotal();
+		
+		PVPRemainTimer = Managers.GameBalanceData.PVPPlayTime;
+		_guiManager.UpdatePVPUI(remainopp, totalopp, (int)PVPRemainTimer);
+
 		yield return null ;
 		
 		while(_gameState == GameState.PVP_INIT) {		
@@ -2742,11 +2780,11 @@ public class GameManager : MonoBehaviour
 		_guiManager.GameUIAllButtonEnable();
 		_guiManager.SetItemUseButtonEnable(HaveShoutItem, HaveSingijeon, HaveInvincible) ;
 		_GameStageManager.ChangeGameSpeed(GameSpeed);
-		ReturnToBattleTimer = ReturnToBattleMaxTime;		
+		ReturnToBattleTimer = ReturnToBattleMaxTime;
 		yield return null ;
 		
 		while(_gameState == GameState.PVP_PLAY) {
-			float deltatime = Time.fixedDeltaTime;
+			float deltatime = Time.deltaTime;
 			
 			_guiManager.DisplayFeverGauge(InTheGameFeverGauge, FeverModeMaxGauge);
 			
@@ -2763,31 +2801,50 @@ public class GameManager : MonoBehaviour
 				_guiManager.DisplayHealthGauge(m_Player.m_CurHealth, m_Player.MaxHealth);
 			}
 			//check game clear or fail
-			
-			// 스테이지 클리어 체크.
-			if (_GameStageManager.StageIsDone()){
-				
-				// Game 중지 상태 호출.
-				if (!_isGameOver && !_isTutorialMode){
-					
-					_guiManager.GameUIAllButtonDisable();
-					//_gameSubmarine.SetSubmarineStateIdle();
-					_gameState = GameState.PVP_CLEAR ;
-				}
-			}else if(m_Player.m_CurHealth <= 0)
-			{
-				if (!_isGameOver)
-				{
-					_guiManager.GameUIAllButtonDisable();
-					_gameState = GameState.GamePlayerDead;
-				}
-			}
+
+			ProcessPVPPlay(deltatime);
 			yield return new WaitForFixedUpdate();
 		}
 		
 		
 		StartCoroutine(_gameState.ToString()) ;
 		
+	}
+
+	protected void ProcessPVPPlay(float _timer)
+	{
+		PVPRemainTimer -= _timer;
+				
+		if (GamePlayerManager.Instance.GetOpponentAlive() == 0){
+			
+			// Game 중지 상태 호출.
+			if (!_isGameOver && !_isTutorialMode){
+				
+				_guiManager.GameUIAllButtonDisable();
+				//_gameSubmarine.SetSubmarineStateIdle();
+				_gameState = GameState.PVP_CLEAR ;
+			}
+		}else if(m_Player.m_CurHealth <= 0)
+		{
+			if (!_isGameOver)
+			{
+				_guiManager.GameUIAllButtonDisable();
+				_gameState = GameState.PVP_DEAD;
+			}
+		}else if(PVPRemainTimer <= 0f)
+		{
+			if (!_isGameOver)
+			{
+				_guiManager.GameUIAllButtonDisable();
+				_gameState = GameState.PVP_DEAD;
+			}
+		}
+
+		int remainopp = GamePlayerManager.Instance.GetOpponentAlive();
+		int totalopp = GamePlayerManager.Instance.GetOpponentTotal();
+
+		float remainsec = PVPRemainTimer;
+		_guiManager.UpdatePVPUI(remainopp, totalopp, (int)remainsec);
 	}
 
 	private IEnumerator PVP_CLEAR() 
@@ -2799,44 +2856,29 @@ public class GameManager : MonoBehaviour
 		Managers.UserData.SetUserStageDataClear(Managers.UserData.SelectedStageIndex);
 		
 		yield return new WaitForSeconds(2f) ;
-		GameClearFlag = true;
+		PVPResultFlag = true;
+		_gameState = GameState.PVP_RESULT;
+		StartCoroutine(_gameState.ToString());
+		yield break;
+	}
+
+	private IEnumerator PVP_DEAD() {
+		
+		_guiManager.PlayLoseAnimation();
+		_guiManager.SetItemUseButtonDisable() ;
+		
+		yield return new WaitForSeconds(2f) ;
+		
+		PVPResultFlag = false;
 		_gameState = GameState.PVP_RESULT;
 		StartCoroutine(_gameState.ToString());
 		yield break;
 	}
 
 	private IEnumerator PVP_RESULT() {
-		if(PlayerPrefs.GetInt(Constant.PREFKEY_ExperiencePopup_Mode_INT) == Constant.INT_False)
-		{
-			Managers.UserData.GameClearCount++;
-			//Debug.Log("CLEAR COUNT: " + Managers.UserData.GameClearCount);
-			//if(Managers.UserData.GameClearCount % 10 == 0)
-			//{
-			//	Managers.UserData.AddLuckyCoupon(1);
-			//}
-		}
-		//
-		//_guiManager.SetResultData(InTheGameDistance, InTheGameGetCoin, InTheGameGetScore, AllKillCount) ;
-		//
-		
+
 		// Mission
 		CalculateMissionDataWithPlayTime() ;
-		//	
-		ST200KLogManager.Instance.SaveGameEnd(GameStage,
-		                                      Managers.UserData.GetCurrentUserShipData().IndexNumber,
-		                                      Managers.UserData.GetCurrentUserShipData().Level,
-		                                      Managers.UserData.GetUserSubShipData(Managers.UserData.GetEquipedSubShipIndex(1)).IndexNumber,
-		                                      Managers.UserData.GetUserSubShipData(Managers.UserData.GetEquipedSubShipIndex(1)).Level,
-		                                      Managers.UserData.GetUserSubShipData(Managers.UserData.GetEquipedSubShipIndex(2)).IndexNumber,
-		                                      Managers.UserData.GetUserSubShipData(Managers.UserData.GetEquipedSubShipIndex(2)).Level,
-		                                      Managers.UserData.GetUserSubShipData(Managers.UserData.GetEquipedSubShipIndex(3)).IndexNumber,
-		                                      Managers.UserData.GetUserSubShipData(Managers.UserData.GetEquipedSubShipIndex(3)).Level,
-		                                      Managers.UserData.GetUserSubShipData(Managers.UserData.GetEquipedSubShipIndex(4)).IndexNumber,
-		                                      Managers.UserData.GetUserSubShipData(Managers.UserData.GetEquipedSubShipIndex(4)).Level,
-		                                      Managers.UserData.GetCurrentGameCharacter().IndexNumber,
-		                                      PlayerHitCount,
-		                                      EnemyKillCount,
-		                                      PlayerCrashCount);
 		
 		float t =0f ;
 		
@@ -2848,64 +2890,12 @@ public class GameManager : MonoBehaviour
 			
 			if(t > 1.5f && !_isGameOver){
 				
-				_isGameOver = true ;
-				
-				StageData stagedata = Managers.GameBalanceData.GetStageData(GameStage);
-				UserStageData data = Managers.UserData.GetUserStageData(GameStage);
-				bool newscore = false;
+				_isGameOver = true ;				
 				int gaincoin = 0;
-				InTheGameGetScore += Mathf.Max(0, (int)(m_Player.m_CurHealth * 10f));
-				if(GameClearFlag)
-				{
-					if(data.MaxScore < InTheGameGetScore)
-					{
-						newscore = true;
-					}
-					data.MaxScore = InTheGameGetScore;
-					Managers.UserData.SetUserStageData(data);
-					gaincoin = stagedata.WinCoinGetAmount;
-				}else
-				{
-					gaincoin = stagedata.LoseCoinGetAmount;
-				}
-				
-				int killgaincoin = (int)EnemyKillCount * (int)Managers.GameBalanceData.GamePlayKillGainCoinAmount;
-				if(Managers.UserData.GetCurrentGameCharacter().IndexNumber == 4)
-				{
-					killgaincoin *= 2;
-				}
-				gaincoin += killgaincoin;
-				gaincoin += CoinItemGet;
 				
 				Managers.UserData.SetGainGold(gaincoin);
-				Managers.UserData.SetGainJewel(GoldItemGet);
-				
-				_guiManager.LoadResultGameUI(EnemyKillCount, gaincoin, GoldItemGet, InTheGameGetScore, newscore );
-				
-				//save worldrank
-				int totalscore = 0;
-				for(int i = 0; i < Managers.UserData.m_UserStageDataList.Count; i++)
-				{
-					UserStageData userdata = Managers.UserData.m_UserStageDataList[i];
-					totalscore += userdata.MaxScore;
-				}
-				int maxstageopenindex = 0;
-				for(int i = 0; i < Managers.UserData.m_UserStageDataList.Count; i++)
-				{
-					UserStageData userstagedata = Managers.UserData.m_UserStageDataList[i];
-					if(userstagedata.IsOpen)
-					{
-						if(userstagedata.IndexNumber > maxstageopenindex)
-						{
-							maxstageopenindex = userstagedata.IndexNumber;
-						}
-					}
-				}
-				WorldRankManager.Instance.SaveWorldRanking(Managers.UserData.UserID,
-				                                           Managers.UserData.UserNickName,
-				                                           totalscore,
-				                                           maxstageopenindex,
-				                                           Managers.UserData.GetCurrentGameCharacter().IndexNumber.ToString());
+
+				_guiManager.LoadPVPResultUI(PVPResultFlag, 10, 10, 10);
 			}
 			
 			yield return null ;			
@@ -3163,10 +3153,8 @@ public class GameManager : MonoBehaviour
 			}
 			yield return new WaitForFixedUpdate();
 		}
-
 		
-		StartCoroutine(_gameState.ToString()) ;
-		
+		StartCoroutine(_gameState.ToString()) ;		
 	}
 
 
@@ -3225,10 +3213,6 @@ public class GameManager : MonoBehaviour
 
 		isGameOverState = false ;
 
-		while(_guiManager.m_DeadByTimeWarning.IsPlaying())
-		{
-			yield return null;
-		}
 		{
 			
 			//_gameSubmarine.ChangeStateSubmarineDeadReadyEffect(true) ;

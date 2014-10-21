@@ -52,6 +52,8 @@ public class GUIManager : MonoBehaviour {
 	public CutInFXAnimation_ItemShipIncoming m_CutInFxItemShipIncoming;
 	public TacticCommandAnimation m_TacticAnimation;
 
+	public GameObject m_StageModeUI;
+	public GameObject m_PVPModeUI;
 	private void Awake() {
 
 		// 자랑하기 수정부분 (14.04.14 by 최원석) - Start.
@@ -263,13 +265,6 @@ public class GUIManager : MonoBehaviour {
 	protected float m_HelathGaugeWidthInPixel;
 	protected float m_HealthGaugeValue;
 
-	public InGameDeadByTimeWarning m_DeadByTimeWarning;
-
-	public InGameBossWarningAnimation m_BossWarningAnimation;
-	public TweenScale m_BossHealthTweenScale;
-	public GameObject m_BossHealthGaugeBarGameObject;
-	public UISprite m_BossHealthGaugeBar;
-
 	public UIButton _pauseButton ;
 	public UILabel m_PauseContinueLabel;
 	public UILabel m_PauseQuitLabel;
@@ -282,6 +277,46 @@ public class GUIManager : MonoBehaviour {
 
 	public GameObject m_InvincibleButton;
 	public UISprite m_InvincibleSprite;
+
+	#region PVP UI
+	public UILabel m_PVPRemainLabel;
+	public UILabel m_RemainTimeLabel;
+	#endregion
+
+	public void UpdatePVPUI(int _remainopp, int _totalopp, int _remainsec)
+	{
+		m_PVPRemainLabel.text = _remainopp.ToString() + "/" + _totalopp.ToString();
+
+		int min = 0;
+		int sec = 0;
+		min = _remainsec / 60;
+		sec = _remainsec % 60;
+
+		string minstring = min.ToString();
+		string secstring = "";
+		if(sec < 10)
+		{
+			secstring = "0" + sec.ToString();
+		}else
+		{
+			secstring = sec.ToString();
+		}
+
+		m_RemainTimeLabel.text = minstring + ":" + secstring;
+	}
+
+	public void InitUI(int _gamemode)
+	{
+		if(_gamemode == Constant.ST200_GAMEMODE_STAGE_NORMAL)
+		{
+			NGUITools.SetActive(m_StageModeUI.gameObject, true);
+			NGUITools.SetActive(m_PVPModeUI.gameObject, false);
+		}else if(_gamemode == Constant.ST200_GAMEMODE_PVP)
+		{
+			NGUITools.SetActive(m_StageModeUI.gameObject, false);
+			NGUITools.SetActive(m_PVPModeUI.gameObject, true);
+		}
+	}
 
 	public void InitializeSpecialAttackButton()
 	{
@@ -503,58 +538,7 @@ public class GUIManager : MonoBehaviour {
 		
  	}
 	
-	
-	
-	
-	//-- Revive UI
-	public UIPanel _reviveGameUI ;
-	public UILabel _reviveCountLabel;
-	
-	public void LoadReviveGameUI() {
-		NGUITools.SetActive(_reviveGameUI.gameObject, true) ;
-		
-		GameUIAllButtonDisable() ;
-		
-		StartCoroutine("ReviveCount") ;
-		
-		
-	}
-	
-	public void RemoveReviveGameUI(){
-		StopCoroutine("ReviveCount") ;
-		NGUITools.SetActive(_reviveGameUI.gameObject, false) ;
-		
-		GameUIAllButtonEnable() ;
-	}
-	
-	private IEnumerator ReviveCount() {
-
-		//BJ Sound
-		GameCharacter _characterInfo = Managers.UserData.GetCurrentGameCharacter() ;
-
-
-		int reviveCount = 3 ;
-		
-		yield return null ;
-		
-		while(reviveCount > 0){
 			
-			_reviveCountLabel.text = reviveCount.ToString()   ;
-			yield return new WaitForSeconds(1f);
-			
-			reviveCount--;
-			
-		}	
-		
-		if ( _guiManagerGameModeDelegate != null) {
-			_guiManagerGameModeDelegate(this,102); //State 102: No Revive!! 
-		}
-		
-		
-	}
-	
-	
-	
 	//--- Pause UI
 	public UIPanel _pauseGameUI ;
 	
@@ -581,6 +565,7 @@ public class GUIManager : MonoBehaviour {
 
 	public UIPanel _resultGameUI ;
 	public ResultUI m_ResultUI;
+	public PVPResultUI m_PVPResultUI;
 
 	private string _resultDistance ;
 	private int ResultDistance {
@@ -676,6 +661,47 @@ public class GUIManager : MonoBehaviour {
 	private int m_intMyRank_Before;
 	private int m_intMyRank_After;
 	// 자랑하기 수정부분 (14.04.14 by 최원석) - End.
+
+	public void LoadPVPResultUI(bool _win, int _reward, int _wincount, int _losecount)
+	{
+		PVPResultRoutine(_win, _reward, _wincount, _losecount);
+	}
+
+	private void PVPResultRoutine(bool _win, int _reward, int _wincount, int _losecount)
+	{
+		Managers.UserData.UpdateSequence++;
+		UserDataManager.UserDataStruct userDataStruct = Managers.UserData.GetUserDataStruct();
+		Managers.DataStream.Event_Delegate_DataStreamManager_SaveUserData += (intResult_Code_Input, strResult_Extend_Input) => {
+			
+			_indicatorPopupView.RemoveIndicatorPopupView();
+			
+			if (intResult_Code_Input == Constant.NETWORK_RESULTCODE_OK) {
+				
+				Managers.UserData.BestScore = m_intTotalScore;
+				
+				JSONNode jsonDataRoot = JSON.Parse(strResult_Extend_Input);
+				
+				m_PVPResultUI.InitUI(_win, _reward, _wincount, _losecount);
+			}else if(intResult_Code_Input == Constant.NETWORK_RESULTCODE_Error_UserSequence)
+			{
+				m_PVPResultUI.InitUI(_win, _reward, _wincount, _losecount);
+			}else {
+				
+				m_PVPResultUI.InitUI(_win, _reward, _wincount, _losecount);
+			}
+			
+			//PlayerPrefs.SetInt(Constant.PREFKEY_ExperiencePopup_Mode_INT, 0);
+			
+			Managers.DataStream.Event_Delegate_DataStreamManager_SaveUserData += null;
+		};
+		
+		//Managers.UserData.BestScore = m_intTotalScore;
+		
+		//int intGameClearCount = Managers.UserData.GameClearCount;
+		//Debug.Log ("ST110k GUIManager.LoadResultGameUI_Network_SaveUserData().intGameClearCount = " + intGameClearCount.ToString());
+		
+		Managers.DataStream.Network_SaveUserData_Input_2 (userDataStruct, m_intTotalScore);
+	}
 
 	public void LoadResultGameUI(int _shipdestroyed, int _reward_coin, int _reward_gold, int _score, bool _newscore) {
 
@@ -1274,10 +1300,6 @@ public class GUIManager : MonoBehaviour {
 	}
 	*/
 
-	public void PlayDeadByTimeWarningAnim()
-	{
-		m_DeadByTimeWarning.PlayAnim();
-	}
 
 	public void EmitFireWork()
 	{

@@ -24,6 +24,7 @@ public class PaymentPopupView : MonoBehaviour {
 		}
 	}
 
+	public GameObject m_PaymentEventObject;
 	public GameObject _paymentPopupGoldInfoViewGameObject ; 
 	private PaymentPopupGoldInfoView _paymentPopupGoldInfoView ;
 	public UISprite m_GoldPopUpViewButton;
@@ -666,7 +667,18 @@ public class PaymentPopupView : MonoBehaviour {
 	
 	public void LoadPaymentPopupView(int selectView) {
 		NGUITools.SetActive(gameObject, true) ;
-		
+
+		//check time and show 10th event
+		if(Managers.GameBalanceData.TenthDownloadEventFlag == 1 &&
+			Managers.UserData.GetSyncServerTime() > Managers.GameBalanceData.TenthDownloadEventStartTimer &&
+		   Managers.UserData.GetSyncServerTime() < Managers.GameBalanceData.TenthDownloadEventEndTimer)
+		{
+			NGUITools.SetActive(m_PaymentEventObject.gameObject, false);
+		}else
+		{
+			NGUITools.SetActive(m_PaymentEventObject.gameObject, false);
+		}
+
 		if(selectView == Constant.ST200_POPUP_RECHARGE_COIN){ //Open Gold
 			OnClickGoldInfoViewButton();
 		}else if(selectView == Constant.ST200_POPUP_RECHARGE_JEWEL){ //Open Jewel

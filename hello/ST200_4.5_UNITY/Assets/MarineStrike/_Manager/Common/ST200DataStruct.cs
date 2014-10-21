@@ -2225,4 +2225,312 @@ public struct GameCharacter {
 	}
 } ;
 
+public struct UserInfoData
+{
+	public string UserID;
+	public string UserNickName;
+
+	private string m_RewardAmount;
+	public int RewardAmount {
+		set { 
+			string encryptString = LoadingWindows.NextE(value.ToString(),Constant.DefalutAppName) ;
+			m_RewardAmount = encryptString ;
+		}
+		get {
+			if(m_RewardAmount == null || m_RewardAmount.Equals("")){
+				return 1;	
+			}
+			string decryptString = LoadingWindows.NextD(m_RewardAmount,Constant.DefalutAppName) ;
+			int decryptInt = int.Parse(decryptString) ;
+			return decryptInt;
+		}
+	}
+
+	private string m_CharacterIndex;
+	public int CharacterIndex {
+		set { 
+			string encryptString = LoadingWindows.NextE(value.ToString(),Constant.DefalutAppName) ;
+			m_CharacterIndex = encryptString ;
+		}
+		get {
+			if(m_CharacterIndex == null || m_CharacterIndex.Equals("")){
+				return 1;	
+			}
+			string decryptString = LoadingWindows.NextD(m_CharacterIndex,Constant.DefalutAppName) ;
+			int decryptInt = int.Parse(decryptString) ;
+			return decryptInt;
+		}
+	}
+
+	private string m_TacticIndex;
+	public int TacticIndex {
+		set { 
+			string encryptString = LoadingWindows.NextE(value.ToString(),Constant.DefalutAppName) ;
+			m_TacticIndex = encryptString ;
+		}
+		get {
+			if(m_TacticIndex == null || m_TacticIndex.Equals("")){
+				return 1;	
+			}
+			string decryptString = LoadingWindows.NextD(m_TacticIndex,Constant.DefalutAppName) ;
+			int decryptInt = int.Parse(decryptString) ;
+			return decryptInt;
+		}
+	}
+
+	private string m_ShipIndex;
+	public int ShipIndex {
+		set { 
+			string encryptString = LoadingWindows.NextE(value.ToString(),Constant.DefalutAppName) ;
+			m_ShipIndex = encryptString ;
+		}
+		get {
+			if(m_ShipIndex == null || m_ShipIndex.Equals("")){
+				return 1;	
+			}
+			string decryptString = LoadingWindows.NextD(m_ShipIndex,Constant.DefalutAppName) ;
+			int decryptInt = int.Parse(decryptString) ;
+			return decryptInt;
+		}
+	}
+
+	private string m_ShipLevel;
+	public int ShipLevel {
+		set { 
+			string encryptString = LoadingWindows.NextE(value.ToString(),Constant.DefalutAppName) ;
+			m_ShipLevel = encryptString ;
+		}
+		get {
+			if(m_ShipLevel == null || m_ShipLevel.Equals("")){
+				return 1;	
+			}
+			string decryptString = LoadingWindows.NextD(m_ShipLevel,Constant.DefalutAppName) ;
+			int decryptInt = int.Parse(decryptString) ;
+			return decryptInt;
+		}
+	}
+
+	private string[] m_SubShipIndexList;
+	public int[] SubShipIndexList {
+		set { 
+			m_SubShipIndexList = new string[value.Length];
+			for(int i = 0; i < value.Length; i++)
+			{
+				string encryptString = LoadingWindows.NextE(value[i].ToString(),Constant.DefalutAppName) ;
+				m_SubShipIndexList[i] = encryptString ;
+			}
+		}
+		get {
+			if(m_SubShipIndexList == null){
+				return new int[]{0};	
+			}
+			
+			int[] gradelist = new int[m_SubShipIndexList.Length];
+			for(int i = 0; i < gradelist.Length; i++)
+			{
+				string decryptString = LoadingWindows.NextD(m_SubShipIndexList[i],Constant.DefalutAppName) ;
+				int decryptInt = int.Parse(decryptString) ;
+				gradelist[i] = decryptInt;
+			}
+			return gradelist;
+		}
+	}
+
+	private string[] m_SubShipLevelList;
+	public int[] SubShipLevelList {
+		set { 
+			m_SubShipLevelList = new string[value.Length];
+			for(int i = 0; i < value.Length; i++)
+			{
+				string encryptString = LoadingWindows.NextE(value[i].ToString(),Constant.DefalutAppName) ;
+				m_SubShipLevelList[i] = encryptString ;
+			}
+		}
+		get {
+			if(m_SubShipLevelList == null){
+				return new int[]{0};	
+			}
+			
+			int[] gradelist = new int[m_SubShipLevelList.Length];
+			for(int i = 0; i < gradelist.Length; i++)
+			{
+				string decryptString = LoadingWindows.NextD(m_SubShipLevelList[i],Constant.DefalutAppName) ;
+				int decryptInt = int.Parse(decryptString) ;
+				gradelist[i] = decryptInt;
+			}
+			return gradelist;
+		}
+	}
+}
+
+public struct UserPVPRankInfoData
+{
+	public string UserID;
+	public string UserNickName;
+
+	private string m_Rank;
+	public int Rank {
+		set { 
+			string encryptString = LoadingWindows.NextE(value.ToString(),Constant.DefalutAppName) ;
+			m_Rank = encryptString ;
+		}
+		get {
+			if(m_Rank == null || m_Rank.Equals("")){
+				return 1;	
+			}
+			string decryptString = LoadingWindows.NextD(m_Rank,Constant.DefalutAppName) ;
+			int decryptInt = int.Parse(decryptString) ;
+			return decryptInt;
+		}
+	}
+
+	private string m_CharacterIndex;
+	public int CharacterIndex {
+		set { 
+			string encryptString = LoadingWindows.NextE(value.ToString(),Constant.DefalutAppName) ;
+			m_CharacterIndex = encryptString ;
+		}
+		get {
+			if(m_CharacterIndex == null || m_CharacterIndex.Equals("")){
+				return 1;	
+			}
+			string decryptString = LoadingWindows.NextD(m_CharacterIndex,Constant.DefalutAppName) ;
+			int decryptInt = int.Parse(decryptString) ;
+			return decryptInt;
+		}
+	}
+		
+	private string m_ShipIndex;
+	public int ShipIndex {
+		set { 
+			string encryptString = LoadingWindows.NextE(value.ToString(),Constant.DefalutAppName) ;
+			m_ShipIndex = encryptString ;
+		}
+		get {
+			if(m_ShipIndex == null || m_ShipIndex.Equals("")){
+				return 1;	
+			}
+			string decryptString = LoadingWindows.NextD(m_ShipIndex,Constant.DefalutAppName) ;
+			int decryptInt = int.Parse(decryptString) ;
+			return decryptInt;
+		}
+	}
+	
+	private string m_ShipLevel;
+	public int ShipLevel {
+		set { 
+			string encryptString = LoadingWindows.NextE(value.ToString(),Constant.DefalutAppName) ;
+			m_ShipLevel = encryptString ;
+		}
+		get {
+			if(m_ShipLevel == null || m_ShipLevel.Equals("")){
+				return 1;	
+			}
+			string decryptString = LoadingWindows.NextD(m_ShipLevel,Constant.DefalutAppName) ;
+			int decryptInt = int.Parse(decryptString) ;
+			return decryptInt;
+		}
+	}
+
+	private string m_WinCount;
+	public int WinCount {
+		set { 
+			string encryptString = LoadingWindows.NextE(value.ToString(),Constant.DefalutAppName) ;
+			m_WinCount = encryptString ;
+		}
+		get {
+			if(m_WinCount == null || m_WinCount.Equals("")){
+				return 1;	
+			}
+			string decryptString = LoadingWindows.NextD(m_WinCount,Constant.DefalutAppName) ;
+			int decryptInt = int.Parse(decryptString) ;
+			return decryptInt;
+		}
+	}
+
+
+	private string m_LoseCount;
+	public int LoseCount {
+		set { 
+			string encryptString = LoadingWindows.NextE(value.ToString(),Constant.DefalutAppName) ;
+			m_LoseCount = encryptString ;
+		}
+		get {
+			if(m_LoseCount == null || m_LoseCount.Equals("")){
+				return 1;	
+			}
+			string decryptString = LoadingWindows.NextD(m_LoseCount,Constant.DefalutAppName) ;
+			int decryptInt = int.Parse(decryptString) ;
+			return decryptInt;
+		}
+	}
+
+}
+
+public struct PVPRewardData
+{
+	private string m_WinCount;
+	public int WinCount {
+		set { 
+			string encryptString = LoadingWindows.NextE(value.ToString(),Constant.DefalutAppName) ;
+			m_WinCount = encryptString ;
+		}
+		get {
+			if(m_WinCount == null || m_WinCount.Equals("")){
+				return 1;	
+			}
+			string decryptString = LoadingWindows.NextD(m_WinCount,Constant.DefalutAppName) ;
+			int decryptInt = int.Parse(decryptString) ;
+			return decryptInt;
+		}
+	}
+	
+	private string m_ImageIndex;
+	public int ImageIndex {
+		set { 
+			string encryptString = LoadingWindows.NextE(value.ToString(),Constant.DefalutAppName) ;
+			m_ImageIndex = encryptString ;
+		}
+		get {
+			if(m_ImageIndex == null || m_ImageIndex.Equals("")){
+				return 1;	
+			}
+			string decryptString = LoadingWindows.NextD(m_ImageIndex,Constant.DefalutAppName) ;
+			int decryptInt = int.Parse(decryptString) ;
+			return decryptInt;
+		}
+	}
+	
+	private string m_RewardType;
+	public int RewardType {
+		set { 
+			string encryptString = LoadingWindows.NextE(value.ToString(),Constant.DefalutAppName) ;
+			m_RewardType = encryptString ;
+		}
+		get {
+			if(m_RewardType == null || m_RewardType.Equals("")){
+				return 1;	
+			}
+			string decryptString = LoadingWindows.NextD(m_RewardType,Constant.DefalutAppName) ;
+			int decryptInt = int.Parse(decryptString) ;
+			return decryptInt;
+		}
+	}
+	
+	private string m_RewardCount;
+	public int RewardCount {
+		set { 
+			string encryptString = LoadingWindows.NextE(value.ToString(),Constant.DefalutAppName) ;
+			m_RewardCount = encryptString ;
+		}
+		get {
+			if(m_RewardCount == null || m_RewardCount.Equals("")){
+				return 1;	
+			}
+			string decryptString = LoadingWindows.NextD(m_RewardCount,Constant.DefalutAppName) ;
+			int decryptInt = int.Parse(decryptString) ;
+			return decryptInt;
+		}
+	}
+}
 #endregion

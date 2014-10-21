@@ -19,10 +19,12 @@ public class GameUIManager : MonoBehaviour {
 	public MainUI m_MainUI;
 	public GameShopManager m_GameShopManager;
 	public StageSelectUI m_StageSelectUI;
+	public PVPUI m_PVPUI;
 	public MainTutorial m_MainTutorial;
 
 	public LuckyCouponAlertView m_LuckyCouponAlertView;
 	public UIRootAlertView m_UIRootAlertView;
+	public MainUI_FreeChargeNoticeWindow m_FreeChargeNoticeWindow;
 	void OnDestroy()
 	{
 		instance = null;
@@ -119,7 +121,8 @@ public class GameUIManager : MonoBehaviour {
 		//m_GameRankingManager.gameObject.SetActive(true);
 		m_GameShopManager.gameObject.SetActive(false);
 		m_StageSelectUI.gameObject.SetActive(false);
-
+		m_PVPUI.RemoveUI();
+		
 		m_MainUI.InitUI();
 
 		LoadGameGoldAndGameJewelInfo();
@@ -134,6 +137,7 @@ public class GameUIManager : MonoBehaviour {
 		//m_GameRankingManager.gameObject.SetActive(false);
 		m_GameShopManager.gameObject.SetActive(true);
 		//m_StageSelectUI.gameObject.SetActive(false);
+		m_PVPUI.RemoveUI();
 
 		m_GameShopManager.UpdateUI();
 
@@ -148,13 +152,28 @@ public class GameUIManager : MonoBehaviour {
 		//m_GameRankingManager.gameObject.SetActive(false);
 		m_GameShopManager.gameObject.SetActive(false);
 		m_StageSelectUI.gameObject.SetActive(true);
+		m_PVPUI.RemoveUI();
 
 		m_StageSelectUI.InitUI();
 
 		LoadGameGoldAndGameJewelInfo();
 		UpdateTorpedoUI();
 	}
-	
+
+	public void SwitchToPVPUI()
+	{
+		m_DisplayTopBarSprite.spriteName = ImageResourceManager.Instance.GetTopBG(1);
+		m_MainUI.gameObject.SetActive(false);
+		//m_GameRankingManager.gameObject.SetActive(false);
+		m_GameShopManager.gameObject.SetActive(false);
+		m_StageSelectUI.gameObject.SetActive(false);
+		m_PVPUI.ShowUI();
+		
+		m_PVPUI.Init();
+		
+		LoadGameGoldAndGameJewelInfo();
+		UpdateTorpedoUI();
+	}
 	
 	public UISprite m_DisplayTopBarSprite;
 	public UILabel _displayGameGoldLabel ;
@@ -297,16 +316,47 @@ public class GameUIManager : MonoBehaviour {
 		_paymentPopupView.LoadPaymentPopupView(Constant.ST200_POPUP_RECHARGE_JEWEL) ;
 	}
 
+	private void InitTnkData()
+	{
+		string userID = Managers.UserData.UserID;
+		string osType = Managers.DataStream.OsType;
+		string serviceCode = Managers.DataStream.GameCode;
+		string marketType = Managers.DataStream.MType;
+		
+		string userDataValue = userID + "|" + osType + "|" + serviceCode + "|" + marketType;  
+		
+		string md_user_nm = Managers.DataStream.getParameterCheckSum( userID + osType + serviceCode + marketType );
+		Debug.Log( "userDataValue = " + userDataValue );
+		Debug.Log( "md_user_nm = " + md_user_nm );
+		Debug.Log( "Data = " + ( userDataValue + "|" + md_user_nm ) );
+#if UNITY_ANDROID && !UNITY_EDITOR
+		TnkAd.Plugin.Instance.setUserName( ( userDataValue + "|" + md_user_nm ) );
+#endif
+	}
+	
 	public void OnClickFreeGoldButton() {
 		
 		//if ( Managers.Audio != null) Managers.Audio.PlayFXSound(AudioManager.FX_SOUND.FX_Button_Common,false);
-		if ( Managers.Audio != null){
+		if ( Managers.Audio != null)
+		{
 			Managers.Audio.PlayAllFXSoundStop() ;
 			Managers.Audio.PlayFXSound(AudioManager.FX_SOUND.FX_Button_Common,false);
 		}
-
+		
+		Debug.Log( "Test InterstitialAD" );
+		
+		InitTnkData();
+		ShowFreeGoldChargeInfoWindow();
+#if UNITY_ANDROID && !UNITY_EDITOR
+		TnkAd.Plugin.Instance.showAdList("무료 금괴 받기");
+#endif
 	}
-	
+
+	protected void ShowFreeGoldChargeInfoWindow()
+	{
+		m_FreeChargeNoticeWindow.ShowUI();
+	}
+
 	//--Delegate
 	public void PaymentPopupViewDelegate(PaymentPopupView paymentPopupView, int state) {
 		if(state == 100) {

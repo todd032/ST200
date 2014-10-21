@@ -8,6 +8,7 @@ public class PlayerShipAI : MonoBehaviour {
 	protected int DEFENDSTATE = 0;
 	protected int RUNSTATE = 0;
 	protected int AVOIDSTATE = 0;
+	protected int RETURNTOBATTLESTATE = 0;
 
 	protected int m_CurState;
 
@@ -23,12 +24,12 @@ public class PlayerShipAI : MonoBehaviour {
 		m_AIShip = _aiship;
 		m_PlayerShip = _playership;
 
-		ATTACKSTATE = (int)PlayerShipAIState.ATTACK_HARD;
-		DEFENDSTATE = (int)PlayerShipAIState.DEFEND_MID;
-		RUNSTATE = (int)PlayerShipAIState.RUN_EASY;
-		AVOIDSTATE = (int)PlayerShipAIState.AVOID_EASY;
-
-		ChangeState(DEFENDSTATE);
+		ATTACKSTATE = Random.Range((int)PlayerShipAIState.ATTACK_EASY,(int)PlayerShipAIState.ATTACK_HARD + 1);
+		DEFENDSTATE = Random.Range((int)PlayerShipAIState.DEFEND_EASY, (int)PlayerShipAIState.DEFEND_HARD + 1);
+		RUNSTATE = Random.Range((int)PlayerShipAIState.RUN_EASY, (int)PlayerShipAIState.RUN_HARD + 1);
+		AVOIDSTATE = Random.Range((int)PlayerShipAIState.AVOID_EASY, (int)PlayerShipAIState.AVOID_HARD + 1);
+		RETURNTOBATTLESTATE = (int)PlayerShipAIState.RETURN_TO_BATTLE;
+		ChangeState(ATTACKSTATE);
 	}
 
 	public virtual void Process(float _deltatime)
@@ -58,13 +59,16 @@ public class PlayerShipAI : MonoBehaviour {
 	protected virtual void CheckState()
 	{
 		int newstate = m_CurState;
-		if(GamePathManager2.Instance.CollideWithLine(m_AIShip.transform.position, m_PlayerShip.transform.position))
+		if(Vector3.Distance(m_AIShip.transform.position, Vector3.zero) > Managers.GameBalanceData.GamePlayReturnToBattleMaxDistance)
+		{
+			newstate = RETURNTOBATTLESTATE;
+		}else if(GamePathManager2.Instance.CollideWithLine(m_AIShip.transform.position, m_PlayerShip.transform.position))
 		{
 			newstate = DEFENDSTATE;
 		}else if(m_PlayerShip.m_CurHealth < m_AIShip.m_CurHealth * 0.8f)
 		{
 			newstate = ATTACKSTATE;
-		}else if(m_PlayerShip.m_CurHealth > m_AIShip.m_CurHealth * 1.5f)
+		}else if(m_AIShip.m_CurHealth < m_AIShip.MaxHealth * 0.5f && m_PlayerShip.m_CurHealth > m_AIShip.m_CurHealth * 1.5f)
 		{
 			newstate = RUNSTATE;
 		}else
@@ -558,6 +562,35 @@ public class PlayerShipAI : MonoBehaviour {
 		}
 		yield break;
 	}
+
+	protected virtual IEnumerator RETURN_TO_BATTLE()
+	{
+		List<Vector3> attackdirection = m_AIShip.GetAttackDirectionList();
+		//check angle and find closest rotation
+		while(true)
+		{
+			Vector3 deltadirection = -m_AIShip.transform.position;
+			Vector3 curdir = m_AIShip.m_LookingVector;
+			
+			float angle = Vector2.Angle(curdir, deltadirection);
+			if(angle > 5f && Vector3.Cross(curdir, deltadirection).z < 0f)
+			{
+				m_AIShip.SetRotationInput(-1f);
+			}else if(angle > 5f)
+			{
+				m_AIShip.SetRotationInput(1f);
+			}else
+			{
+				m_AIShip.SetRotationInput(0f);
+			}
+			
+			m_AIShip.AddRowGauge(true, Managers.GameBalanceData.GamePlayRowPressAmount, 1);
+			m_AIShip.AddRowGauge(false, Managers.GameBalanceData.GamePlayRowPressAmount, 1);
+
+			yield return new WaitForFixedUpdate();
+		}
+		yield break;
+	}
 }
 
 public enum PlayerShipAIState
@@ -577,4 +610,6 @@ public enum PlayerShipAIState
 	AVOID_EASY			= 30,
 	AVOID_MID			= 31,
 	AVOID_HARD			= 32,
+
+	RETURN_TO_BATTLE	= 41,
 }

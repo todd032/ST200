@@ -89,7 +89,8 @@ public class MainUI_ModeSelect : MonoBehaviour {
 	{
 		if ( Managers.Audio != null) Managers.Audio.PlayFXSound(AudioManager.FX_SOUND.FX_Button_Common,false);
 		Managers.UserData.SelectedGameType = Constant.ST200_GAMEMODE_PVP;
-		Application.LoadLevel(Constant.SCENE_GameMainLoadingScene);
+		GameUIManager.Instance.SwitchToPVPUI();
+		//Application.LoadLevel(Constant.SCENE_GameMainLoadingScene);
 	}
 
 	public void OnClickCloseButton()

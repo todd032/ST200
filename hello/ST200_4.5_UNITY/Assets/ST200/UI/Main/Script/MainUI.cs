@@ -119,8 +119,53 @@ public class MainUI : MonoBehaviour {
 	public void OnClickGameReadyButton(){
 		
 		if ( Managers.Audio != null) Managers.Audio.PlayFXSound(AudioManager.FX_SOUND.FX_Button_GameReady,false);
-		
-		m_ModeSelectUI.ShowUI();
+
+		if(Constant.AppVersionInfo == "1.2.3" || Constant.AppVersionInfo == "1.2.4")
+		{
+			Managers.UserData.ExperienceIndex = 0;
+			//
+			
+			if (Managers.DataStream != null){
+				
+				if (Managers.UserData != null){
+					
+					// 영어학원 쿠폰 주기 기능 추가 (by 최원석 14.05.27) ========= Start.
+					Managers.DataStream.Event_Delegate_DataStreamManager_SaveUserData += (intResult_Code_Input, strResult_Extend_Input) => {
+						
+						//_indicatorPopupView.RemoveIndicatorPopupView() ;
+						
+						if (intResult_Code_Input == Constant.NETWORK_RESULTCODE_OK){
+							
+							//	_indicatorPopupView.RemoveIndicatorPopupView() ;
+							GameUIManager.Instance.SwitchToStageSelectManager();
+						} else if (intResult_Code_Input == Constant.NETWORK_RESULTCODE_Error_Network){
+							
+							//	_uiRootAlertView.LoadUIRootAlertView(11) ; // 통신상태가 불안정합니다. 다시 실행해 주세요.
+							//	_uiRootAlertView.UIRootAlertViewEvent += UIRootAlertViewDelegate ;
+							
+						}else if(intResult_Code_Input == Constant.NETWORK_RESULTCODE_Error_UserSequence)
+						{
+							GameUIManager.Instance.LoadUIRootAlertView(Constant.ST200_POPUP_ERROR_USERSEQUENCE_ERROR); 
+						} else {
+							
+							//	_uiRootAlertView.LoadUIRootAlertView(21) ; // 데이터가 올바르지 않습니다. 다시 실행해 주세요.
+							//	_uiRootAlertView.UIRootAlertViewEvent += UIRootAlertViewDelegate ;
+						}
+						//Debug.Log("RESULT: " + intResult_Code_Input);
+						Managers.DataStream.Event_Delegate_DataStreamManager_SaveUserData += null;
+					};
+					
+					Managers.UserData.UpdateSequence++;
+					UserDataManager.UserDataStruct userDataStruct = Managers.UserData.GetUserDataStruct() ;
+					
+					Managers.DataStream.Network_SaveUserData_Input_1(userDataStruct);
+					// 영어학원 쿠폰 주기 기능 추가 (by 최원석 14.05.27) ========= End.
+				}
+			}
+		}else
+		{
+			m_ModeSelectUI.ShowUI();
+		}
 	}
 
 	public void OnClickMailButton() {
@@ -171,6 +216,8 @@ public class MainUI : MonoBehaviour {
 	public void OnClickKakaoButton()
 	{
 		if ( Managers.Audio != null) Managers.Audio.PlayFXSound(AudioManager.FX_SOUND.FX_Button_Common,false);
+		ST200KakaoLink.g_Instance.InitLink(TextManager.Instance.GetString(246), TextManager.Instance.GetString (247),
+		                                   TextManager.Instance.GetString(250));
 		ST200KakaoLink.g_Instance.SendKakaoLinkMessage();
 	}
 
