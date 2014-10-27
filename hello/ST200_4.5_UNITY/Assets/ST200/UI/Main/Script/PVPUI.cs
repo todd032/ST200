@@ -8,6 +8,10 @@ public class PVPUI : MonoBehaviour {
 	public PVPUI_History m_HistoryUI;
 	public PVPUI_DetailUI m_DetailUI;
 
+	public PVPUI_Menu_Button m_ListButton;
+	public PVPUI_Menu_Button m_RankingButton;
+	public PVPUI_Menu_Button m_HistoryButton;
+
 	public void Init()
 	{
 		ShowPVPUI();
@@ -31,6 +35,9 @@ public class PVPUI : MonoBehaviour {
 
 		m_DetailUI.RemoveUI();
 
+		m_ListButton.SetSelected(true);
+		m_RankingButton.SetSelected(false);
+		m_HistoryButton.SetSelected(false);
 	}
 
 	public void ShowRankingUI()
@@ -44,6 +51,9 @@ public class PVPUI : MonoBehaviour {
 
 		m_DetailUI.RemoveUI();
 
+		m_ListButton.SetSelected(false);
+		m_RankingButton.SetSelected(true);
+		m_HistoryButton.SetSelected(false);
 	}
 
 	public void ShowHistoryUI()
@@ -57,6 +67,9 @@ public class PVPUI : MonoBehaviour {
 
 		m_DetailUI.RemoveUI();
 
+		m_ListButton.SetSelected(false);
+		m_RankingButton.SetSelected(false);
+		m_HistoryButton.SetSelected(true);
 	}
 
 	public void ShowDetailUI()
@@ -65,6 +78,10 @@ public class PVPUI : MonoBehaviour {
 		m_HistoryUI.RemoveUI();
 		m_DetailUI.ShowUI();
 		m_DetailUI.InitUI();
+
+		m_ListButton.SetSelected(false);
+		m_RankingButton.SetSelected(false);
+		m_HistoryButton.SetSelected(false);
 	}
 
 	public void ShowUI()
