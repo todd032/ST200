@@ -14,6 +14,12 @@ public class PVPUI : MonoBehaviour {
 
 	}
 
+	public void UpdateUI()
+	{
+		//Debug.Log("WTF..?");
+		m_PVPUI.UpdateUI();
+	}
+
 	public void ShowPVPUI()
 	{
 		m_PVPUI.ShowUI();
@@ -99,4 +105,16 @@ public class PVPUI : MonoBehaviour {
 		                                   TextManager.Instance.GetString(250));
 		ST200KakaoLink.g_Instance.SendKakaoLinkMessage();
 	}
+
+	public bool OnEscapePress()
+	{
+		if(gameObject.activeSelf)
+		{
+
+		}
+		
+		return false;
+	}
+
+
 }

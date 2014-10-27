@@ -1,9 +1,10 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
 public class PVPUI_FriendTapUI : MonoBehaviour {
 
+	protected bool m_SearchFriendMode = false;
 	public UIInput m_SearchFriendInput;
 	public UILabel m_SearchNickNameLabel;
 
@@ -50,34 +51,32 @@ public class PVPUI_FriendTapUI : MonoBehaviour {
 		NGUITools.SetActive (gameObject, false);
 	}
 
+	public void UpdateUI()
+	{
+		if(m_SearchFriendMode)
+		{
+			InitFriendSearchList();
+		}else
+		{
+			InitFriendList();
+		}
+	}
+
+	bool initfriendlist = false;
 	public void InitFriendList()
 	{
-#if UNITY_EDITOR
+		m_SearchFriendMode = false;
 
-#endif
-
-		for(int i = 0; i < 20; i++)
-		{
-			string userid = "FRIEND" + i.ToString();
-			UserInfoData curuserinfo = PVPDataManager.Instance.GetUserInfoDataById(userid);
-			if(curuserinfo.CharacterIndex == 0)
-			{
-				//no data 
-			}else
-			{
-				m_FriendInfoDataList.Add(curuserinfo);
-			}
-		}
 
 		m_FriendUIMaxCount = (int)(m_FriendUIScrollViewHeight / m_FriendUIObjectHeight) + 2;
-		m_MaxScrollPointer = m_FriendInfoDataList.Count - m_FriendUIMaxCount + 2;
+		m_MaxScrollPointer = PVPDataManager.Instance.m_FriendInfoList.Count - m_FriendUIMaxCount + 2;
 		m_MaxScrollPointer = Mathf.Max(0f, m_MaxScrollPointer);
-
+		
 		for(int i = 0; i < m_FriendUIList.Count; i++)
 		{
 			m_FriendUIList[i].SetAsFriend();
 		}
-		m_CurInfoList = m_FriendInfoDataList;
+		m_CurInfoList = PVPDataManager.Instance.m_FriendInfoList;
 
 		UpdateUIInfo();
 	}
@@ -175,26 +174,39 @@ public class PVPUI_FriendTapUI : MonoBehaviour {
 
 	public void OnSearchFriend()
 	{
-		List<UserInfoData> testlist = new List<UserInfoData>();
-		for(int i = 0; i < 20; i++)
+		if(m_SearchFriendInput.value.Length < 2)
 		{
-			string userid = "freindseardc" + i.ToString();
-			UserInfoData curuserinfo = PVPDataManager.Instance.GetUserInfoDataById(userid);
-			if(curuserinfo.CharacterIndex == 0)
+			m_SearchFriendMode = false;
+			InitFriendList();
+			GameUIManager.Instance.LoadUIRootAlertView(Constant.ST200_POPUP_PVP_FRIEND_SEARCH_LENGTH_ERROR);
+		}else
+		{
+			Managers.DataStream.Event_Delegate_DataStreamManager_PVP += (int intResult_Code_Input, string strResult_Extend_Input) => 
 			{
-				//no data 
-			}else
-			{
-				testlist.Add(curuserinfo);
-			}
+				if(intResult_Code_Input == Constant.NETWORK_RESULTCODE_OK)
+				{	
+					if(strResult_Extend_Input == "0")
+					{
+						m_SearchFriendMode = false;
+						InitFriendList();
+						GameUIManager.Instance.LoadUIRootAlertView(Constant.ST200_POPUP_PVP_FRIEND_SEARCH_NORESULT);
+					}else
+					{
+						InitFriendSearchList();
+					}
+				}else
+				{
+					Managers.DataStream.PVP_Request_FriendSearch(Managers.UserData.UserNickName, Managers.UserData.GetUserMaxClearStage(), m_SearchFriendInput.value);
+				}
+			};
+			Managers.DataStream.PVP_Request_FriendSearch(Managers.UserData.UserNickName, Managers.UserData.GetUserMaxClearStage(), m_SearchFriendInput.value);
+			m_SearchFriendMode = true;
 		}
-
-		InitFriendSearchList(testlist);
 	}
 
-	public void InitFriendSearchList(List<UserInfoData> _list)
+	public void InitFriendSearchList()
 	{
-		m_FriendSearchInfoDataList = _list;
+		m_FriendSearchInfoDataList = PVPDataManager.Instance.m_FriendSearchInfoList;
 		
 		m_FriendUIMaxCount = (int)(m_FriendUIScrollViewHeight / m_FriendUIObjectHeight) + 2;
 		m_MaxScrollPointer = m_FriendSearchInfoDataList.Count - m_FriendUIMaxCount + 2;
@@ -207,5 +219,19 @@ public class PVPUI_FriendTapUI : MonoBehaviour {
 
 		m_CurInfoList = m_FriendSearchInfoDataList;
 		UpdateUIInfo();
+	}
+
+	public bool OnEscapePress()
+	{
+		if(gameObject.activeSelf)
+		{
+			if(m_SearchFriendMode)
+			{
+				InitFriendList();
+				return true;
+			}
+		}
+		
+		return false;
 	}
 }

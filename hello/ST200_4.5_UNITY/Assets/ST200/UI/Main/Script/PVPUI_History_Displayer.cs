@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public class PVPUI_History_Displayer : MonoBehaviour {
 	
-	protected List<UserInfoData> m_InfoDataList = new List<UserInfoData>();
+	protected List<UserHistoryData> m_InfoDataList = new List<UserHistoryData>();
 	public int m_UIMaxCount = 6;
 	public float m_UIScrollViewHeight;
 	public float m_UIObjectHeight;
@@ -49,7 +49,7 @@ public class PVPUI_History_Displayer : MonoBehaviour {
 		NGUITools.SetActive (gameObject, false);
 	}
 	
-	public void InitList(List<UserInfoData> _list)
+	public void InitList(List<UserHistoryData> _list)
 	{
 		m_InfoDataList = _list;
 		
@@ -113,8 +113,8 @@ public class PVPUI_History_Displayer : MonoBehaviour {
 			int curuserindex = i;
 			if(curuserindex < m_InfoDataList.Count)
 			{
-				UserInfoData userdata = m_InfoDataList[curuserindex];
-				m_UserInfoUIList[curuiindex].Init(userdata, false);
+				UserHistoryData userdata = m_InfoDataList[curuserindex];
+				m_UserInfoUIList[curuiindex].Init(userdata);
 			}else
 			{
 				NGUITools.SetActive(m_UserInfoUIList[curuiindex].gameObject, false);

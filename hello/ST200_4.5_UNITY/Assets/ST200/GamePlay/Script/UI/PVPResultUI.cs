@@ -17,8 +17,7 @@ public class PVPResultUI : MonoBehaviour {
 
 	void Awake()
 	{
-		m_RewardText.text = Constant.COLOR_PVPRESULT_DESCRIPTION + TextManager.Instance.GetString(253);
-		m_RateText.text = Constant.COLOR_PVPRESULT_DESCRIPTION + TextManager.Instance.GetString(254);
+
 		m_OkLabel.text = TextManager.Instance.GetString(41);
 	}
 
@@ -27,14 +26,22 @@ public class PVPResultUI : MonoBehaviour {
 		NGUITools.SetActive (gameObject, true);
 		if(_win)
 		{
-			m_TitleBG.spriteName = "main_title_bg";
-			m_BG.spriteName = "main_char_info_box";
+			m_TitleBG.spriteName = "pvp_win_text";
+			m_TitleBG.MakePixelPerfect();
+			m_BG.spriteName = "pvp_win_bg";
 			m_ResultLabel.text = Constant.COLOR_BLUE + TextManager.Instance.GetString(251);
+
+			m_RewardText.text = Constant.COLOR_PVP_RESULT_DESCRIPTION_WIN + TextManager.Instance.GetString(253);
+			m_RateText.text = Constant.COLOR_PVP_RESULT_DESCRIPTION_WIN + TextManager.Instance.GetString(254);
 		}else
 		{
-			m_BG.spriteName = "ready_bg";
-			m_TitleBG.spriteName = "ready_title_bg";
+			m_BG.spriteName = "pvp_lose_bg";
+			m_TitleBG.spriteName = "pvp_lose_text";
+			m_TitleBG.MakePixelPerfect();
 			m_ResultLabel.text = Constant.COLOR_RED + TextManager.Instance.GetString(252);
+
+			m_RewardText.text = Constant.COLOR_PVP_RESULT_DESCRIPTION_LOSE + TextManager.Instance.GetString(253);
+			m_RateText.text = Constant.COLOR_PVP_RESULT_DESCRIPTION_LOSE + TextManager.Instance.GetString(254);
 		}
 
 		string reward = "0";
@@ -42,9 +49,9 @@ public class PVPResultUI : MonoBehaviour {
 		{
 			reward = _reward.ToString("#,#");
 		}
-		m_RewardLabel.text = Constant.COLOR_RED + "x" + reward;
+		m_RewardLabel.text = Constant.COLOR_WHITE + "x" + reward;
 
-		m_RateLabel.text = Constant.COLOR_RED + _wincount.ToString() + TextManager.Instance.GetString(248) + " " + _losecount.ToString() + 
+		m_RateLabel.text = Constant.COLOR_WHITE + _wincount.ToString() + TextManager.Instance.GetString(248) + " " + _losecount.ToString() + 
 			TextManager.Instance.GetString(249);
 
 	}

@@ -24,10 +24,15 @@ public class PlayerShipAI : MonoBehaviour {
 		m_AIShip = _aiship;
 		m_PlayerShip = _playership;
 
-		ATTACKSTATE = Random.Range((int)PlayerShipAIState.ATTACK_EASY,(int)PlayerShipAIState.ATTACK_HARD + 1);
-		DEFENDSTATE = Random.Range((int)PlayerShipAIState.DEFEND_EASY, (int)PlayerShipAIState.DEFEND_HARD + 1);
-		RUNSTATE = Random.Range((int)PlayerShipAIState.RUN_EASY, (int)PlayerShipAIState.RUN_HARD + 1);
-		AVOIDSTATE = Random.Range((int)PlayerShipAIState.AVOID_EASY, (int)PlayerShipAIState.AVOID_HARD + 1);
+		//ATTACKSTATE = Random.Range((int)PlayerShipAIState.ATTACK_EASY,(int)PlayerShipAIState.ATTACK_HARD + 1);
+		//DEFENDSTATE = Random.Range((int)PlayerShipAIState.DEFEND_EASY, (int)PlayerShipAIState.DEFEND_HARD + 1);
+		//RUNSTATE = Random.Range((int)PlayerShipAIState.RUN_EASY, (int)PlayerShipAIState.RUN_HARD + 1);
+		//AVOIDSTATE = Random.Range((int)PlayerShipAIState.AVOID_EASY, (int)PlayerShipAIState.AVOID_HARD + 1);
+		ATTACKSTATE = (int)PlayerShipAIState.ATTACK_HARD;
+		DEFENDSTATE = (int)PlayerShipAIState.DEFEND_HARD;
+		RUNSTATE = (int)PlayerShipAIState.RUN_HARD;
+		AVOIDSTATE = (int)PlayerShipAIState.AVOID_HARD;
+
 		RETURNTOBATTLESTATE = (int)PlayerShipAIState.RETURN_TO_BATTLE;
 		ChangeState(ATTACKSTATE);
 	}
@@ -70,12 +75,24 @@ public class PlayerShipAI : MonoBehaviour {
 			newstate = ATTACKSTATE;
 		}else if(m_AIShip.m_CurHealth < m_AIShip.MaxHealth * 0.5f && m_PlayerShip.m_CurHealth > m_AIShip.m_CurHealth * 1.5f)
 		{
-			newstate = RUNSTATE;
+			if(Random.Range(0f, 100f) < 20f)
+			{
+				newstate = RUNSTATE;
+			}else
+			{
+				newstate = DEFENDSTATE;
+			}
 		}else
 		{
 			if(m_PlayerShip.IsInAttackAngle(m_AIShip.transform.position))
 			{
-				newstate = RUNSTATE;
+				if(Random.Range(0f, 100f) < 20f)
+				{
+					newstate = RUNSTATE;
+				}else
+				{
+					newstate = DEFENDSTATE;
+				}
 			}else
 			{
 				newstate = ATTACKSTATE;

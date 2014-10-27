@@ -11,6 +11,7 @@ public class PVPUI_UserInfoObject : MonoBehaviour {
 
 	public GameObject m_FightButton;
 	public GameObject m_AddFriendButton;
+	public UISprite m_AddFriendSprite;
 	public GameObject m_RemoveFriendButton;
 	public GameObject m_FixButton;
 	public UILabel m_FixTimeLabel;
@@ -28,6 +29,30 @@ public class PVPUI_UserInfoObject : MonoBehaviour {
 
 		m_CharacterSprite.spriteName = ImageResourceManager.Instance.GetWorldRankingCharacterImage(m_UserInfoData.CharacterIndex.ToString());
 		m_ShipSprite.spriteName = ImageResourceManager.Instance.GetMainUIShipImageName(m_UserInfoData.ShipIndex);
+		m_RewardLabel.text = m_UserInfoData.RewardAmount.ToString();
+
+		if(m_UserInfoData.RepairSecond > 0)
+		{
+			NGUITools.SetActive(m_FightButton.gameObject, false);
+			NGUITools.SetActive(m_FixButton.gameObject, true);
+			
+			m_FixTimeLabel.text = TextManager.GetHM(m_UserInfoData.RepairSecond);
+		}else
+		{
+			NGUITools.SetActive(m_FightButton.gameObject, true);
+			NGUITools.SetActive(m_FixButton.gameObject, false);
+		}
+
+		if(PVPDataManager.Instance.IsInFriendList(m_UserInfoData.UserIndex))
+		{
+			m_AddFriendSprite.spriteName = "pvp_list_add_2";
+			friend_addedflag = true;
+		}else
+		{
+			m_AddFriendSprite.spriteName = "pvp_list_add";
+			friend_addedflag = false;
+		}
+
 	}
 
 	public void SetAsRecommend()
@@ -54,14 +79,26 @@ public class PVPUI_UserInfoObject : MonoBehaviour {
 		NGUITools.SetActive(m_FixButton.gameObject, false);
 	}
 
+	bool friend_addedflag = false;
 	public void OnClickAddFriendButton()
 	{
 		if ( Managers.Audio != null) Managers.Audio.PlayFXSound(AudioManager.FX_SOUND.FX_Button_Common,false);
+		if(!friend_addedflag)
+		{
+			m_AddFriendSprite.spriteName = "pvp_list_add_2";
+			PVPDataManager.Instance.AddToFriend(m_UserInfoData);
+			GameUIManager.Instance.LoadUIRootAlertView(Constant.ST200_POPUP_PVP_FRIENDADD_SUCCESS,
+			                                           new string[]{m_UserInfoData.UserNickName});
+			friend_addedflag = true;
+		}
 	}
 
 	public void OnClickRemoveFriendButton()
 	{
 		if ( Managers.Audio != null) Managers.Audio.PlayFXSound(AudioManager.FX_SOUND.FX_Button_Common,false);
+		PVPDataManager.Instance.RemoveFromFriend(m_UserInfoData);
+		GameUIManager.Instance.LoadUIRootAlertView(Constant.ST200_POPUP_PVP_FRIENDREMOVE_SUCCESS,
+		                                           new string[]{m_UserInfoData.UserNickName});
 	}
 
 	public void OnClickFightButton()

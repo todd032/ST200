@@ -2225,10 +2225,83 @@ public struct GameCharacter {
 	}
 } ;
 
+public struct UserHistoryData
+{
+	public UserInfoData m_UserInfoData;
+	private string m_PastSecond;
+	public int PastSecond {
+		set { 
+			string encryptString = LoadingWindows.NextE(value.ToString(),Constant.DefalutAppName) ;
+			m_PastSecond = encryptString ;
+		}
+		get {
+			if(m_PastSecond == null || m_PastSecond.Equals("")){
+				return 0;	
+			}
+			string decryptString = LoadingWindows.NextD(m_PastSecond,Constant.DefalutAppName) ;
+			int decryptInt = int.Parse(decryptString) ;
+			return decryptInt;
+		}
+	}
+
+	private string m_Win ;
+	public bool Win {
+		set { 
+			string encryptString = LoadingWindows.NextE(value.ToString(),Constant.DefalutAppName) ;
+			m_Win = encryptString ;
+		}
+		get { 
+			if(m_Win == null || m_Win.Equals("")){
+				return false ;	
+			}
+			string decryptString = LoadingWindows.NextD(m_Win,Constant.DefalutAppName) ;
+			
+			bool decryptBool = false ;
+			if(decryptString.Equals("True")){
+				decryptBool = true ;
+			}else if(decryptString.Equals("False")){
+				decryptBool = false ;
+			}
+			return decryptBool;
+		}
+	}
+}
+
 public struct UserInfoData
 {
-	public string UserID;
+	private string m_UserIndex;
+	public int UserIndex {
+		set { 
+			string encryptString = LoadingWindows.NextE(value.ToString(),Constant.DefalutAppName) ;
+			m_UserIndex = encryptString ;
+		}
+		get {
+			if(m_UserIndex == null || m_UserIndex.Equals("")){
+				return 0;	
+			}
+			string decryptString = LoadingWindows.NextD(m_UserIndex,Constant.DefalutAppName) ;
+			int decryptInt = int.Parse(decryptString) ;
+			return decryptInt;
+		}
+	}
+
 	public string UserNickName;
+
+	private string m_RepairSecond;
+	public int RepairSecond {
+		set { 
+			string encryptString = LoadingWindows.NextE(value.ToString(),Constant.DefalutAppName) ;
+			m_RepairSecond = encryptString ;
+		}
+		get {
+			if(m_RepairSecond == null || m_RepairSecond.Equals("")){
+				return 0;	
+			}
+			string decryptString = LoadingWindows.NextD(m_RepairSecond,Constant.DefalutAppName) ;
+			int decryptInt = int.Parse(decryptString) ;
+			return decryptInt;
+		}
+	}
 
 	private string m_RewardAmount;
 	public int RewardAmount {
@@ -2319,6 +2392,7 @@ public struct UserInfoData
 				string encryptString = LoadingWindows.NextE(value[i].ToString(),Constant.DefalutAppName) ;
 				m_SubShipIndexList[i] = encryptString ;
 			}
+			//Debug.Log("SET CALLED");
 		}
 		get {
 			if(m_SubShipIndexList == null){
@@ -2332,6 +2406,7 @@ public struct UserInfoData
 				int decryptInt = int.Parse(decryptString) ;
 				gradelist[i] = decryptInt;
 			}
+			//Debug.Log("Get called///??");
 			return gradelist;
 		}
 	}
@@ -2365,7 +2440,7 @@ public struct UserInfoData
 
 public struct UserPVPRankInfoData
 {
-	public string UserID;
+	public int UserIndex;
 	public string UserNickName;
 
 	private string m_Rank;
@@ -2469,6 +2544,8 @@ public struct UserPVPRankInfoData
 
 public struct PVPRewardData
 {
+	public string WinColor;
+
 	private string m_WinCount;
 	public int WinCount {
 		set { 
@@ -2500,37 +2577,7 @@ public struct PVPRewardData
 			return decryptInt;
 		}
 	}
-	
-	private string m_RewardType;
-	public int RewardType {
-		set { 
-			string encryptString = LoadingWindows.NextE(value.ToString(),Constant.DefalutAppName) ;
-			m_RewardType = encryptString ;
-		}
-		get {
-			if(m_RewardType == null || m_RewardType.Equals("")){
-				return 1;	
-			}
-			string decryptString = LoadingWindows.NextD(m_RewardType,Constant.DefalutAppName) ;
-			int decryptInt = int.Parse(decryptString) ;
-			return decryptInt;
-		}
-	}
-	
-	private string m_RewardCount;
-	public int RewardCount {
-		set { 
-			string encryptString = LoadingWindows.NextE(value.ToString(),Constant.DefalutAppName) ;
-			m_RewardCount = encryptString ;
-		}
-		get {
-			if(m_RewardCount == null || m_RewardCount.Equals("")){
-				return 1;	
-			}
-			string decryptString = LoadingWindows.NextD(m_RewardCount,Constant.DefalutAppName) ;
-			int decryptInt = int.Parse(decryptString) ;
-			return decryptInt;
-		}
-	}
+
+	public string RewardString;
 }
 #endregion

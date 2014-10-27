@@ -61,7 +61,7 @@ public class PVPUI_ShipDisplayer : MonoBehaviour {
 		for(int i = 0; i < subshipposition.Count; i++)
 		{
 			Vector3 newpos = m_PlayerShipSprite.transform.position;
-			newpos += subshipposition[i] * 0.7f;
+			newpos += subshipposition[i] * 0.65f;
 			
 			m_SubShipUIDisplayObject[i].transform.position = newpos;
 			if(characterbalance.AvailableTacticSlot > i)

@@ -190,9 +190,9 @@ public class SettingPopupView : MonoBehaviour {
 
 		#if UNITY_IPHONE && !UNITY_EDITOR
 
-		string strQnA_Url = "mailto:help2@polycube.co.kr";
-		string strQnA_Subject = "?subject=%EA%B2%8C%EC%9E%84%EB%AC%B8%EC%9D%98(" +  Managers.UserData.UserID + ")";
-		string strQnA_Body = "&body=%EA%B2%8C%EC%9E%84ID:" + Managers.UserData.UserID;
+		string strQnA_Url = "mailto:master@polycube.co.kr";
+		string strQnA_Subject = "?subject=%EA%B2%8C%EC%9E%84%EB%AC%B8%EC%9D%98(" +  Managers.UserData.UserNickName + ")";
+		string strQnA_Body = "&body=%EA%B2%8C%EC%9E%84ID:" + Managers.UserData.UserNickName;
 
 		Application.OpenURL(strQnA_Url + strQnA_Subject + strQnA_Body);
 
@@ -200,9 +200,9 @@ public class SettingPopupView : MonoBehaviour {
 		
 		#elif UNITY_ANDROID && !UNITY_EDITOR
 
-		string strQnA_Url = "mailto:help2@polycube.co.kr";
-		string strQnA_Subject = Constant.QNA_Subject_STR + Managers.UserData.UserID + ")";
-		string strQnA_Body = Constant.QNA_Body_STR + Managers.UserData.UserID + "\n\n\n";
+		string strQnA_Url = "mailto:master@polycube.co.kr";
+		string strQnA_Subject = Constant.QNA_Subject_STR + Managers.UserData.UserNickName + ")";
+		string strQnA_Body = Constant.QNA_Body_STR + Managers.UserData.UserNickName + "\n\n\n";
 		
 		Application.OpenURL(strQnA_Url + strQnA_Subject + strQnA_Body);
 
@@ -268,6 +268,7 @@ public class SettingPopupView : MonoBehaviour {
 			Managers.UserData.InitializeShipData();
 			Managers.UserData.InitializeStageData();
 			Managers.UserData.InitializeSubShipData();
+			Managers.UserData.GameCoin = 0;
 		}
 	}
 

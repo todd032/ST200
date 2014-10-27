@@ -6,13 +6,17 @@ public class PVPUI_Ranking : MonoBehaviour {
 
 	public UILabel m_TitleLabel;
 	public GameObject m_WorldRankBlackImage;
+	public UILabel m_WorldRankingLabel;
 	public GameObject m_FriendRankBlackImage;
+	public UILabel m_FriendRankingLabel;
 	public PVPUI_RankingDisplay m_RankDisplayer;
 	public PVPUI_Rank_RewardDisplayer m_RewardDisplayer;
 
 	void Awake()
 	{
 		m_TitleLabel.text = Constant.COLOR_SUBSHIP_SUBTITLE + TextManager.Instance.GetString(257);
+		m_WorldRankingLabel.text = TextManager.Instance.GetString(266);
+		m_FriendRankingLabel.text = TextManager.Instance.GetString(267);
 	}
 
 	public void ShowUI()
@@ -43,50 +47,52 @@ public class PVPUI_Ranking : MonoBehaviour {
 		m_RewardDisplayer.InitUI();
 	}
 
+	protected bool m_WorldRankInitFlag = false;
 	public void ShowWorldRank()
 	{
 		NGUITools.SetActive(m_WorldRankBlackImage.gameObject, false);
 		NGUITools.SetActive(m_FriendRankBlackImage.gameObject, true);
 
-		List<UserPVPRankInfoData> pvplist = new List<UserPVPRankInfoData>();
-		for(int i = 0; i < 50; i++)
+		if(!m_WorldRankInitFlag)
 		{
-			UserPVPRankInfoData newdata = new UserPVPRankInfoData();
-			newdata.UserNickName = "world" + i.ToString();
-			newdata.CharacterIndex = Random.Range(1,4);
-			newdata.ShipIndex = Random.Range(1, 7);
-			newdata.ShipLevel = Random.Range(1,10);
-			newdata.LoseCount = Random.Range(1,100);
-			newdata.WinCount = Random.Range(1,100);
-			newdata.Rank = i + 1;
-			newdata.UserID = "HI" + i.ToString();
-
-			pvplist.Add(newdata);
+			Managers.DataStream.Event_Delegate_DataStreamManager_PVP += (int intResult_Code_Input, string strResult_Extend_Input) => 
+			{
+				if(intResult_Code_Input == Constant.NETWORK_RESULTCODE_OK)
+				{	
+					m_RankDisplayer.InitRankList(PVPDataManager.Instance.m_WorldRankList);
+				}else
+				{
+					
+				}
+			};
+			Managers.DataStream.PVP_Request_WorldRank();
 		}
-		m_RankDisplayer.InitRankList(pvplist);
+		m_WorldRankInitFlag = true;
+		m_RankDisplayer.InitRankList (PVPDataManager.Instance.m_WorldRankList);
 	}
 
+	protected bool m_FriendRankInitFlag = false;
 	public void ShowFriendRank()
 	{
 		NGUITools.SetActive(m_WorldRankBlackImage.gameObject, true);
 		NGUITools.SetActive(m_FriendRankBlackImage.gameObject, false);
 
-		List<UserPVPRankInfoData> pvplist = new List<UserPVPRankInfoData>();
-		for(int i = 0; i < 50; i++)
+		if(!m_FriendRankInitFlag)
 		{
-			UserPVPRankInfoData newdata = new UserPVPRankInfoData();
-			newdata.UserNickName = "friend" + i.ToString();
-			newdata.CharacterIndex = Random.Range(1,4);
-			newdata.ShipIndex = Random.Range(1, 7);
-			newdata.ShipLevel = Random.Range(1,10);
-			newdata.LoseCount = Random.Range(1,100);
-			newdata.WinCount = Random.Range(1,100);
-			newdata.Rank = i + 1;
-			newdata.UserID = "HI" + i.ToString();
-			
-			pvplist.Add(newdata);
+			Managers.DataStream.Event_Delegate_DataStreamManager_PVP += (int intResult_Code_Input, string strResult_Extend_Input) => 
+			{
+				if(intResult_Code_Input == Constant.NETWORK_RESULTCODE_OK)
+				{	
+					m_RankDisplayer.InitRankList(PVPDataManager.Instance.m_FriendRankList);
+				}else
+				{
+					
+				}
+			};
+			Managers.DataStream.PVP_Request_FriendRank();
 		}
-		m_RankDisplayer.InitRankList(pvplist);
+		m_FriendRankInitFlag = true;
+		m_RankDisplayer.InitRankList (PVPDataManager.Instance.m_FriendRankList);
 	}
 
 	public void OnClickCloseButton()

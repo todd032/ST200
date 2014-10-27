@@ -98,6 +98,9 @@ public class GameUIManager : MonoBehaviour {
 		if(m_MainUI.OnEscapePress())
 		{
 			return true;
+		}else if(m_PVPUI.OnEscapePress())
+		{
+			return true;	
 		}else if(m_UIRootAlertView.OnEscapePress())
 		{
 			return true;
@@ -372,6 +375,11 @@ public class GameUIManager : MonoBehaviour {
 	public void LoadUIRootAlertView(int _index)
 	{
 		m_UIRootAlertView.LoadUIRootAlertView(_index);
+	}
+
+	public void LoadUIRootAlertView(int _index, string[] _replacements)
+	{
+		m_UIRootAlertView.LoadUIRootAlertView(_index, _replacements);
 	}
 
 

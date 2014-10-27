@@ -185,13 +185,13 @@ public class GamePlayerManager : MonoBehaviour {
 	public int GetOpponentAlive()
 	{
 		int alivecount = 0;
-		for(int i = 0; i < m_OppSubShipList.Count; i++)
-		{
-			if(m_OppSubShipList[i].m_CurHealth > 0f)
-			{
-				alivecount++;
-			}
-		}
+		//for(int i = 0; i < m_OppSubShipList.Count; i++)
+		//{
+		//	if(m_OppSubShipList[i].m_CurHealth > 0f)
+		//	{
+		//		alivecount++;
+		//	}
+		//}
 
 		if(m_OppPlayerShip.m_CurHealth > 0f)
 		{
@@ -202,7 +202,7 @@ public class GamePlayerManager : MonoBehaviour {
 	}
 	public int GetOpponentTotal()
 	{
-		int count = 1 + m_OppSubShipList.Count;
+		int count = 1;// + m_OppSubShipList.Count;
 		
 		return count;
 	}

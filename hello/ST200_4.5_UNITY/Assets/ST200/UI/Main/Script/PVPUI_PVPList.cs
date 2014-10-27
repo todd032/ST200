@@ -7,18 +7,29 @@ public class PVPUI_PVPList : MonoBehaviour {
 
 	public PVPUI_RecommandTapUI m_RecommandUI;
 	public GameObject m_RecommandTapBlackUI;
+	public UILabel m_RecommandLabel;
 
 	public PVPUI_FriendTapUI m_FriendUI;
 	public GameObject m_FriendTapBlackUI;
+	public UILabel m_FriendLabel;
 
 	void Awake()
 	{
 		m_TitleLabel.text = Constant.COLOR_SUBSHIP_SUBTITLE + TextManager.Instance.GetString(255);
+		m_RecommandLabel.text = TextManager.Instance.GetString(264);
+		m_FriendLabel.text = TextManager.Instance.GetString(265);
 	}
 
 	public void InitUI()
 	{
 		ShowRecommandUI();
+	}
+
+	public void UpdateUI()
+	{
+		//Debug.Log("WTF..?");
+		m_RecommandUI.UpdateUI();
+		m_FriendUI.UpdateUI();
 	}
 
 	public void ShowUI()
@@ -29,6 +40,12 @@ public class PVPUI_PVPList : MonoBehaviour {
 	public void RemoveUI()
 	{
 		NGUITools.SetActive(gameObject, false);
+	}
+
+	public void HideAll()
+	{
+		m_RecommandUI.RemoveUI();
+		m_FriendUI.RemoveUI();
 	}
 
 	public void ShowRecommandUI()
@@ -62,5 +79,18 @@ public class PVPUI_PVPList : MonoBehaviour {
 	{
 		if ( Managers.Audio != null) Managers.Audio.PlayFXSound(AudioManager.FX_SOUND.FX_Button_Common,false);
 		ShowFriendUI();
+	}
+
+	public bool OnEscapePress()
+	{
+		if(m_RecommandUI.OnEscapePress())
+		{
+			return true;
+		}else if(m_FriendUI.OnEscapePress())
+		{
+			return true;
+		}
+
+		return false;
 	}
 }

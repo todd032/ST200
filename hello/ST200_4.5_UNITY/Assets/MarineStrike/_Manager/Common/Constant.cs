@@ -23,9 +23,9 @@ public class Constant : MonoBehaviour {
 	public static readonly bool PROJECTMODE_OutDebugMessage = true; //상용시 false로..
 	public static readonly bool PROJECTMODE_IabTest = true; //상용시 false로..
 #else
-	public static readonly bool PROJECTMODE_Develop = true; //상용시 false로..
-	public static readonly bool PROJECTMODE_BalanceTest = true; //상용시 false, 테스트용 벨런스 데이터를 가지고 옴..
-	public static readonly bool PROJECTMODE_OutDebugMessage = true; //상용시 false로..
+	public static readonly bool PROJECTMODE_Develop = false; //상용시 false로..
+	public static readonly bool PROJECTMODE_BalanceTest = false; //상용시 false, 테스트용 벨런스 데이터를 가지고 옴..
+	public static readonly bool PROJECTMODE_OutDebugMessage = false; //상용시 false로..
 	public static readonly bool PROJECTMODE_IabTest = false; //상용시 false로..
 #endif
     
@@ -90,6 +90,7 @@ public class Constant : MonoBehaviour {
 	public static readonly string URL_RELEASE_WorldRanking_Update = "https://wrank.polycube.co.kr/st200/update_result.php";
 	public static readonly string URL_RELEASE_NICKNAME = "https://wrank.polycube.co.kr/st200/check_nickname.php";
 	public static readonly string URL_RELEASE_PushInfo = "http://14.63.165.28/st200/push.php";
+	public static readonly string URL_RELEASE_PvpInfo = "http://st200.polycube.co.kr/st200/pvp.php";
 
 	public static readonly string URL_DEVELOP_Connect = "http://14.63.165.28/st200/connect.php";
 	public static readonly string URL_DEVELOP_ConfigData = "http://14.63.165.28/st200/config_data.php";
@@ -104,6 +105,7 @@ public class Constant : MonoBehaviour {
 	public static readonly string URL_DEVELOP_WorldRanking_Update = "https://wrank.polycube.co.kr/st200/update_result.php";
 	public static readonly string URL_DEVELOP_NICKNAME = "https://wrank.polycube.co.kr/st200/check_nickname.php";
 	public static readonly string URL_DEVELOP_PushInfo = "http://14.63.165.28/st200/push.php";
+	public static readonly string URL_DEVELOP_PvpInfo = "http://14.63.165.28/st200/pvp.php";
 
 	// 크로스광고 팝업 기능 추가(by 최원석 14.04.30) ----- Start.
 	public static readonly string URL_Popup_Info = "http://gamehub.polycube.co.kr/cross_popup/popup_info.php";
@@ -136,7 +138,17 @@ public class Constant : MonoBehaviour {
     public static readonly string NETWORK_SENDMODE_SaveLog = "SaveLog";
     public static readonly string NETWORK_SENDMODE_SaveChargeDataTest = "SaveChargeDataTest";
     public static readonly string NETWORK_SENDMODE_SaveChargeData = "SaveChargeData";
-    
+	public static readonly string NETWORK_SENDMODE_PVPRecommendList = "RecommendList";
+	public static readonly string NETWORK_SENDMODE_PVPFriendList = "FriendsList";
+	public static readonly string NETWORK_SENDMODE_PVPFriendSearchList = "SearchFriends";
+	public static readonly string NETWORK_SENDMODE_PVPFriendAdd = "AddFriends";
+	public static readonly string NETWORK_SENDMODE_PVPFriendRemove = "RemoveFriends";
+	public static readonly string NETWORK_SENDMODE_PVPSaveResult = "SaveBattleResult";
+	public static readonly string NETWORK_SENDMODE_PVPWorldRank = "RankListAll";
+	public static readonly string NETWORK_SENDMODE_PVPFriendRank = "RankListFriends";
+	public static readonly string NETWORK_SENDMODE_PVPHistory = "BattleHistory";
+	public static readonly string NETWORK_SENDMODE_PVPPopup = "PopupHistory";
+
     public static readonly int NETWORK_RESULTCODE_OK = 1;
     public static readonly int NETWORK_RESULTCODE_Error_Network = 101;
     public static readonly int NETWORK_RESULTCODE_Error_CheckSum = 111;
@@ -2115,6 +2127,10 @@ public class Constant : MonoBehaviour {
 	public readonly static string COLOR_SUBSHIP_UPGRADE_LEVEL			 		= "[ffffff]";
 	public readonly static string COLOR_SUBSHIP_UPGRADE_DESCRIPTION		 		= "[455069]";
 	public readonly static string COLOR_SUBSHIP_UPGRADE_SPECIALDESCRIPTION 		= "[ae0000]";
+
+	public readonly static string COLOR_PVP_RESULT_DESCRIPTION_WIN		 		= "[ffd2c7]";
+	public readonly static string COLOR_PVP_RESULT_DESCRIPTION_LOSE		 		= "[c7f6ff]";
+	public readonly static string COLOR_PVP_ATTACK_ALERT_DESCRIPTION	 		= "[8A3324]";
 	#endregion
 
 	#region ST200 Pop up box message type
@@ -2156,6 +2172,16 @@ public class Constant : MonoBehaviour {
 	public readonly static int ST200_POPUP_NICKNAME_INAPPROPRIATE_NAME			= 7001;
 	public readonly static int ST200_POPUP_NICKNAME_ALREADY_EXIST				= 7002;
 	public readonly static int ST200_POPUP_NICKNAME_SUCCESS						= 7003;
+
+	public readonly static int ST200_POPUP_PVP_RECOMMANDLIST_GETERROR			= 8001;
+	public readonly static int ST200_POPUP_PVP_FRIENDLIST_GETERROR				= 8002;
+	public readonly static int ST200_POPUP_PVP_WOLDRANK_GETERROR				= 8003;
+	public readonly static int ST200_POPUP_PVP_FRIENDRANK_GETERROR				= 8004;
+	public readonly static int ST200_POPUP_PVP_FRIENDADD_SUCCESS				= 8005;
+	public readonly static int ST200_POPUP_PVP_FRIENDADD_FAIL					= 8006;
+	public readonly static int ST200_POPUP_PVP_FRIENDREMOVE_SUCCESS				= 8007;
+	public readonly static int ST200_POPUP_PVP_FRIEND_SEARCH_NORESULT			= 8008;
+	public readonly static int ST200_POPUP_PVP_FRIEND_SEARCH_LENGTH_ERROR		= 8009;
 	#endregion
 
 	#region ST200 ItemID

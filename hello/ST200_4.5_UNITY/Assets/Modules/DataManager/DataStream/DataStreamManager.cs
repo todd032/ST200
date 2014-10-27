@@ -878,7 +878,7 @@ public class DataStreamManager : MonoBehaviour {
 		#if UNITY_EDITOR
 		if (Input.GetKeyDown(KeyCode.Space)) {
 			//testcodeinituserdata();
-			//testcodeinitbalancedata();
+			testcodeinitbalancedata();
 			//			gachatestcode();
 			//StartCoroutine(LuckyTestCode());
 			//Managers.UserData.SetPurchaseGameSubmarine(4);
@@ -3890,12 +3890,1532 @@ public class DataStreamManager : MonoBehaviour {
 	}
 	// 네이버 인앱 추가 (by 최원석 in 14.06.11) - End ==========
 	
+	#region PVP 
 
-	
-	
-	
-	
-	
-	
+	[HideInInspector]
+	public delegate void Delegate_DataStreamManager_PVP(int intResult_Code_Input, string strResult_Extend_Input);
+	protected Delegate_DataStreamManager_PVP _delegate_DataStreamManager_PVP ;
+	public event Delegate_DataStreamManager_PVP Event_Delegate_DataStreamManager_PVP{
+		add {
+			_delegate_DataStreamManager_PVP = null;
+			if (_delegate_DataStreamManager_PVP == null) _delegate_DataStreamManager_PVP += value;
+		}
+		remove {
+			
+			_delegate_DataStreamManager_PVP -= value;
+		}
+	}
+
+	public void PVP_Request_Recommend(string _usernickname, int _maxstage)
+	{
+		StartCoroutine(PVP_Request(_usernickname, _maxstage));
+	}
+	// 유저 데이터 통신 (user_data.php) - SaveUserData.
+	protected IEnumerator PVP_Request(string _usernickname, int _maxstage) 
+	{
+
+		msgHeader.Ct = Managers.UserData.GetSyncServerTime();
+		string header = JsonMapper.ToJson(msgHeader);
+
+		Dictionary<string, string> bodydic = new Dictionary<string, string>();
+		bodydic.Add("UserNickName", "\"" + _usernickname + "\"");
+		bodydic.Add("MaxStage", _maxstage.ToString());
+
+		string body = TextManager.CreateJsonData(bodydic);
+		//Debug.Log("body: " + body);
+		string extend = "";
+		
+		string check = getParameterCheckSum(header + body + extend);   //checksum 코드 생성...
+		
+		yield return null;
+		
+		//서버에 저장.
+		string sendMode = Constant.NETWORK_SENDMODE_PVPRecommendList;
+		addMessageBuffer("REQUEST MODE : " + sendMode);
+		addMessageBuffer("REQUEST HEADER : " + header);
+		addMessageBuffer("REQUEST BODY : " + body);
+		addMessageBuffer("REQUEST EXTEND : " + extend);
+		
+		WWWForm form = new WWWForm();
+		form.AddField("mode", sendMode);
+		form.AddField("head", header);
+		form.AddField("body", body);
+		form.AddField("extend", extend);
+		form.AddField("check", check);
+		
+		if (Constant.PROJECTMODE_Develop) {
+			
+			m_strURL = Constant.URL_DEVELOP_PvpInfo;
+			
+		} else {
+			
+			m_strURL = Constant.URL_RELEASE_PvpInfo;
+		}
+		
+		WWW www = new WWW(m_strURL, form);
+		yield return www;
+		
+		//Debug.Log ("ST200k DataStreamManager SaveUserData sendMode = " + sendMode);
+		//Debug.Log ("ST200k DataStreamManager SaveUserData header = " + header);
+		//Debug.Log ("ST200k DataStreamManager SaveUserData body = " + body);
+		//Debug.Log ("ST200k DataStreamManager SaveUserData extend = " + extend);
+		//Debug.Log ("ST200k DataStreamManager SaveUserData check = " + check);
+		//Debug.Log ("ST200k DataStreamManager SaveUserData www.text = " + www.text);
+		
+		if (www.error == null) {
+			
+			clsReturn.init();  //초기화..
+			clsReturn = JsonMapper.ToObject<ClsReturn>(www.text);
+			
+			//리턴 오브젝트..
+			if (clsReturn.result == true) {
+				//Debug.Log("mark");
+				string returndata = clsReturn.data;
+				//Debug.Log("return data: " + returndata);
+				string strExtendJson = clsReturn.extend;
+				
+				if (returndata != null && !returndata.Equals("")) {
+
+					//JSONNode extendroot = JSON.Parse(strExtendJson);
+					//string receiveServerTime = extendroot ["ServerTime"];
+					//int serverTime = int.Parse(receiveServerTime);
+
+
+					JSONNode root = JSON.Parse(returndata);
+
+					JSONNode myinfo = root["MyInfo"];
+					string myuserindex = myinfo["pvp_user_index"];
+					int mybattlecount = myinfo["battle_count"].AsInt;
+					int mywincount = myinfo["win_count"].AsInt;
+					int mylosecount = myinfo["lose_count"].AsInt;
+					//Debug.Log("myinfo: " + myuserindex + " WIN: " + mywincount);
+					
+					JSONNode recommend = root["Recommend"];
+					List<UserInfoData> pvprecommendlist = new List<UserInfoData>();
+					for(int i = 0; i < recommend.Count; i++)
+					{
+						JSONNode recommenddata = recommend[i];
+						//Debug.Log("TOTAL: " + recommenddata.ToString());
+
+						int recommenduserindex = recommenddata["pvp_user_index"].AsInt;
+						string recommendnickname = recommenddata["nickname"];
+						int recommendbattlecount = recommenddata["battle_count"].AsInt;
+						int recommendwincount = recommenddata["win_count"].AsInt;
+						int recommendlosecount = recommenddata["lose_count"].AsInt;
+						JSONNode armdata = recommenddata["armed_data"];
+						int recommendcharacterindex = armdata["CharacterIndex"].AsInt;
+						int recommendtacticindex = armdata["TacticIndex"].AsInt;
+						int recommendshipindex = armdata["ShipIndex"].AsInt;
+						int recommendshiplevel = armdata["ShipLevel"].AsInt;
+						JSONArray recommendsubshipindex = armdata["SubShipIndexList"].AsArray;
+						JSONArray recommendsubshiplevel = armdata["SubShipLeveList"].AsArray;
+						int recommendreward = recommenddata["winning_reward"].AsInt;
+
+						UserInfoData recommendinfodata = new UserInfoData();
+						recommendinfodata.UserIndex = recommenduserindex;
+						recommendinfodata.UserNickName = recommendnickname;
+						recommendinfodata.CharacterIndex = recommendcharacterindex;
+						recommendinfodata.TacticIndex = recommendtacticindex;
+						recommendinfodata.ShipIndex = recommendshipindex;
+						recommendinfodata.ShipLevel = recommendshiplevel;
+						int[] subshipindexlist = new int[]{0,0,0,0};
+						int[] subshiplevellist = new int[]{0,0,0,0};
+						for(int j = 0; j < subshipindexlist.Length; j++)
+						{
+							if(recommendsubshipindex.Count > j)
+							{
+								subshipindexlist[j] = recommendsubshipindex[j].AsInt;
+							}
+						}
+						for(int j = 0; j < subshiplevellist.Length; j++)
+						{
+							if(recommendsubshiplevel.Count > j)
+							{
+								subshiplevellist[j] = recommendsubshiplevel[j].AsInt;
+							}
+						}
+						recommendinfodata.SubShipIndexList = subshipindexlist;
+						recommendinfodata.SubShipLevelList = subshiplevellist;
+
+						recommendinfodata.RewardAmount = recommendreward;
+
+						pvprecommendlist.Add(recommendinfodata);
+
+						//Debug.Log("ARMDATA: " + armdata.ToString());
+						//Debug.Log("hmm: " + recommenduserindex + " subship: " + recommendsubshiplevel[0].AsInt);
+					}
+					PVPDataManager.Instance.SetPVPRecommendList(pvprecommendlist);
+
+					if (_delegate_DataStreamManager_PVP != null) {
+						_delegate_DataStreamManager_PVP(Constant.NETWORK_RESULTCODE_OK, strExtendJson);
+					}
+				} else {
+					
+					if (_delegate_DataStreamManager_PVP != null) {
+						_delegate_DataStreamManager_PVP(Constant.NETWORK_RESULTCODE_Error_Result_Extend, "");
+					}
+				}
+				
+			} else if (clsReturn.result == false) {
+				
+				if(clsReturn.error_msg == Constant.NETWORK_RESULTCODE_Error_UserSequence_Message)
+				{
+					if (_delegate_DataStreamManager_PVP != null) {
+						_delegate_DataStreamManager_PVP(Constant.NETWORK_RESULTCODE_Error_UserSequence, "");
+					}
+				}else
+				{
+					if (_delegate_DataStreamManager_PVP != null) {
+						_delegate_DataStreamManager_PVP(Constant.NETWORK_RESULTCODE_Error_Result_False, "");
+					}
+				}
+			}
+			
+		} else {
+			
+			addMessageBuffer("RESPONSE ERROR: " + www.error);
+			
+			if (_delegate_DataStreamManager_PVP != null) {
+				_delegate_DataStreamManager_PVP(Constant.NETWORK_RESULTCODE_Error_Network, "");
+			}
+		}
+		
+		www.Dispose();
+		www = null;
+	}
+
+	public void PVP_Request_FriendList(string _usernickname, int _maxstage)
+	{
+		StartCoroutine(IEPVP_Request_FriendList(_usernickname, _maxstage));
+	}
+	// 유저 데이터 통신 (user_data.php) - SaveUserData.
+	protected IEnumerator IEPVP_Request_FriendList(string _usernickname, int _maxstage) 
+	{
+		
+		msgHeader.Ct = Managers.UserData.GetSyncServerTime();
+		string header = JsonMapper.ToJson(msgHeader);
+		
+		Dictionary<string, string> bodydic = new Dictionary<string, string>();
+		bodydic.Add("UserNickName", "\""+_usernickname+"\"");
+		bodydic.Add("MaxStage", _maxstage.ToString());
+		
+		string body = TextManager.CreateJsonData(bodydic);
+		//Debug.Log("body: " + body);
+		string extend = "";
+		
+		string check = getParameterCheckSum(header + body + extend);   //checksum 코드 생성...
+		
+		yield return null;
+		
+		//서버에 저장.
+		string sendMode = Constant.NETWORK_SENDMODE_PVPFriendList;
+		addMessageBuffer("REQUEST MODE : " + sendMode);
+		addMessageBuffer("REQUEST HEADER : " + header);
+		addMessageBuffer("REQUEST BODY : " + body);
+		addMessageBuffer("REQUEST EXTEND : " + extend);
+		
+		WWWForm form = new WWWForm();
+		form.AddField("mode", sendMode);
+		form.AddField("head", header);
+		form.AddField("body", body);
+		form.AddField("extend", extend);
+		form.AddField("check", check);
+		
+		if (Constant.PROJECTMODE_Develop) {
+			
+			m_strURL = Constant.URL_DEVELOP_PvpInfo;
+			
+		} else {
+			
+			m_strURL = Constant.URL_RELEASE_PvpInfo;
+		}
+		
+		WWW www = new WWW(m_strURL, form);
+		yield return www;
+		
+		//Debug.Log ("ST200k DataStreamManager SaveUserData sendMode = " + sendMode);
+		//Debug.Log ("ST200k DataStreamManager SaveUserData header = " + header);
+		//Debug.Log ("ST200k DataStreamManager SaveUserData body = " + body);
+		//Debug.Log ("ST200k DataStreamManager SaveUserData extend = " + extend);
+		//Debug.Log ("ST200k DataStreamManager SaveUserData check = " + check);
+		//Debug.Log ("ST200k DataStreamManager SaveUserData www.text = " + www.text);
+		
+		if (www.error == null) {
+			
+			clsReturn.init();  //초기화..
+			clsReturn = JsonMapper.ToObject<ClsReturn>(www.text);
+			
+			//리턴 오브젝트..
+			if (clsReturn.result == true) {
+				//Debug.Log("mark");
+				string returndata = clsReturn.data;
+				string strExtendJson = clsReturn.extend;
+				
+				if (returndata != null && !returndata.Equals("")) {
+					
+					//JSONNode extendroot = JSON.Parse(strExtendJson);
+					//string receiveServerTime = extendroot ["ServerTime"];
+					//int serverTime = int.Parse(receiveServerTime);
+					
+					
+					JSONNode root = JSON.Parse(returndata);
+					
+					JSONNode friendlist = root["FriendsList"];
+
+					PVPDataManager.Instance.m_FriendInfoList.Clear();
+					for(int friendindexno = 0; friendindexno < friendlist.Count; friendindexno++)
+					{
+						JSONNode userdata = friendlist[friendindexno];
+						//Debug.Log("TOTAL: " + userdata.ToString());
+						
+						int userindex = userdata["pvp_user_index"].AsInt;
+						string nickname = userdata["nickname"];
+						int battlecount = userdata["battle_count"].AsInt;
+						int wincount = userdata["win_count"].AsInt;
+						int losecount = userdata["lose_count"].AsInt;
+						JSONNode armdata = userdata["armed_data"];
+						int characterindex = armdata["CharacterIndex"].AsInt;
+						int tacticindex = armdata["TacticIndex"].AsInt;
+						int shipindex = armdata["ShipIndex"].AsInt;
+						int shiplevel = armdata["ShipLevel"].AsInt;
+						JSONArray subshipindex = armdata["SubShipIndexList"].AsArray;
+						JSONArray subshiplevel = armdata["SubShipLeveList"].AsArray;
+						int reward = userdata["winning_reward"].AsInt;
+						int repairsec = userdata["sec_under_repair"].AsInt;
+
+						UserInfoData infodata = new UserInfoData();
+						infodata.UserIndex = userindex;
+						infodata.UserNickName = nickname;
+						infodata.CharacterIndex = characterindex;
+						infodata.TacticIndex = tacticindex;
+						infodata.ShipIndex = shipindex;
+						infodata.ShipLevel = shiplevel;
+						int[] subshipindexlist = new int[]{0,0,0,0};
+						int[] subshiplevellist = new int[]{0,0,0,0};
+						for(int j = 0; j < subshipindexlist.Length; j++)
+						{
+							if(subshipindex.Count > j)
+							{
+								subshipindexlist[j] = subshipindex[j].AsInt;
+							}
+						}
+						for(int j = 0; j < subshiplevellist.Length; j++)
+						{
+							if(subshiplevel.Count > j)
+							{
+								subshiplevellist[j] = subshiplevel[j].AsInt;
+							}
+						}
+						infodata.SubShipIndexList = subshipindexlist;
+						infodata.SubShipLevelList = subshiplevellist;
+
+						infodata.RewardAmount = reward;
+						infodata.RepairSecond = repairsec;
+
+						PVPDataManager.Instance.m_FriendInfoList.Add(infodata);
+						
+						//Debug.Log("ARMDATA: " + armdata.ToString());
+						//Debug.Log("hmm: " + recommenduserindex + " subship: " + recommendsubshiplevel[0].AsInt);
+					}
+					
+					if (_delegate_DataStreamManager_PVP != null) {
+						_delegate_DataStreamManager_PVP(Constant.NETWORK_RESULTCODE_OK, strExtendJson);
+					}
+
+				} else {
+					
+					if (_delegate_DataStreamManager_PVP != null) {
+						_delegate_DataStreamManager_PVP(Constant.NETWORK_RESULTCODE_Error_Result_Extend, "");
+					}
+				}
+				
+			} else if (clsReturn.result == false) {
+				
+				if(clsReturn.error_msg == Constant.NETWORK_RESULTCODE_Error_UserSequence_Message)
+				{
+					if (_delegate_DataStreamManager_PVP != null) {
+						_delegate_DataStreamManager_PVP(Constant.NETWORK_RESULTCODE_Error_UserSequence, "");
+					}
+				}else
+				{
+					if (_delegate_DataStreamManager_PVP != null) {
+						_delegate_DataStreamManager_PVP(Constant.NETWORK_RESULTCODE_Error_Result_False, "");
+					}
+				}
+			}
+			
+		} else {
+			
+			addMessageBuffer("RESPONSE ERROR: " + www.error);
+			
+			if (_delegate_DataStreamManager_PVP != null) {
+				_delegate_DataStreamManager_PVP(Constant.NETWORK_RESULTCODE_Error_Network, "");
+			}
+		}
+		
+		www.Dispose();
+		www = null;
+	}
+
+	public void PVP_Request_FriendSearch(string _usernickname, int _maxstage, string _nickname)
+	{
+		StartCoroutine(IEPVP_Request_FriendSearch(_usernickname, _maxstage, _nickname));
+	}
+	// 유저 데이터 통신 (user_data.php) - SaveUserData.
+	protected IEnumerator IEPVP_Request_FriendSearch(string _usernickname, int _maxstage, string _nickname) 
+	{
+		
+		msgHeader.Ct = Managers.UserData.GetSyncServerTime();
+		string header = JsonMapper.ToJson(msgHeader);
+		
+		Dictionary<string, string> bodydic = new Dictionary<string, string>();
+		bodydic.Add("UserNickName", "\""+_usernickname+"\"");
+		bodydic.Add("MaxStage", _maxstage.ToString());
+		bodydic.Add("SearchNick", "\""+_nickname + "\"");
+		
+		string body = TextManager.CreateJsonData(bodydic);
+		//Debug.Log("body: " + body);
+		string extend = "";
+		
+		string check = getParameterCheckSum(header + body + extend);   //checksum 코드 생성...
+		
+		yield return null;
+		
+		//서버에 저장.
+		string sendMode = Constant.NETWORK_SENDMODE_PVPFriendSearchList;
+		addMessageBuffer("REQUEST MODE : " + sendMode);
+		addMessageBuffer("REQUEST HEADER : " + header);
+		addMessageBuffer("REQUEST BODY : " + body);
+		addMessageBuffer("REQUEST EXTEND : " + extend);
+		
+		WWWForm form = new WWWForm();
+		form.AddField("mode", sendMode);
+		form.AddField("head", header);
+		form.AddField("body", body);
+		form.AddField("extend", extend);
+		form.AddField("check", check);
+		
+		if (Constant.PROJECTMODE_Develop) {
+			
+			m_strURL = Constant.URL_DEVELOP_PvpInfo;
+			
+		} else {
+			
+			m_strURL = Constant.URL_RELEASE_PvpInfo;
+		}
+		
+		WWW www = new WWW(m_strURL, form);
+		yield return www;
+		
+		//Debug.Log ("ST200k DataStreamManager SaveUserData sendMode = " + sendMode);
+		//Debug.Log ("ST200k DataStreamManager SaveUserData header = " + header);
+		//Debug.Log ("ST200k DataStreamManager SaveUserData body = " + body);
+		//Debug.Log ("ST200k DataStreamManager SaveUserData extend = " + extend);
+		//Debug.Log ("ST200k DataStreamManager SaveUserData check = " + check);
+		//Debug.Log ("ST200k DataStreamManager SaveUserData www.text = " + www.text);
+		
+		if (www.error == null) {
+			
+			clsReturn.init();  //초기화..
+			clsReturn = JsonMapper.ToObject<ClsReturn>(www.text);
+			
+			//리턴 오브젝트..
+			if (clsReturn.result == true) {
+				//Debug.Log("mark");
+				string returndata = clsReturn.data;
+				string strExtendJson = clsReturn.extend;
+				
+				if (returndata != null && !returndata.Equals("")) {
+					
+					//JSONNode extendroot = JSON.Parse(strExtendJson);
+					//string receiveServerTime = extendroot ["ServerTime"];
+					//int serverTime = int.Parse(receiveServerTime);
+					
+					
+					JSONNode root = JSON.Parse(returndata);
+					
+					JSONNode friendlist = root["SearchList"];
+					//Debug.Log("TOTAL FRIEND SEARCH COUNT: " + friendlist.Count);
+
+					PVPDataManager.Instance.m_FriendSearchInfoList.Clear();
+					for(int friendindexno = 0; friendindexno < friendlist.Count; friendindexno++)
+					{
+						JSONNode userdata = friendlist[friendindexno];
+						//Debug.Log("TOTAL: " + userdata.ToString());
+						
+						int userindex = userdata["pvp_user_index"].AsInt;
+						string nickname = userdata["nickname"];
+						int battlecount = userdata["battle_count"].AsInt;
+						int wincount = userdata["win_count"].AsInt;
+						int losecount = userdata["lose_count"].AsInt;
+						JSONNode armdata = userdata["armed_data"];
+						int characterindex = armdata["CharacterIndex"].AsInt;
+						int tacticindex = armdata["TacticIndex"].AsInt;
+						int shipindex = armdata["ShipIndex"].AsInt;
+						int shiplevel = armdata["ShipLevel"].AsInt;
+						JSONArray subshipindex = armdata["SubShipIndexList"].AsArray;
+						JSONArray subshiplevel = armdata["SubShipLeveList"].AsArray;
+						int reward = userdata["winning_reward"].AsInt;
+						int repairsec = userdata["sec_under_repair"].AsInt;
+
+						UserInfoData infodata = new UserInfoData();
+						infodata.UserIndex = userindex;
+						infodata.UserNickName = nickname;
+						infodata.CharacterIndex = characterindex;
+						infodata.TacticIndex = tacticindex;
+						infodata.ShipIndex = shipindex;
+						infodata.ShipLevel = shiplevel;
+						int[] subshipindexlist = new int[]{0,0,0,0};
+						int[] subshiplevellist = new int[]{0,0,0,0};
+						for(int j = 0; j < subshipindexlist.Length; j++)
+						{
+							if(subshipindex.Count > j)
+							{
+								subshipindexlist[j] = subshipindex[j].AsInt;
+							}
+						}
+						for(int j = 0; j < subshiplevellist.Length; j++)
+						{
+							if(subshiplevel.Count > j)
+							{
+								subshiplevellist[j] = subshiplevel[j].AsInt;
+							}
+						}
+						infodata.SubShipIndexList = subshipindexlist;
+						infodata.SubShipLevelList = subshiplevellist;
+
+						infodata.RewardAmount = reward;
+						infodata.RepairSecond = repairsec;
+
+						PVPDataManager.Instance.m_FriendSearchInfoList.Add(infodata);
+						
+						//Debug.Log("ARMDATA: " + armdata.ToString());
+						//Debug.Log("hmm: " + recommenduserindex + " subship: " + recommendsubshiplevel[0].AsInt);
+					}
+					
+					if (_delegate_DataStreamManager_PVP != null) {
+						_delegate_DataStreamManager_PVP(Constant.NETWORK_RESULTCODE_OK, friendlist.Count.ToString());
+					}
+					
+				} else {
+					
+					if (_delegate_DataStreamManager_PVP != null) {
+						_delegate_DataStreamManager_PVP(Constant.NETWORK_RESULTCODE_Error_Result_Extend, "");
+					}
+				}
+				
+			} else if (clsReturn.result == false) {
+				
+				if(clsReturn.error_msg == Constant.NETWORK_RESULTCODE_Error_UserSequence_Message)
+				{
+					if (_delegate_DataStreamManager_PVP != null) {
+						_delegate_DataStreamManager_PVP(Constant.NETWORK_RESULTCODE_Error_UserSequence, "");
+					}
+				}else
+				{
+					if (_delegate_DataStreamManager_PVP != null) {
+						_delegate_DataStreamManager_PVP(Constant.NETWORK_RESULTCODE_Error_Result_False, "");
+					}
+				}
+			}
+			
+		} else {
+			
+			addMessageBuffer("RESPONSE ERROR: " + www.error);
+			
+			if (_delegate_DataStreamManager_PVP != null) {
+				_delegate_DataStreamManager_PVP(Constant.NETWORK_RESULTCODE_Error_Network, "");
+			}
+		}
+		
+		www.Dispose();
+		www = null;
+	}
+
+	public void PVP_Request_FriendAdd(int _userindex)
+	{
+		StartCoroutine(IEPVP_Request_FriendAdd(_userindex));
+	}
+	// 유저 데이터 통신 (user_data.php) - SaveUserData.
+	protected IEnumerator IEPVP_Request_FriendAdd(int _userindex) 
+	{
+		
+		msgHeader.Ct = Managers.UserData.GetSyncServerTime();
+		string header = JsonMapper.ToJson(msgHeader);
+		
+		Dictionary<string, string> bodydic = new Dictionary<string, string>();
+		bodydic.Add("UserIndex", _userindex.ToString());
+		
+		string body = TextManager.CreateJsonData(bodydic);
+		//Debug.Log("body: " + body);
+		string extend = "";
+		
+		string check = getParameterCheckSum(header + body + extend);   //checksum 코드 생성...
+		
+		yield return null;
+		
+		//서버에 저장.
+		string sendMode = Constant.NETWORK_SENDMODE_PVPFriendAdd;
+		addMessageBuffer("REQUEST MODE : " + sendMode);
+		addMessageBuffer("REQUEST HEADER : " + header);
+		addMessageBuffer("REQUEST BODY : " + body);
+		addMessageBuffer("REQUEST EXTEND : " + extend);
+		
+		WWWForm form = new WWWForm();
+		form.AddField("mode", sendMode);
+		form.AddField("head", header);
+		form.AddField("body", body);
+		form.AddField("extend", extend);
+		form.AddField("check", check);
+		
+		if (Constant.PROJECTMODE_Develop) {
+			
+			m_strURL = Constant.URL_DEVELOP_PvpInfo;
+			
+		} else {
+			
+			m_strURL = Constant.URL_RELEASE_PvpInfo;
+		}
+		
+		WWW www = new WWW(m_strURL, form);
+		yield return www;
+		
+		//Debug.Log ("ST200k DataStreamManager SaveUserData sendMode = " + sendMode);
+		//Debug.Log ("ST200k DataStreamManager SaveUserData header = " + header);
+		//Debug.Log ("ST200k DataStreamManager SaveUserData body = " + body);
+		//Debug.Log ("ST200k DataStreamManager SaveUserData extend = " + extend);
+		//Debug.Log ("ST200k DataStreamManager SaveUserData check = " + check);
+		//Debug.Log ("ST200k DataStreamManager SaveUserData www.text = " + www.text);
+		
+		if (www.error == null) {
+			
+			clsReturn.init();  //초기화..
+			clsReturn = JsonMapper.ToObject<ClsReturn>(www.text);
+			//리턴 오브젝트..
+			if (clsReturn.result == true) {
+
+				if (_delegate_DataStreamManager_PVP != null) {
+					_delegate_DataStreamManager_PVP(Constant.NETWORK_RESULTCODE_OK, "");
+				}
+				
+			} else if (clsReturn.result == false) {
+				
+				if(clsReturn.error_msg == Constant.NETWORK_RESULTCODE_Error_UserSequence_Message)
+				{
+					if (_delegate_DataStreamManager_PVP != null) {
+						_delegate_DataStreamManager_PVP(Constant.NETWORK_RESULTCODE_Error_UserSequence, "");
+					}
+				}else
+				{
+					if (_delegate_DataStreamManager_PVP != null) {
+						_delegate_DataStreamManager_PVP(Constant.NETWORK_RESULTCODE_Error_Result_False, "");
+					}
+				}
+			}
+			
+		} else {
+			
+			addMessageBuffer("RESPONSE ERROR: " + www.error);
+			
+			if (_delegate_DataStreamManager_PVP != null) {
+				_delegate_DataStreamManager_PVP(Constant.NETWORK_RESULTCODE_Error_Network, "");
+			}
+		}
+		
+		www.Dispose();
+		www = null;
+	}
+
+	public void PVP_Request_FriendRemove(int _userindex)
+	{
+		StartCoroutine(IEPVP_Request_FriendRemove(_userindex));
+	}
+	// 유저 데이터 통신 (user_data.php) - SaveUserData.
+	protected IEnumerator IEPVP_Request_FriendRemove(int _userindex) 
+	{
+		
+		msgHeader.Ct = Managers.UserData.GetSyncServerTime();
+		string header = JsonMapper.ToJson(msgHeader);
+		
+		Dictionary<string, string> bodydic = new Dictionary<string, string>();
+		bodydic.Add("UserIndex", _userindex.ToString());
+		
+		string body = TextManager.CreateJsonData(bodydic);
+		Debug.Log("body: " + body);
+		string extend = "";
+		
+		string check = getParameterCheckSum(header + body + extend);   //checksum 코드 생성...
+		
+		yield return null;
+		
+		//서버에 저장.
+		string sendMode = Constant.NETWORK_SENDMODE_PVPFriendRemove;
+		addMessageBuffer("REQUEST MODE : " + sendMode);
+		addMessageBuffer("REQUEST HEADER : " + header);
+		addMessageBuffer("REQUEST BODY : " + body);
+		addMessageBuffer("REQUEST EXTEND : " + extend);
+		
+		WWWForm form = new WWWForm();
+		form.AddField("mode", sendMode);
+		form.AddField("head", header);
+		form.AddField("body", body);
+		form.AddField("extend", extend);
+		form.AddField("check", check);
+		
+		if (Constant.PROJECTMODE_Develop) {
+			
+			m_strURL = Constant.URL_DEVELOP_PvpInfo;
+			
+		} else {
+			
+			m_strURL = Constant.URL_RELEASE_PvpInfo;
+		}
+		
+		WWW www = new WWW(m_strURL, form);
+		yield return www;
+		
+		//Debug.Log ("ST200k DataStreamManager SaveUserData sendMode = " + sendMode);
+		//Debug.Log ("ST200k DataStreamManager SaveUserData header = " + header);
+		//Debug.Log ("ST200k DataStreamManager SaveUserData body = " + body);
+		//Debug.Log ("ST200k DataStreamManager SaveUserData extend = " + extend);
+		//Debug.Log ("ST200k DataStreamManager SaveUserData check = " + check);
+		//Debug.Log ("ST200k DataStreamManager SaveUserData www.text = " + www.text);
+		
+		if (www.error == null) {
+			
+			clsReturn.init();  //초기화..
+			clsReturn = JsonMapper.ToObject<ClsReturn>(www.text);
+			
+			//리턴 오브젝트..
+			if (clsReturn.result == true) {
+				//Debug.Log("mark");
+				if (_delegate_DataStreamManager_PVP != null) {
+						_delegate_DataStreamManager_PVP(Constant.NETWORK_RESULTCODE_OK, "");
+					}
+			} else if (clsReturn.result == false) {
+				
+				if(clsReturn.error_msg == Constant.NETWORK_RESULTCODE_Error_UserSequence_Message)
+				{
+					if (_delegate_DataStreamManager_PVP != null) {
+						_delegate_DataStreamManager_PVP(Constant.NETWORK_RESULTCODE_Error_UserSequence, "");
+					}
+				}else
+				{
+					if (_delegate_DataStreamManager_PVP != null) {
+						_delegate_DataStreamManager_PVP(Constant.NETWORK_RESULTCODE_Error_Result_False, "");
+					}
+				}
+			}
+			
+		} else {
+			
+			addMessageBuffer("RESPONSE ERROR: " + www.error);
+			
+			if (_delegate_DataStreamManager_PVP != null) {
+				_delegate_DataStreamManager_PVP(Constant.NETWORK_RESULTCODE_Error_Network, "");
+			}
+		}
+		
+		www.Dispose();
+		www = null;
+	}
+
+	public void PVP_Request_SaveBattleResult(int _userindex, bool _win)
+	{
+		StartCoroutine(IEPVP_Request_SaveBattleResult(_userindex, _win));
+	}
+	// 유저 데이터 통신 (user_data.php) - SaveUserData.
+	protected IEnumerator IEPVP_Request_SaveBattleResult(int _userindex, bool _win) 
+	{
+		
+		msgHeader.Ct = Managers.UserData.GetSyncServerTime();
+		string header = JsonMapper.ToJson(msgHeader);
+		
+		Dictionary<string, string> bodydic = new Dictionary<string, string>();
+		bodydic.Add("UserIndex", _userindex.ToString());
+		if(_win)
+		{
+			bodydic.Add("Win", "true");
+		}else
+		{
+			bodydic.Add("Win", "false");
+		}
+
+		string body = TextManager.CreateJsonData(bodydic);
+		//Debug.Log("body: " + body);
+		string extend = "";
+		
+		string check = getParameterCheckSum(header + body + extend);   //checksum 코드 생성...
+		
+		yield return null;
+		
+		//서버에 저장.
+		string sendMode = Constant.NETWORK_SENDMODE_PVPSaveResult;
+		addMessageBuffer("REQUEST MODE : " + sendMode);
+		addMessageBuffer("REQUEST HEADER : " + header);
+		addMessageBuffer("REQUEST BODY : " + body);
+		addMessageBuffer("REQUEST EXTEND : " + extend);
+		
+		WWWForm form = new WWWForm();
+		form.AddField("mode", sendMode);
+		form.AddField("head", header);
+		form.AddField("body", body);
+		form.AddField("extend", extend);
+		form.AddField("check", check);
+		
+		if (Constant.PROJECTMODE_Develop) {
+			
+			m_strURL = Constant.URL_DEVELOP_PvpInfo;
+			
+		} else {
+			
+			m_strURL = Constant.URL_RELEASE_PvpInfo;
+		}
+		
+		WWW www = new WWW(m_strURL, form);
+		yield return www;
+		
+		//Debug.Log ("ST200k DataStreamManager SaveUserData sendMode = " + sendMode);
+		//Debug.Log ("ST200k DataStreamManager SaveUserData header = " + header);
+		//Debug.Log ("ST200k DataStreamManager SaveUserData body = " + body);
+		//Debug.Log ("ST200k DataStreamManager SaveUserData extend = " + extend);
+		//Debug.Log ("ST200k DataStreamManager SaveUserData check = " + check);
+		//Debug.Log ("ST200k DataStreamManager SaveUserData www.text = " + www.text);
+		
+		if (www.error == null) {
+			
+			clsReturn.init();  //초기화..
+			clsReturn = JsonMapper.ToObject<ClsReturn>(www.text);
+			
+			//리턴 오브젝트..
+			if (clsReturn.result == true) {
+				//Debug.Log("mark");
+				string returndata = clsReturn.data;
+				string strExtendJson = clsReturn.extend;
+				
+				if (returndata != null && !returndata.Equals("")) {
+					
+					//JSONNode extendroot = JSON.Parse(strExtendJson);
+					//string receiveServerTime = extendroot ["ServerTime"];
+					//int serverTime = int.Parse(receiveServerTime);
+					
+					
+					JSONNode root = JSON.Parse(returndata);
+					
+					JSONNode resultdata = root["MyInfo"];
+
+					int wincount = resultdata["win_count"].AsInt;
+					int losecount = resultdata["loss_count"].AsInt;
+					PVPDataManager.Instance.MyWinCount = wincount;
+					PVPDataManager.Instance.MyLoseCount = losecount;
+
+					if (_delegate_DataStreamManager_PVP != null) {
+						_delegate_DataStreamManager_PVP(Constant.NETWORK_RESULTCODE_OK, strExtendJson);
+					}
+					
+				} else {
+					
+					if (_delegate_DataStreamManager_PVP != null) {
+						_delegate_DataStreamManager_PVP(Constant.NETWORK_RESULTCODE_Error_Result_Extend, "");
+					}
+				}
+			} else if (clsReturn.result == false) {
+				
+				if(clsReturn.error_msg == Constant.NETWORK_RESULTCODE_Error_UserSequence_Message)
+				{
+					if (_delegate_DataStreamManager_PVP != null) {
+						_delegate_DataStreamManager_PVP(Constant.NETWORK_RESULTCODE_Error_UserSequence, "");
+					}
+				}else
+				{
+					if (_delegate_DataStreamManager_PVP != null) {
+						_delegate_DataStreamManager_PVP(Constant.NETWORK_RESULTCODE_Error_Result_False, "");
+					}
+				}
+			}
+			
+		} else {
+			
+			addMessageBuffer("RESPONSE ERROR: " + www.error);
+			
+			if (_delegate_DataStreamManager_PVP != null) {
+				_delegate_DataStreamManager_PVP(Constant.NETWORK_RESULTCODE_Error_Network, "");
+			}
+		}
+		
+		www.Dispose();
+		www = null;
+	}
+
+	public void PVP_Request_WorldRank()
+	{
+		StartCoroutine(IEPVP_Request_WorldRank());
+	}
+	// 유저 데이터 통신 (user_data.php) - SaveUserData.
+	protected IEnumerator IEPVP_Request_WorldRank() 
+	{
+		
+		msgHeader.Ct = Managers.UserData.GetSyncServerTime();
+		string header = JsonMapper.ToJson(msgHeader);
+		
+		string body = "";
+		//Debug.Log("body: " + body);
+		string extend = "";
+		
+		string check = getParameterCheckSum(header + body + extend);   //checksum 코드 생성...
+		
+		yield return null;
+		
+		//서버에 저장.
+		string sendMode = Constant.NETWORK_SENDMODE_PVPWorldRank;
+		addMessageBuffer("REQUEST MODE : " + sendMode);
+		addMessageBuffer("REQUEST HEADER : " + header);
+		addMessageBuffer("REQUEST BODY : " + body);
+		addMessageBuffer("REQUEST EXTEND : " + extend);
+		
+		WWWForm form = new WWWForm();
+		form.AddField("mode", sendMode);
+		form.AddField("head", header);
+		form.AddField("body", body);
+		form.AddField("extend", extend);
+		form.AddField("check", check);
+		
+		if (Constant.PROJECTMODE_Develop) {
+			
+			m_strURL = Constant.URL_DEVELOP_PvpInfo;
+			
+		} else {
+			
+			m_strURL = Constant.URL_RELEASE_PvpInfo;
+		}
+		
+		WWW www = new WWW(m_strURL, form);
+		yield return www;
+		
+		//Debug.Log ("ST200k DataStreamManager SaveUserData sendMode = " + sendMode);
+		//Debug.Log ("ST200k DataStreamManager SaveUserData header = " + header);
+		//Debug.Log ("ST200k DataStreamManager SaveUserData body = " + body);
+		//Debug.Log ("ST200k DataStreamManager SaveUserData extend = " + extend);
+		//Debug.Log ("ST200k DataStreamManager SaveUserData check = " + check);
+		//Debug.Log ("ST200k DataStreamManager SaveUserData www.text = " + www.text);
+		
+		if (www.error == null) {
+			
+			clsReturn.init();  //초기화..
+			clsReturn = JsonMapper.ToObject<ClsReturn>(www.text);
+			
+			//리턴 오브젝트..
+			if (clsReturn.result == true) {
+				//Debug.Log("mark");
+				string returndata = clsReturn.data;
+				string strExtendJson = clsReturn.extend;
+				
+				if (returndata != null && !returndata.Equals("")) {
+					
+					//JSONNode extendroot = JSON.Parse(strExtendJson);
+					//string receiveServerTime = extendroot ["ServerTime"];
+					//int serverTime = int.Parse(receiveServerTime);
+					
+					PVPDataManager.Instance.m_WorldRankList.Clear();
+					JSONNode root = JSON.Parse(returndata);
+
+					JSONNode myrank = root["MyRank"];
+					int myuserindex = myrank["pvp_user_index"].AsInt;
+					int mywincount = myrank["win_count"].AsInt;
+					int mylosecount = myrank["loss_count"].AsInt;
+					JSONNode myarmdata = myrank["armed_data"];
+					int mycharacter = myarmdata["CharacterIndex"].AsInt;
+					int mytacticindex = myarmdata["TacticIndex"].AsInt;
+					int myshipindex = myarmdata["ShipIndex"].AsInt;
+					int myshiplevel = myarmdata["ShipLevel"].AsInt;
+					int myrankno = myrank["rank"].AsInt;
+					UserPVPRankInfoData myrankinfodata = new UserPVPRankInfoData();
+					myrankinfodata.Rank = myrankno;
+					myrankinfodata.CharacterIndex = mycharacter;
+					myrankinfodata.WinCount = mywincount;
+					myrankinfodata.LoseCount = mylosecount;
+					myrankinfodata.ShipIndex = myshipindex;
+					myrankinfodata.ShipLevel = myshiplevel;
+					myrankinfodata.UserIndex = myuserindex;
+					myrankinfodata.UserNickName = Managers.UserData.UserNickName;
+
+					PVPDataManager.Instance.m_WorldRankList.Add(myrankinfodata);
+
+
+					JSONNode friendlist = root["TopRank"];
+					//Debug.Log("TOTAL FRIEND SEARCH COUNT: " + friendlist.Count);
+
+					for(int friendindexno = 0; friendindexno < friendlist.Count; friendindexno++)
+					{
+						JSONNode userdata = friendlist[friendindexno];
+						Debug.Log("TOTAL: " + userdata.ToString());
+						
+						int userindex = userdata["pvp_user_index"].AsInt;
+						string nickname = userdata["nickname"];
+						int wincount = userdata["win_count"].AsInt;
+						int losecount = userdata["lose_count"].AsInt;
+						JSONNode armdata = userdata["armed_data"];
+						int characterindex = armdata["CharacterIndex"].AsInt;
+						int tacticindex = armdata["TacticIndex"].AsInt;
+						int shipindex = armdata["ShipIndex"].AsInt;
+						int shiplevel = armdata["ShipLevel"].AsInt;
+						int rank = userdata["rank"].AsInt;
+
+						UserPVPRankInfoData infodata = new UserPVPRankInfoData();
+						infodata.UserIndex = userindex;
+						infodata.UserNickName = nickname;
+						infodata.CharacterIndex = characterindex;
+						infodata.ShipIndex = shipindex;
+						infodata.ShipLevel = shiplevel;
+						infodata.LoseCount = losecount;
+						infodata.WinCount = wincount;
+						infodata.Rank = rank;
+
+						
+						PVPDataManager.Instance.m_WorldRankList.Add(infodata);
+						
+						//Debug.Log("ARMDATA: " + armdata.ToString());
+						//Debug.Log("hmm: " + recommenduserindex + " subship: " + recommendsubshiplevel[0].AsInt);
+					}
+
+					PVPDataManager.Instance.m_RewardList.Clear();
+					JSONNode rewardlist = root["RewardNotice"];
+					for(int i = 0; i < rewardlist.Count; i++)
+					{
+						JSONNode rewarddata = rewardlist[i];
+						PVPRewardData data = new PVPRewardData();
+						data.ImageIndex = rewarddata["image_index"].AsInt;
+						data.WinCount = rewarddata["win_count"].AsInt;
+						data.WinColor = rewarddata["color_code"];
+						data.RewardString = rewarddata["reward_string"];
+						PVPDataManager.Instance.m_RewardList.Add(data);
+					}
+
+
+					if (_delegate_DataStreamManager_PVP != null) {
+						_delegate_DataStreamManager_PVP(Constant.NETWORK_RESULTCODE_OK, strExtendJson);
+					}
+					
+				} else {
+					
+					if (_delegate_DataStreamManager_PVP != null) {
+						_delegate_DataStreamManager_PVP(Constant.NETWORK_RESULTCODE_Error_Result_Extend, "");
+					}
+				}
+				
+			} else if (clsReturn.result == false) {
+				
+				if(clsReturn.error_msg == Constant.NETWORK_RESULTCODE_Error_UserSequence_Message)
+				{
+					if (_delegate_DataStreamManager_PVP != null) {
+						_delegate_DataStreamManager_PVP(Constant.NETWORK_RESULTCODE_Error_UserSequence, "");
+					}
+				}else
+				{
+					if (_delegate_DataStreamManager_PVP != null) {
+						_delegate_DataStreamManager_PVP(Constant.NETWORK_RESULTCODE_Error_Result_False, "");
+					}
+				}
+			}
+			
+		} else {
+			
+			addMessageBuffer("RESPONSE ERROR: " + www.error);
+			
+			if (_delegate_DataStreamManager_PVP != null) {
+				_delegate_DataStreamManager_PVP(Constant.NETWORK_RESULTCODE_Error_Network, "");
+			}
+		}
+		
+		www.Dispose();
+		www = null;
+	}
+
+	public void PVP_Request_FriendRank()
+	{
+		StartCoroutine(IEPVP_Request_FriendRank());
+	}
+	// 유저 데이터 통신 (user_data.php) - SaveUserData.
+	protected IEnumerator IEPVP_Request_FriendRank() 
+	{
+		
+		msgHeader.Ct = Managers.UserData.GetSyncServerTime();
+		string header = JsonMapper.ToJson(msgHeader);
+		
+		string body = "";
+		Debug.Log("body: " + body);
+		string extend = "";
+		
+		string check = getParameterCheckSum(header + body + extend);   //checksum 코드 생성...
+		
+		yield return null;
+		
+		//서버에 저장.
+		string sendMode = Constant.NETWORK_SENDMODE_PVPFriendRank;
+		addMessageBuffer("REQUEST MODE : " + sendMode);
+		addMessageBuffer("REQUEST HEADER : " + header);
+		addMessageBuffer("REQUEST BODY : " + body);
+		addMessageBuffer("REQUEST EXTEND : " + extend);
+		
+		WWWForm form = new WWWForm();
+		form.AddField("mode", sendMode);
+		form.AddField("head", header);
+		form.AddField("body", body);
+		form.AddField("extend", extend);
+		form.AddField("check", check);
+		
+		if (Constant.PROJECTMODE_Develop) {
+			
+			m_strURL = Constant.URL_DEVELOP_PvpInfo;
+			
+		} else {
+			
+			m_strURL = Constant.URL_RELEASE_PvpInfo;
+		}
+		
+		WWW www = new WWW(m_strURL, form);
+		yield return www;
+		
+		//Debug.Log ("ST200k DataStreamManager SaveUserData sendMode = " + sendMode);
+		//Debug.Log ("ST200k DataStreamManager SaveUserData header = " + header);
+		//Debug.Log ("ST200k DataStreamManager SaveUserData body = " + body);
+		//Debug.Log ("ST200k DataStreamManager SaveUserData extend = " + extend);
+		//Debug.Log ("ST200k DataStreamManager SaveUserData check = " + check);
+		//Debug.Log ("ST200k DataStreamManager SaveUserData www.text = " + www.text);
+		
+		if (www.error == null) {
+			
+			clsReturn.init();  //초기화..
+			clsReturn = JsonMapper.ToObject<ClsReturn>(www.text);
+			Debug.Log("clsreturn: " + clsReturn.result);
+			//리턴 오브젝트..
+			if (clsReturn.result == true) {
+				Debug.Log("mark");
+				string returndata = clsReturn.data;
+				string strExtendJson = clsReturn.extend;
+				
+				if (returndata != null && !returndata.Equals("")) {
+					
+					//JSONNode extendroot = JSON.Parse(strExtendJson);
+					//string receiveServerTime = extendroot ["ServerTime"];
+					//int serverTime = int.Parse(receiveServerTime);
+					
+					PVPDataManager.Instance.m_FriendRankList.Clear();
+					JSONNode root = JSON.Parse(returndata);
+					
+					JSONNode myrank = root["MyRank"];
+					int myuserindex = myrank["pvp_user_index"].AsInt;
+					int mywincount = myrank["win_count"].AsInt;
+					int mylosecount = myrank["loss_count"].AsInt;
+					JSONNode myarmdata = myrank["armed_data"];
+					int mycharacter = myarmdata["CharacterIndex"].AsInt;
+					int mytacticindex = myarmdata["TacticIndex"].AsInt;
+					int myshipindex = myarmdata["ShipIndex"].AsInt;
+					int myshiplevel = myarmdata["ShipLevel"].AsInt;
+					int myrankno = myrank["rank"].AsInt;
+					UserPVPRankInfoData myrankinfodata = new UserPVPRankInfoData();
+					myrankinfodata.Rank = myrankno;
+					myrankinfodata.CharacterIndex = mycharacter;
+					myrankinfodata.LoseCount = mylosecount;
+					myrankinfodata.WinCount = mywincount;
+					myrankinfodata.ShipIndex = myshipindex;
+					myrankinfodata.ShipLevel = myshiplevel;
+					myrankinfodata.UserIndex = myuserindex;
+					myrankinfodata.UserNickName = Managers.UserData.UserNickName;
+					
+					PVPDataManager.Instance.m_FriendRankList.Add(myrankinfodata);
+					
+					
+					JSONNode friendlist = root["TopRank"];
+					Debug.Log("TOTAL FRIEND SEARCH COUNT: " + friendlist.Count);
+					
+					for(int friendindexno = 0; friendindexno < friendlist.Count; friendindexno++)
+					{
+						JSONNode userdata = friendlist[friendindexno];
+						Debug.Log("TOTAL: " + userdata.ToString());
+						
+						int userindex = userdata["pvp_user_index"].AsInt;
+						string nickname = userdata["nickname"];
+						int wincount = userdata["win_count"].AsInt;
+						int losecount = userdata["lose_count"].AsInt;
+						JSONNode armdata = userdata["armed_data"];
+						int characterindex = armdata["CharacterIndex"].AsInt;
+						int tacticindex = armdata["TacticIndex"].AsInt;
+						int shipindex = armdata["ShipIndex"].AsInt;
+						int shiplevel = armdata["ShipLevel"].AsInt;
+						int rank = userdata["rank"].AsInt;
+						
+						UserPVPRankInfoData infodata = new UserPVPRankInfoData();
+						infodata.UserIndex = userindex;
+						infodata.UserNickName = nickname;
+						infodata.CharacterIndex = characterindex;
+						infodata.ShipIndex = shipindex;
+						infodata.ShipLevel = shiplevel;
+						infodata.LoseCount = losecount;
+						infodata.WinCount = wincount;
+						infodata.Rank = rank;
+						
+						
+						PVPDataManager.Instance.m_FriendRankList.Add(infodata);
+						
+						//Debug.Log("ARMDATA: " + armdata.ToString());
+						//Debug.Log("hmm: " + recommenduserindex + " subship: " + recommendsubshiplevel[0].AsInt);
+					}
+					
+					PVPDataManager.Instance.m_RewardList.Clear();
+					JSONNode rewardlist = root["RewardNotice"];
+					for(int i = 0; i < rewardlist.Count; i++)
+					{
+						JSONNode rewarddata = rewardlist[i];
+						PVPRewardData data = new PVPRewardData();
+						data.ImageIndex = rewarddata["image_index"].AsInt;
+						data.WinCount = rewarddata["win_count"].AsInt;
+						data.WinColor = rewarddata["color_code"];
+						data.RewardString = rewarddata["reward_string"];
+						PVPDataManager.Instance.m_RewardList.Add(data);
+					}
+					
+					
+					if (_delegate_DataStreamManager_PVP != null) {
+						_delegate_DataStreamManager_PVP(Constant.NETWORK_RESULTCODE_OK, strExtendJson);
+					}
+					
+				} else {
+					
+					if (_delegate_DataStreamManager_PVP != null) {
+						_delegate_DataStreamManager_PVP(Constant.NETWORK_RESULTCODE_Error_Result_Extend, "");
+					}
+				}
+				
+			} else if (clsReturn.result == false) {
+				
+				if(clsReturn.error_msg == Constant.NETWORK_RESULTCODE_Error_UserSequence_Message)
+				{
+					if (_delegate_DataStreamManager_PVP != null) {
+						_delegate_DataStreamManager_PVP(Constant.NETWORK_RESULTCODE_Error_UserSequence, "");
+					}
+				}else
+				{
+					if (_delegate_DataStreamManager_PVP != null) {
+						_delegate_DataStreamManager_PVP(Constant.NETWORK_RESULTCODE_Error_Result_False, "");
+					}
+				}
+			}
+			
+		} else {
+			
+			addMessageBuffer("RESPONSE ERROR: " + www.error);
+			
+			if (_delegate_DataStreamManager_PVP != null) {
+				_delegate_DataStreamManager_PVP(Constant.NETWORK_RESULTCODE_Error_Network, "");
+			}
+		}
+		
+		www.Dispose();
+		www = null;
+	}
+
+	/// <summary>
+	/// 0 - attack
+	/// 1 - defend
+	/// </summary>
+	public void PVP_Request_History(int _mode, int _maxstage)
+	{
+		StartCoroutine(IEPVP_Request_History(_mode, _maxstage));
+	}
+	// 유저 데이터 통신 (user_data.php) - SaveUserData.
+	protected IEnumerator IEPVP_Request_History(int _mode, int _maxstage) 
+	{
+		
+		msgHeader.Ct = Managers.UserData.GetSyncServerTime();
+		string header = JsonMapper.ToJson(msgHeader);
+
+		Dictionary<string, string> bodydic = new Dictionary<string, string>();
+		bodydic.Add("Mode", (_mode == 0 ? "\"A\"" : "\"D\""));
+		bodydic.Add("MaxStage", _maxstage.ToString());
+		string body = TextManager.CreateJsonData(bodydic);
+		//Debug.Log("body: " + body);
+		string extend = "";
+		
+		string check = getParameterCheckSum(header + body + extend);   //checksum 코드 생성...
+		
+		yield return null;
+		
+		//서버에 저장.
+		string sendMode = Constant.NETWORK_SENDMODE_PVPHistory;
+		addMessageBuffer("REQUEST MODE : " + sendMode);
+		addMessageBuffer("REQUEST HEADER : " + header);
+		addMessageBuffer("REQUEST BODY : " + body);
+		addMessageBuffer("REQUEST EXTEND : " + extend);
+		
+		WWWForm form = new WWWForm();
+		form.AddField("mode", sendMode);
+		form.AddField("head", header);
+		form.AddField("body", body);
+		form.AddField("extend", extend);
+		form.AddField("check", check);
+		
+		if (Constant.PROJECTMODE_Develop) {
+			
+			m_strURL = Constant.URL_DEVELOP_PvpInfo;
+			
+		} else {
+			
+			m_strURL = Constant.URL_RELEASE_PvpInfo;
+		}
+		
+		WWW www = new WWW(m_strURL, form);
+		yield return www;
+		
+		//Debug.Log ("ST200k DataStreamManager SaveUserData sendMode = " + sendMode);
+		//Debug.Log ("ST200k DataStreamManager SaveUserData header = " + header);
+		//Debug.Log ("ST200k DataStreamManager SaveUserData body = " + body);
+		//Debug.Log ("ST200k DataStreamManager SaveUserData extend = " + extend);
+		//Debug.Log ("ST200k DataStreamManager SaveUserData check = " + check);
+		//Debug.Log ("ST200k DataStreamManager SaveUserData www.text = " + www.text);
+		
+		if (www.error == null) {
+			
+			clsReturn.init();  //초기화..
+			clsReturn = JsonMapper.ToObject<ClsReturn>(www.text);
+			
+			//리턴 오브젝트..
+			if (clsReturn.result == true) {
+				//Debug.Log("mark");
+				string returndata = clsReturn.data;
+				string strExtendJson = clsReturn.extend;
+				
+				if (returndata != null && !returndata.Equals("")) {
+					
+					//JSONNode extendroot = JSON.Parse(strExtendJson);
+					//string receiveServerTime = extendroot ["ServerTime"];
+					//int serverTime = int.Parse(receiveServerTime);
+
+					if(_mode == 0)
+					{
+						PVPDataManager.Instance.m_HistoryAttackList.Clear();
+					}else
+					{
+						PVPDataManager.Instance.m_HistoryDefendList.Clear();
+					}
+
+					JSONNode root = JSON.Parse(returndata);			
+					
+					JSONNode friendlist = root["BattleList"];
+					//Debug.Log("TOTAL FRIEND SEARCH COUNT: " + friendlist.Count);
+					
+					for(int friendindexno = 0; friendindexno < friendlist.Count; friendindexno++)
+					{
+						JSONNode userdata = friendlist[friendindexno];
+						//Debug.Log("TOTAL: " + userdata.ToString());
+						
+						int userindex = userdata["pvp_user_index"].AsInt;
+						string nickname = userdata["nickname"];
+						int battlecount = userdata["battle_count"].AsInt;
+						int wincount = userdata["win_count"].AsInt;
+						int losecount = userdata["lose_count"].AsInt;
+						JSONNode armdata = userdata["armed_data"];
+						int characterindex = armdata["CharacterIndex"].AsInt;
+						int tacticindex = armdata["TacticIndex"].AsInt;
+						int shipindex = armdata["ShipIndex"].AsInt;
+						int shiplevel = armdata["ShipLevel"].AsInt;
+						JSONArray subshipindex = armdata["SubShipIndexList"].AsArray;
+						JSONArray subshiplevel = armdata["SubShipLeveList"].AsArray;
+						int reward = userdata["winning_reward"].AsInt;
+						int repairsec = userdata["sec_under_repair"].AsInt;
+						
+						UserInfoData infodata = new UserInfoData();
+						infodata.UserIndex = userindex;
+						infodata.UserNickName = nickname;
+						infodata.CharacterIndex = characterindex;
+						infodata.TacticIndex = tacticindex;
+						infodata.ShipIndex = shipindex;
+						infodata.ShipLevel = shiplevel;
+						int[] subshipindexlist = new int[]{0,0,0,0};
+						int[] subshiplevellist = new int[]{0,0,0,0};
+						for(int j = 0; j < subshipindexlist.Length; j++)
+						{
+							if(subshipindex.Count > j)
+							{
+								subshipindexlist[j] = subshipindex[j].AsInt;
+							}
+						}
+						for(int j = 0; j < subshiplevellist.Length; j++)
+						{
+							if(subshiplevel.Count > j)
+							{
+								subshiplevellist[j] = subshiplevel[j].AsInt;
+							}
+						}
+						infodata.SubShipIndexList = subshipindexlist;
+						infodata.SubShipLevelList = subshiplevellist;
+
+						infodata.RewardAmount = reward;
+						infodata.RepairSecond = repairsec;
+						//Debug.Log("REARD: " +infodata.RewardAmount + " COME: " + reward);
+						UserHistoryData historydata = new UserHistoryData();
+						historydata.m_UserInfoData = infodata;
+						historydata.PastSecond = userdata["psec"].AsInt;
+						historydata.Win = userdata["Win"].AsBool;
+						if(_mode == 0)
+						{
+							PVPDataManager.Instance.m_HistoryAttackList.Add(historydata);
+						}else
+						{
+							PVPDataManager.Instance.m_HistoryDefendList.Add(historydata);
+						}
+						
+						//Debug.Log("ARMDATA: " + armdata.ToString());
+						//Debug.Log("hmm: " + recommenduserindex + " subship: " + recommendsubshiplevel[0].AsInt);
+					}
+					
+					if (_delegate_DataStreamManager_PVP != null) {
+						_delegate_DataStreamManager_PVP(Constant.NETWORK_RESULTCODE_OK, strExtendJson);
+					}
+					
+				} else {
+					
+					if (_delegate_DataStreamManager_PVP != null) {
+						_delegate_DataStreamManager_PVP(Constant.NETWORK_RESULTCODE_Error_Result_Extend, "");
+					}
+				}
+				
+			} else if (clsReturn.result == false) {
+				
+				if(clsReturn.error_msg == Constant.NETWORK_RESULTCODE_Error_UserSequence_Message)
+				{
+					if (_delegate_DataStreamManager_PVP != null) {
+						_delegate_DataStreamManager_PVP(Constant.NETWORK_RESULTCODE_Error_UserSequence, "");
+					}
+				}else
+				{
+					if (_delegate_DataStreamManager_PVP != null) {
+						_delegate_DataStreamManager_PVP(Constant.NETWORK_RESULTCODE_Error_Result_False, "");
+					}
+				}
+			}
+			
+		} else {
+			
+			addMessageBuffer("RESPONSE ERROR: " + www.error);
+			
+			if (_delegate_DataStreamManager_PVP != null) {
+				_delegate_DataStreamManager_PVP(Constant.NETWORK_RESULTCODE_Error_Network, "");
+			}
+		}
+		
+		www.Dispose();
+		www = null;
+	}
+
+
+	/// <summary>
+	/// 0 - attack
+	/// 1 - defend
+	/// </summary>
+	public void PVP_Request_Popup()
+	{
+		StartCoroutine(IEPVP_Request_Popup());
+	}
+	// 유저 데이터 통신 (user_data.php) - SaveUserData.
+	protected IEnumerator IEPVP_Request_Popup() 
+	{
+		
+		msgHeader.Ct = Managers.UserData.GetSyncServerTime();
+		string header = JsonMapper.ToJson(msgHeader);
+
+		string body = "";
+		//Debug.Log("body: " + body);
+		string extend = "";
+		
+		string check = getParameterCheckSum(header + body + extend);   //checksum 코드 생성...
+		
+		yield return null;
+		
+		//서버에 저장.
+		string sendMode = Constant.NETWORK_SENDMODE_PVPPopup;
+		addMessageBuffer("REQUEST MODE : " + sendMode);
+		addMessageBuffer("REQUEST HEADER : " + header);
+		addMessageBuffer("REQUEST BODY : " + body);
+		addMessageBuffer("REQUEST EXTEND : " + extend);
+		
+		WWWForm form = new WWWForm();
+		form.AddField("mode", sendMode);
+		form.AddField("head", header);
+		form.AddField("body", body);
+		form.AddField("extend", extend);
+		form.AddField("check", check);
+		
+		if (Constant.PROJECTMODE_Develop) {
+			
+			m_strURL = Constant.URL_DEVELOP_PvpInfo;
+			
+		} else {
+			
+			m_strURL = Constant.URL_RELEASE_PvpInfo;
+		}
+		
+		WWW www = new WWW(m_strURL, form);
+		yield return www;
+		
+		//Debug.Log ("ST200k DataStreamManager SaveUserData sendMode = " + sendMode);
+		//Debug.Log ("ST200k DataStreamManager SaveUserData header = " + header);
+		//Debug.Log ("ST200k DataStreamManager SaveUserData body = " + body);
+		//Debug.Log ("ST200k DataStreamManager SaveUserData extend = " + extend);
+		//Debug.Log ("ST200k DataStreamManager SaveUserData check = " + check);
+		//Debug.Log ("ST200k DataStreamManager SaveUserData www.text = " + www.text);
+		
+		if (www.error == null) {
+			
+			clsReturn.init();  //초기화..
+			clsReturn = JsonMapper.ToObject<ClsReturn>(www.text);
+			
+			//리턴 오브젝트..
+			if (clsReturn.result == true) {
+				//Debug.Log("mark");
+				string returndata = clsReturn.data;
+				string strExtendJson = clsReturn.extend;
+				
+				if (returndata != null && !returndata.Equals("")) {
+
+					if (_delegate_DataStreamManager_PVP != null) {
+						_delegate_DataStreamManager_PVP(Constant.NETWORK_RESULTCODE_OK, returndata);
+					}
+					
+				} else {
+					
+					if (_delegate_DataStreamManager_PVP != null) {
+						_delegate_DataStreamManager_PVP(Constant.NETWORK_RESULTCODE_Error_Result_Extend, "");
+					}
+				}
+				
+			} else if (clsReturn.result == false) {
+				
+				if(clsReturn.error_msg == Constant.NETWORK_RESULTCODE_Error_UserSequence_Message)
+				{
+					if (_delegate_DataStreamManager_PVP != null) {
+						_delegate_DataStreamManager_PVP(Constant.NETWORK_RESULTCODE_Error_UserSequence, "");
+					}
+				}else
+				{
+					if (_delegate_DataStreamManager_PVP != null) {
+						_delegate_DataStreamManager_PVP(Constant.NETWORK_RESULTCODE_Error_Result_False, "");
+					}
+				}
+			}
+			
+		} else {
+			
+			addMessageBuffer("RESPONSE ERROR: " + www.error);
+			
+			if (_delegate_DataStreamManager_PVP != null) {
+				_delegate_DataStreamManager_PVP(Constant.NETWORK_RESULTCODE_Error_Network, "");
+			}
+		}
+		
+		www.Dispose();
+		www = null;
+	}
+#endregion
 	
 }

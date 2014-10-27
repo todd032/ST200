@@ -52,18 +52,7 @@ public class PVPUI_Rank_RewardDisplayer : MonoBehaviour {
 
 	public void InitUI()
 	{
-		List<PVPRewardData> rewardlist = new List<PVPRewardData>();
-		for(int i = 0; i < 5; i++)
-		{
-			PVPRewardData data = new PVPRewardData();
-			data.WinCount = i * 10;
-			data.ImageIndex = 1;
-			data.RewardType = 1;
-			data.RewardCount = i;
-			rewardlist.Add(data);
-		}
-
-		InitList(rewardlist);
+		InitList(PVPDataManager.Instance.m_RewardList);
 	}
 
 	public void OnClickCloseButton()
@@ -138,10 +127,9 @@ public class PVPUI_Rank_RewardDisplayer : MonoBehaviour {
 			{
 				PVPRewardData data = m_InfoDataList[curuserindex];
 				m_InfoUIList[curuiindex].InitUI(
-					data.WinCount,
+					"[" + data.WinColor + "]" + data.WinCount.ToString() + TextManager.Instance.GetString(248),
 					data.ImageIndex,
-					data.RewardType,
-					data.RewardCount);					
+					data.RewardString);					
 			}else
 			{
 				NGUITools.SetActive(m_InfoUIList[curuiindex].gameObject, false);

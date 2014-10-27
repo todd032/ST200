@@ -45,6 +45,7 @@ public class GUIManager : MonoBehaviour {
 	public WinLoseAnimation m_WinLoseAnimation;
 	public UILabel m_StageWaveLabel;
 	public CutInFXAnimation_GO m_CutInFXAnimation_GO;
+	public CutInFXAnimation_GO m_CutInFXAnimation_PVPGO;
 	public CutInFXAnimation_Continue m_CutInFxAnimation_Continue;
 	public CutInFXAnimation_EnemyIncoming m_CutInFxAnimation_Incoming;
 	public CutInFXAnimation_Shout m_CutInFxAnimation_Shout;
@@ -176,6 +177,11 @@ public class GUIManager : MonoBehaviour {
 	public void PlayCutInFxAnimation_GO(int _character)
 	{
 		m_CutInFXAnimation_GO.PlayAnimation(_character);
+	}
+
+	public void PlayCutInFxAnimation_PvpGo(int _character)
+	{
+		m_CutInFXAnimation_PVPGO.PlayAnimation(_character);
 	}
 
 	public void PlayCutInFXAnimation_Continue(int _character)
@@ -545,7 +551,7 @@ public class GUIManager : MonoBehaviour {
 	public void LoadPauseGameUI() {
 		NGUITools.SetActive(_pauseGameUI.gameObject, true) ;
 		
-		GameUIAllButtonDisable() ;
+		//GameUIAllButtonDisable() ;
 		
 		InitializePauseGameUI() ;
 		

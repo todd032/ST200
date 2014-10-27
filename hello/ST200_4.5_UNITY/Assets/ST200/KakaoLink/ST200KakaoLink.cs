@@ -24,7 +24,7 @@ public class ST200KakaoLink {
 	
 	public ST200KakaoLink()
 	{
-		/*
+
 #if UNITY_ANDROID && !UNITY_EDITOR
 		pluginClass = new AndroidJavaClass( "com.kakao.sample.kakaolink.KakaoLinkMainActivity" );
 
@@ -36,10 +36,10 @@ public class ST200KakaoLink {
 		{
 			Debug.Log( "Success Init JavaClass" );
 
-			pluginClass.CallStatic( "InitKakaoLink", m_ImageUrl, m_LinkText );
+			//pluginClass.CallStatic( "InitKakaoLink", m_ImageUrl, m_LinkText );
 		}
 #endif
-*/
+
 		
 		//InitLink( m_ImageUrl, m_LinkText );
 	}
@@ -50,7 +50,8 @@ public class ST200KakaoLink {
 		m_LinkText = _text;
 		m_ButtonText = _buttontext;
 #if UNITY_ANDROID && !UNITY_EDITOR
-		NativeHelper.Instance.activity.Call( "InitKakaoLink", m_ImageUrl, m_LinkText , m_ButtonText);
+		pluginClass.CallStatic( "InitKakaoLink", _imageurl, _text, _buttontext );
+		//NativeHelper.Instance.activity.Call( "InitKakaoLink", m_ImageUrl, m_LinkText , m_ButtonText);
 #endif
 	}
 	
@@ -58,8 +59,8 @@ public class ST200KakaoLink {
 	{
 		Debug.Log( "Click KakaoLink" );
 		#if UNITY_ANDROID && !UNITY_EDITOR
-		//pluginClass.CallStatic( "SendKakaoLinkMessage");
-		NativeHelper.Instance.activity.Call( "SendKakaoLinkMessage" );
+		pluginClass.CallStatic( "SendKakaoLinkMessage");
+		//NativeHelper.Instance.activity.Call( "SendKakaoLinkMessage" );
 		#endif
 	}
 	

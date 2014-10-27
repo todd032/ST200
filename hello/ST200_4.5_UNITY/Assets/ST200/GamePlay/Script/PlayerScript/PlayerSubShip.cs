@@ -28,8 +28,31 @@ public class PlayerSubShip : MonoBehaviour {
 	public Vector3 m_ShootDirection;
 	
 	public float m_CurHealth;
-	public float m_MaxHealth = 100f;
-	
+	protected string m_MaxHealth = "";
+	public float MaxHealth {
+		set { 
+			string encryptString = LoadingWindows.NextE(value.ToString(),Constant.DefalutAppName) ;
+			m_MaxHealth = encryptString ;
+		}
+		get {
+			if(m_MaxHealth == null || m_MaxHealth.Equals("")){
+				return 1f ;	
+			}
+			string decryptString = LoadingWindows.NextD(m_MaxHealth,Constant.DefalutAppName) ;
+			float decryptFloat = float.Parse(decryptString) ;
+			
+			for(int i = 0; i < m_BuffList.Count; i++)
+			{
+				if(m_BuffList[i].BuffType == GameShipBuffType.HEALTH_INCREASE)
+				{
+					decryptFloat *= m_BuffList[i].Value2;
+				}
+			}
+			
+			return decryptFloat;
+		}
+	}
+
 	public float SpecialValue1
 	{
 		get
@@ -139,8 +162,8 @@ public class PlayerSubShip : MonoBehaviour {
 	{
 		m_StatInfo = _info;
 		TeamIndex = _teamindex;
-		m_MaxHealth = m_StatInfo.Health;
-		m_CurHealth = m_MaxHealth;
+		MaxHealth = m_StatInfo.Health;
+		m_CurHealth = MaxHealth;
 		m_PlayerShip = _playership;
 
 		m_EquipIndex = _equipindex;
@@ -204,7 +227,7 @@ public class PlayerSubShip : MonoBehaviour {
 		{
 			m_AttackTimer += _timer * GaugeSpeed;
 		}
-		m_HealthGauge.UpdateHealth(m_CurHealth, m_StatInfo.Health);
+		m_HealthGauge.UpdateHealth(m_CurHealth, MaxHealth);
 		m_SpecialGauge.UpdateHealth(m_AttackTimer, m_StatInfo.SpecialGaugeMax);
 	}
 
@@ -547,7 +570,7 @@ public class PlayerSubShip : MonoBehaviour {
 	{
 		if(m_CurHealth > 0f)
 		{
-			m_CurHealth = Mathf.Min(m_MaxHealth, m_CurHealth + _heal);
+			m_CurHealth = Mathf.Min(MaxHealth, m_CurHealth + _heal);
 			GamePlayFXManager.Instance.StartFontFX(Color.green, transform.position, "+" + ((int)_heal).ToString());
 		}
 	}
@@ -555,7 +578,7 @@ public class PlayerSubShip : MonoBehaviour {
 	public virtual void Revive()
 	{
 		gameObject.SetActive(true);
-		m_CurHealth = m_MaxHealth;
+		m_CurHealth = MaxHealth;
 		m_ShipAnimation.PlayIdleAnimation();
 	}
 

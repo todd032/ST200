@@ -28,6 +28,7 @@ public class MainUI : MonoBehaviour {
 
 	public AttendPopupView m_AttendPopupView;
 	public EventPopupView m_EventPopupView;
+	public Main_AttackAlertPopup m_AttackAlertPopup;
 
 	public MainUI_ModeSelect m_ModeSelectUI;
 	// Use this for initialization
@@ -87,6 +88,9 @@ public class MainUI : MonoBehaviour {
 			{
 				return true;
 			}else if(m_EventPopupView.OnEscapePress())
+			{
+				return true;
+			}else if(m_AttackAlertPopup.OnEscapePress())
 			{
 				return true;
 			}else if(m_WorldRankingUI.OnEscapePress())
@@ -285,6 +289,10 @@ public class MainUI : MonoBehaviour {
 			if(!Managers.UserData.TutorialFlagV119)
 			{
 				GameUIManager.Instance.m_MainTutorial.StartTutorial();
+			}else
+			{
+				//m_AttackAlertPopup show
+				CheckAttackHistoryPopup();
 			}
 		}
 		
@@ -328,9 +336,91 @@ public class MainUI : MonoBehaviour {
 			if(!Managers.UserData.TutorialFlagV119)
 			{
 				GameUIManager.Instance.m_MainTutorial.StartTutorial();
+			}else
+			{
+				//m_AttackAlertPopup show
+				CheckAttackHistoryPopup();
 			}
 		}
 		
 	}
 
+
+	public void CheckAttackHistoryPopup()
+	{
+		Managers.DataStream.Event_Delegate_DataStreamManager_PVP += (int intResult_Code_Input, string strResult_Extend_Input) => 
+		{
+			if(intResult_Code_Input == Constant.NETWORK_RESULTCODE_OK)
+			{	
+				//Debug.Log("stresult: " + strResult_Extend_Input);
+				JSONNode root = JSON.Parse(strResult_Extend_Input);			
+				
+				JSONNode friendlist = root["BattleLast"];
+				//Debug.Log("TOTAL FRIEND SEARCH COUNT: " + friendlist.Count);
+				if(friendlist.Count > 0)
+				{
+					UserHistoryData historydata = new UserHistoryData();
+					for(int friendindexno = 0; friendindexno < friendlist.Count; friendindexno++)
+					{
+						JSONNode userdata = friendlist[friendindexno];
+						//Debug.Log("TOTAL: " + userdata.ToString());
+						
+						int userindex = userdata["pvp_user_index"].AsInt;
+						string nickname = userdata["nickname"];
+						int battlecount = userdata["battle_count"].AsInt;
+						int wincount = userdata["win_count"].AsInt;
+						int losecount = userdata["lose_count"].AsInt;
+						JSONNode armdata = userdata["armed_data"];
+						int characterindex = armdata["CharacterIndex"].AsInt;
+						int tacticindex = armdata["TacticIndex"].AsInt;
+						int shipindex = armdata["ShipIndex"].AsInt;
+						int shiplevel = armdata["ShipLevel"].AsInt;
+						JSONArray subshipindex = armdata["SubShipIndexList"].AsArray;
+						JSONArray subshiplevel = armdata["SubShipLeveList"].AsArray;
+						int reward = userdata["winning_reward"].AsInt;
+						int repairsec = userdata["sec_under_repair"].AsInt;
+						
+						UserInfoData infodata = new UserInfoData();
+						infodata.UserIndex = userindex;
+						infodata.UserNickName = nickname;
+						infodata.CharacterIndex = characterindex;
+						infodata.TacticIndex = tacticindex;
+						infodata.ShipIndex = shipindex;
+						infodata.ShipLevel = shiplevel;
+						int[] subshipindexlist = new int[]{0,0,0,0};
+						int[] subshiplevellist = new int[]{0,0,0,0};
+						for(int j = 0; j < subshipindexlist.Length; j++)
+						{
+							if(subshipindex.Count > j)
+							{
+								subshipindexlist[j] = subshipindex[j].AsInt;
+							}
+						}
+						for(int j = 0; j < subshiplevellist.Length; j++)
+						{
+							if(subshiplevel.Count > j)
+							{
+								subshiplevellist[j] = subshiplevel[j].AsInt;
+							}
+						}
+						infodata.SubShipIndexList = subshipindexlist;
+						infodata.SubShipLevelList = subshiplevellist;
+						
+						infodata.RewardAmount = reward;
+						infodata.RepairSecond = repairsec;
+						//Debug.Log("REARD: " +infodata.RewardAmount + " COME: " + reward);
+						historydata.m_UserInfoData = infodata;
+						historydata.PastSecond = userdata["psec"].AsInt;
+						historydata.Win = userdata["Win"].AsBool;
+					}
+					m_AttackAlertPopup.ShowUI();
+					m_AttackAlertPopup.InitUI(historydata);
+				}
+			}else
+			{
+				
+			}
+		};
+		Managers.DataStream.PVP_Request_Popup();
+	}
 }

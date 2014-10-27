@@ -179,4 +179,117 @@ public class TextManager : MonoBehaviour {
 		
 		return GetEnterReplaced(stringtoreplace);
 	}
+
+	
+	
+	public static string CreateJsonData(Dictionary<string, string> _value)
+	{
+		string returnstring = "";
+		int count = 0;
+		foreach(string _key in _value.Keys)
+		{
+			string value = "\"" + _key + "\":"+_value[_key];
+			if(count != 0)
+			{
+				returnstring += "," + value;
+			}else
+			{
+				returnstring += value;
+			}
+			count++;
+		}
+		return "{" + returnstring + "}";
+	}
+
+	public static string CreateJsonData(Dictionary<string, object> _value)
+	{
+		string returnstring = "";
+		int count = 0;
+		foreach(string _key in _value.Keys)
+		{
+			string value = "\"" + _key + "\":"+_value[_key]+"";
+			if(count != 0)
+			{
+				returnstring += "," + value;
+			}else
+			{
+				returnstring += value;
+			}
+			count++;
+		}
+		return "{" + returnstring + "}";
+	}
+
+	/// <summary>
+	/// return [XXday, XXmin, XXsec]
+	/// </summary>
+	public static string[] GetDHM(int _second)
+	{
+		string daystring = "00";
+		string hourstring = "00";
+		string minstring = "00";
+
+		int min = _second / 60 % 60;
+		int hour = (_second / 60 / 60) % 24;
+		int day = (_second / 60 / 60) / 24;
+
+		if(min < 10)
+		{
+			minstring = "0" + min.ToString();
+		}else
+		{
+			minstring = min.ToString();
+		}
+
+		if(hour < 10)
+		{
+			hourstring = "0" + hour.ToString();
+		}else
+		{
+			hourstring = hour.ToString();
+		}
+
+		if(day < 10)
+		{
+			daystring = "0" + day.ToString();
+		}else
+		{
+			daystring = day.ToString();
+		}
+		return new string[]{daystring, hourstring, minstring};
+	}
+
+	/// <summary>
+	/// returns XX:XX
+	/// </summary>
+	public static string GetHM(int _second)
+	{
+		string hourstring = "";
+		string minstring = "";
+
+		int totalsecond = _second;
+
+		int min = (_second / 60) % 60;
+		int hour = (_second / 60) / 60;
+
+		if(hour < 10)
+		{
+			hourstring = "0" + hour.ToString();
+		}else
+		{
+			hourstring = hour.ToString();
+		}
+
+		if(min == 0)
+		{
+			minstring = "01";
+		}else if(min < 10)
+		{
+			minstring = "0" + min.ToString();
+		}else
+		{
+			minstring = min.ToString();
+		}
+		return hourstring + ":" + minstring;
+	}
 }

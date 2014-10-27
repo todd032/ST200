@@ -48,6 +48,8 @@ public class GameManager : MonoBehaviour
 	};
 
 	public Camera m_GamePlayCamera;
+	public GameEnemyNotifier m_EnemyNotifier;
+
 	public int _lineCounter = 0;
 	private GameState _gameState = GameState.GameInitialize ;
 	public GameState GetGameState
@@ -2575,7 +2577,7 @@ public class GameManager : MonoBehaviour
 		_GameStageManager.EnemyShootEvent 				+= EnemyShootEvent;
 		_GameStageManager.DefendLinePassEvent 			+= EnemyDefendLinePassEvent;
 		_GameStageManager.EnemyDeadEvent				+= EnemyDeadEvent;
-		
+
 		for(int i = 1 ; i <= Managers.GameBalanceData.SubShipEquipAvailableMaxCount; i++)
 		{
 			int shipindex = Managers.UserData.GetEquipedSubShipIndex(i);
@@ -2600,6 +2602,7 @@ public class GameManager : MonoBehaviour
 				GamePlayerManager.Instance.OppSpawnSubShip(shipindex, shiplevel, selectindex);
 			}
 		}
+		GamePlayerManager.Instance.m_OppPlayerShip.SetMarker(true);
 		GamePlayerManager.Instance.m_OppPlayerShip.gameObject.AddComponent<PlayerShipAI>();
 		PlayerShipAI oppshipai = GamePlayerManager.Instance.m_OppPlayerShip.gameObject.GetComponent<PlayerShipAI>();
 		oppshipai.Init(GamePlayerManager.Instance.m_OppPlayerShip, GamePlayerManager.Instance.m_CurrentPlayerShip);
@@ -2622,6 +2625,63 @@ public class GameManager : MonoBehaviour
 				GamePlayerManager.Instance.m_CurrentPlayerShip.AddTarget(oppsubship.transform);
 			}
 		}
+
+		for(int i = 0; i < GamePlayerManager.Instance.m_OppSubShipList.Count; i++)
+		{
+			PlayerSubShip subship = GamePlayerManager.Instance.m_OppSubShipList[i];
+			subship.AddTarget(GamePlayerManager.Instance.m_CurrentPlayerShip.transform);
+			subship.SetUseTactic(true);
+			GamePlayerManager.Instance.m_CurrentPlayerShip.AddTarget(subship.transform);
+			for(int j = 0; j < GamePlayerManager.Instance.m_SubShipList.Count; j++)
+			{
+				PlayerSubShip playersubship = GamePlayerManager.Instance.m_SubShipList[j];
+				subship.AddTarget(playersubship.transform);
+			}
+		}
+
+		//add buff		
+		GameShipBuff pvphealthbuff = new GameShipBuff();
+		pvphealthbuff.BuffRemainType = GameShipBuffRemainType.INFINITE;
+		pvphealthbuff.BuffType = GameShipBuffType.HEALTH_INCREASE;
+		pvphealthbuff.Value1 = Managers.GameBalanceData.PVPHealthIncreaseRatio;
+		pvphealthbuff.Value2 = Managers.GameBalanceData.PVPHealthIncreaseRatio;
+		m_Player.AddBuff(pvphealthbuff);
+		m_Player.Revive();
+		for(int i = 0; i < GamePlayerManager.Instance.m_SubShipList.Count; i++)
+		{
+			GamePlayerManager.Instance.m_SubShipList[i].AddBuff(pvphealthbuff);
+			GamePlayerManager.Instance.m_SubShipList[i].Revive();
+		}
+		GamePlayerManager.Instance.m_OppPlayerShip.AddBuff(pvphealthbuff);
+		GamePlayerManager.Instance.m_OppPlayerShip.Revive();
+		for(int i = 0; i < GamePlayerManager.Instance.m_OppSubShipList.Count; i++)
+		{
+			GamePlayerManager.Instance.m_OppSubShipList[i].AddBuff(pvphealthbuff);
+			GamePlayerManager.Instance.m_OppSubShipList[i].Revive();
+		}
+
+		GameShipBuff oppattackbuff = new GameShipBuff();
+		oppattackbuff.BuffRemainType = GameShipBuffRemainType.INFINITE;
+		oppattackbuff.BuffType = GameShipBuffType.ATTACK_DAMAGE_BUFF;
+		oppattackbuff.Value1 = 1f;
+		oppattackbuff.Value2 = Managers.GameBalanceData.PVPPlayAttackIncreaseRatio;
+
+		GameShipBuff opphealthbuff = new GameShipBuff();
+		opphealthbuff.BuffRemainType = GameShipBuffRemainType.INFINITE;
+		opphealthbuff.BuffType = GameShipBuffType.HEALTH_INCREASE;
+		opphealthbuff.Value1 = Managers.GameBalanceData.PVPPlayOppHealthIncreaseRatio;
+		opphealthbuff.Value2 = Managers.GameBalanceData.PVPPlayOppHealthIncreaseRatio;
+
+		GamePlayerManager.Instance.m_OppPlayerShip.AddBuff(oppattackbuff);
+		GamePlayerManager.Instance.m_OppPlayerShip.AddBuff(opphealthbuff);
+		GamePlayerManager.Instance.m_OppPlayerShip.Revive();
+		for(int i = 0; i < GamePlayerManager.Instance.m_OppSubShipList.Count; i++)
+		{
+			GamePlayerManager.Instance.m_OppSubShipList[i].AddBuff(oppattackbuff);
+			GamePlayerManager.Instance.m_OppSubShipList[i].AddBuff(opphealthbuff);
+			GamePlayerManager.Instance.m_OppSubShipList[i].Revive();
+		}
+
 		//init effects
 		m_ShoutEffect.Init(20f);//m_Player.m_ShipStatInfo.PushForce 
 		m_SingijeonEffect.Init(m_Player.m_ShipStatInfo.BulletDamage * 2f);
@@ -2739,7 +2799,7 @@ public class GameManager : MonoBehaviour
 						
 						//_readyGoAlertObject.StartReadyGoAction() ;
 						//_guiManager.PlayCutInFxAnimation(1, CharacterNum);
-						_guiManager.PlayCutInFxAnimation_GO(CharacterNum);
+						_guiManager.PlayCutInFxAnimation_PvpGo(PVPDataManager.Instance.m_SelectedPVPUserInfo.CharacterIndex);
 					}
 					
 					//_readyGoAlertObject.StartReadyGoAction() ;
@@ -2845,6 +2905,10 @@ public class GameManager : MonoBehaviour
 
 		float remainsec = PVPRemainTimer;
 		_guiManager.UpdatePVPUI(remainopp, totalopp, (int)remainsec);
+
+		List<GameObject> targetlist = new List<GameObject>();
+		targetlist.Add(GamePlayerManager.Instance.m_OppPlayerShip.gameObject);
+		m_EnemyNotifier.UpdateTargetUI(targetlist);
 	}
 
 	private IEnumerator PVP_CLEAR() 
@@ -2892,10 +2956,27 @@ public class GameManager : MonoBehaviour
 				
 				_isGameOver = true ;				
 				int gaincoin = 0;
-				
+				if(PVPResultFlag)
+				{
+					gaincoin += PVPDataManager.Instance.m_SelectedPVPUserInfo.RewardAmount;
+				}
+				gaincoin += CoinItemGet;
 				Managers.UserData.SetGainGold(gaincoin);
 
-				_guiManager.LoadPVPResultUI(PVPResultFlag, 10, 10, 10);
+				Managers.DataStream.Event_Delegate_DataStreamManager_PVP += (int intResult_Code_Input, string strResult_Extend_Input) => 
+				{
+					if(intResult_Code_Input == Constant.NETWORK_RESULTCODE_OK)
+					{							
+						_guiManager.LoadPVPResultUI(PVPResultFlag, gaincoin, PVPDataManager.Instance.MyWinCount, PVPDataManager.Instance.MyLoseCount);
+					}else
+					{
+						Managers.DataStream.PVP_Request_SaveBattleResult(PVPDataManager.Instance.m_SelectedPVPUserInfo.UserIndex,
+						                                                 PVPResultFlag);
+					}
+				};
+				Managers.DataStream.PVP_Request_SaveBattleResult(PVPDataManager.Instance.m_SelectedPVPUserInfo.UserIndex,
+				                                                 PVPResultFlag);
+
 			}
 			
 			yield return null ;			

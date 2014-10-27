@@ -70,7 +70,17 @@ public class UIRootAlertView : MonoBehaviour {
 		
 		NGUITools.SetActive(gameObject, true) ;
 		
-		SetUIRootAlertView(intAlertType_Input) ;
+		SetUIRootAlertView(intAlertType_Input, new string[]{}) ;
+		
+	}
+
+	public void LoadUIRootAlertView(int intAlertType_Input, string[] _replacements){
+		
+		m_intAlertType = intAlertType_Input ;
+		
+		NGUITools.SetActive(gameObject, true) ;
+		
+		SetUIRootAlertView(intAlertType_Input, _replacements) ;
 		
 	}
 
@@ -92,8 +102,8 @@ public class UIRootAlertView : MonoBehaviour {
 	}
 
 
-	private void SetUIRootAlertView(int intAlertType_Input){
-
+	private void SetUIRootAlertView(int intAlertType_Input, string[] _replacements)
+	{
 		//Debug.Log ("ST110 UIRootAlertView.SetUIRootAlertView().intAlertType_Input = " + intAlertType_Input);
 		
 		if(intAlertType_Input == Constant.ST200_POPUP_PURCHASE_OK){ //Purchase Ok...
@@ -463,6 +473,58 @@ public class UIRootAlertView : MonoBehaviour {
 				string languageCode = Managers.UserData.LanguageCode ;
 				
 				_uiRootAlertViewMessageLabel.text = TextManager.Instance.GetString(240);
+			}
+		}else if(intAlertType_Input == Constant.ST200_POPUP_PVP_FRIENDADD_SUCCESS)
+		{
+			if ( Managers.Audio != null) Managers.Audio.PlayFXSound(AudioManager.FX_SOUND.FX_Etc_Alert,false);
+			
+			NGUITools.SetActive(_uiRootAlertViewCancelButton.gameObject, false) ;
+			_uiRootAlertViewOkButton.transform.localPosition = new Vector3(0f, _uiRootAlertViewOkButton.transform.localPosition.y, _uiRootAlertViewOkButton.transform.localPosition.z) ;
+			
+			if (Managers.UserData != null){
+				
+				string languageCode = Managers.UserData.LanguageCode ;
+				
+				_uiRootAlertViewMessageLabel.text = TextManager.Instance.GetReplaceString(274, _replacements);
+			}
+		}else if(intAlertType_Input == Constant.ST200_POPUP_PVP_FRIENDREMOVE_SUCCESS)
+		{
+			if ( Managers.Audio != null) Managers.Audio.PlayFXSound(AudioManager.FX_SOUND.FX_Etc_Alert,false);
+			
+			NGUITools.SetActive(_uiRootAlertViewCancelButton.gameObject, false) ;
+			_uiRootAlertViewOkButton.transform.localPosition = new Vector3(0f, _uiRootAlertViewOkButton.transform.localPosition.y, _uiRootAlertViewOkButton.transform.localPosition.z) ;
+			
+			if (Managers.UserData != null){
+				
+				string languageCode = Managers.UserData.LanguageCode ;
+				
+				_uiRootAlertViewMessageLabel.text = TextManager.Instance.GetReplaceString(275, _replacements);
+			}
+		}else if(intAlertType_Input == Constant.ST200_POPUP_PVP_FRIEND_SEARCH_LENGTH_ERROR)
+		{
+			if ( Managers.Audio != null) Managers.Audio.PlayFXSound(AudioManager.FX_SOUND.FX_Etc_Alert,false);
+			
+			NGUITools.SetActive(_uiRootAlertViewCancelButton.gameObject, false) ;
+			_uiRootAlertViewOkButton.transform.localPosition = new Vector3(0f, _uiRootAlertViewOkButton.transform.localPosition.y, _uiRootAlertViewOkButton.transform.localPosition.z) ;
+			
+			if (Managers.UserData != null){
+				
+				string languageCode = Managers.UserData.LanguageCode ;
+				
+				_uiRootAlertViewMessageLabel.text = TextManager.Instance.GetString(276);
+			}
+		}else if(intAlertType_Input == Constant.ST200_POPUP_PVP_FRIEND_SEARCH_NORESULT)
+		{
+			if ( Managers.Audio != null) Managers.Audio.PlayFXSound(AudioManager.FX_SOUND.FX_Etc_Alert,false);
+			
+			NGUITools.SetActive(_uiRootAlertViewCancelButton.gameObject, false) ;
+			_uiRootAlertViewOkButton.transform.localPosition = new Vector3(0f, _uiRootAlertViewOkButton.transform.localPosition.y, _uiRootAlertViewOkButton.transform.localPosition.z) ;
+			
+			if (Managers.UserData != null){
+				
+				string languageCode = Managers.UserData.LanguageCode ;
+				
+				_uiRootAlertViewMessageLabel.text = TextManager.Instance.GetString(277);
 			}
 		}
 	}

@@ -154,7 +154,7 @@ public class ImageResourceManager : MonoBehaviour {
 
 	public string GetPVPRankImage(int _rank)
 	{
-		string name = "rank_medal_" + _rank.ToString();
+		string name = "pvp_rank_medal_" + _rank.ToString();
 		return name;
 	}
 
@@ -195,14 +195,7 @@ public class ImageResourceManager : MonoBehaviour {
 
 	public string GetPVPRankRewardImage(int _type)
 	{
-		string imagename = "";
-		if(_type == 1)
-		{
-			imagename = "pvp_rank_gold_3";
-		}else
-		{
-			imagename = "pvp_rank_coin_500";
-		}
+		string imagename = "pvp_rank_reward_" + _type.ToString();
 
 		return imagename;
 	}

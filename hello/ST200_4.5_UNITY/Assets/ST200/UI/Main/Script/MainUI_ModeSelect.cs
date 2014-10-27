@@ -85,11 +85,43 @@ public class MainUI_ModeSelect : MonoBehaviour {
 		RemoveUI();
 	}
 
+	protected bool initpvp = false;
 	public void OnClickPVPModeButton()
 	{
 		if ( Managers.Audio != null) Managers.Audio.PlayFXSound(AudioManager.FX_SOUND.FX_Button_Common,false);
 		Managers.UserData.SelectedGameType = Constant.ST200_GAMEMODE_PVP;
-		GameUIManager.Instance.SwitchToPVPUI();
+
+		if(!initpvp)
+		{
+			Managers.DataStream.Event_Delegate_DataStreamManager_PVP += (int intResult_Code_Input, string strResult_Extend_Input) => 
+			{
+				if(intResult_Code_Input == Constant.NETWORK_RESULTCODE_OK)
+				{					
+					Managers.DataStream.Event_Delegate_DataStreamManager_PVP += (int intResult_Code_Input2, string strResult_Extend_Input2) => 
+					{
+						if(intResult_Code_Input2 == Constant.NETWORK_RESULTCODE_OK)
+						{							
+							GameUIManager.Instance.SwitchToPVPUI();
+							RemoveUI();
+						}else
+						{
+							Managers.DataStream.PVP_Request_FriendList(Managers.UserData.UserNickName, Managers.UserData.GetUserMaxClearStage());
+						}
+					};
+					Managers.DataStream.PVP_Request_FriendList(Managers.UserData.UserNickName, Managers.UserData.GetUserMaxClearStage());
+				}else
+				{
+					Managers.DataStream.PVP_Request_Recommend(Managers.UserData.UserNickName, Managers.UserData.GetUserMaxClearStage());
+				}
+			};
+			Managers.DataStream.PVP_Request_Recommend(Managers.UserData.UserNickName, Managers.UserData.GetUserMaxClearStage());
+		}else
+		{
+			GameUIManager.Instance.SwitchToPVPUI();
+			RemoveUI();
+		}
+		
+		initpvp = true;
 		//Application.LoadLevel(Constant.SCENE_GameMainLoadingScene);
 	}
 

@@ -119,6 +119,11 @@ public class  ST200KLogManager: MonoBehaviour {
 		SetLog(TAG.GAME_START);
 	}
 
+	public void SaveGamePVPStart()
+	{
+		SetLog(TAG.GAME_PVP_START);
+	}
+
 	public void SaveGameEnd(int _gamestage, 
 	                        int _shipindex, int _shiplevel, 
 	                        int _subshipindex1, int _subshiplevel1,
@@ -301,6 +306,8 @@ public class  ST200KLogManager: MonoBehaviour {
 		SHOP_SUBMARINE_PURCHASE,
 		SHOP_GACHA_PURCHASE,
 		SHOP_PET_PURCHASE,
+
+		GAME_PVP_START,
 	};
 	#endregion
 }

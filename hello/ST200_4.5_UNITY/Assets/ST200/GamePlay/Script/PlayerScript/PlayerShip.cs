@@ -15,6 +15,7 @@ public class PlayerShip : MonoBehaviour {
 
 	public GameStageEnemyHealthDisplayer m_HealthGauge;
 	public GameStageEnemyHealthDisplayer m_SpecialGauge;
+	public GameObject m_MarkerObject;
 	public ShipStatInfo m_ShipStatInfo;
 	public ShipAnimation m_ShipAnimation;
 	public Vector3 m_LookingVector;
@@ -223,6 +224,13 @@ public class PlayerShip : MonoBehaviour {
 
 		MaxRowSpeed = Managers.GameBalanceData.GamePlayRowSpeed;
 		RowDecreaseFactor = Managers.GameBalanceData.GamePlayRowResist;
+
+		SetMarker(false);
+	}
+
+	public void SetMarker(bool _flag)
+	{
+		m_MarkerObject.gameObject.SetActive(_flag);
 	}
 
 	public virtual void Process(float _timer)
