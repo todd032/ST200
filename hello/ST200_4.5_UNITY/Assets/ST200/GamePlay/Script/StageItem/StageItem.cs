@@ -3,6 +3,7 @@ using System.Collections;
 
 public class StageItem : MonoBehaviour {
 
+	public int TeamIndex;
 	/// <summary>
 	/// to set prefab's type  don't manipulate
 	/// </summary>
@@ -10,8 +11,9 @@ public class StageItem : MonoBehaviour {
 	public StageItemType m_StageItemType;
 	public StageItemData m_StageItemData;
 
-	public void Init(StageItemData _itemdata)
+	public void Init(int _teamindex, StageItemData _itemdata)
 	{
+		TeamIndex = _teamindex;
 		m_StageItemData = _itemdata;
 		m_StageItemType = (StageItemType)_itemdata.EffectType;
 	}

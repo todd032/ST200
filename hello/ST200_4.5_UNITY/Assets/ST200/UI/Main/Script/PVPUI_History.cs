@@ -28,9 +28,15 @@ public class PVPUI_History : MonoBehaviour {
 		NGUITools.SetActive (gameObject, false);
 	}
 
-	public void InitUI()
+	public void InitUI(bool _attack)
 	{
-		ShowAttackHistory();
+		if(_attack)
+		{
+			ShowAttackHistory();
+		}else
+		{
+			ShowDefendHistory();
+		}
 	}
 
 	protected bool m_AttackInit = false;

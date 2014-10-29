@@ -5259,9 +5259,11 @@ public class DataStreamManager : MonoBehaviour {
 						historydata.Win = userdata["Win"].AsBool;
 						if(_mode == 0)
 						{
+							historydata.AttackHistory = true;
 							PVPDataManager.Instance.m_HistoryAttackList.Add(historydata);
 						}else
 						{
+							historydata.AttackHistory = false;
 							PVPDataManager.Instance.m_HistoryDefendList.Add(historydata);
 						}
 						

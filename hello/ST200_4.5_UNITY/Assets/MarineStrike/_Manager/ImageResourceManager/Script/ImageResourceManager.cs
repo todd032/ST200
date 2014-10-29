@@ -199,4 +199,14 @@ public class ImageResourceManager : MonoBehaviour {
 
 		return imagename;
 	}
+
+	public string GetGamePlayMineSpriteName(int _teamindex)
+	{
+		string imagename = "bomb_red";
+		if(_teamindex == 2)
+		{
+			imagename = "mine2";
+		}
+		return imagename;
+	}
 }

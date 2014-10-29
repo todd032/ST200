@@ -164,6 +164,6 @@ public class PlayerSubShip_Type12 : PlayerSubShip {
 
 	public void SpawnItem()
 	{
-		StageItemManager.Instance.TrySpawnItem((int)m_StatInfo.SpecialEffectValue4, m_ShootTransform[2].position);
+		StageItemManager.Instance.TrySpawnItem(TeamIndex, (int)m_StatInfo.SpecialEffectValue4, m_ShootTransform[2].position);
 	}
 }

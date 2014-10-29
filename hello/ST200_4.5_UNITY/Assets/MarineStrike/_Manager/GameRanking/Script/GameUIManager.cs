@@ -40,11 +40,7 @@ public class GameUIManager : MonoBehaviour {
 		if(Managers.Audio != null)
 		{
 			Managers.Audio.PlayBGMSound(AudioManager.BGM_SOUND.BGM_GAMEPLAY1,true);
-		}
-
-		SwitchToGameMainUI();
-
-		
+		}		
 		_paymentPopupView = _paymentPopupViewObject.GetComponent<PaymentPopupView>() as PaymentPopupView ;
 		_paymentPopupView.PaymentPopupViewEvent += PaymentPopupViewDelegate ;
 		
@@ -53,6 +49,35 @@ public class GameUIManager : MonoBehaviour {
 		m_UIRootAlertView.UIRootAlertViewEvent += UIRootAlertViewDelegate;
 
 		InitializeGameTorpedoInfo();
+
+		if(Managers.UserData.SelectedGameType == Constant.ST200_GAMEMODE_PVP)
+		{
+			Managers.DataStream.Event_Delegate_DataStreamManager_PVP += (int intResult_Code_Input, string strResult_Extend_Input) => 
+			{
+				if(intResult_Code_Input == Constant.NETWORK_RESULTCODE_OK)
+				{					
+					Managers.DataStream.Event_Delegate_DataStreamManager_PVP += (int intResult_Code_Input2, string strResult_Extend_Input2) => 
+					{
+						if(intResult_Code_Input2 == Constant.NETWORK_RESULTCODE_OK)
+						{							
+							SwitchToPVPUI();
+						}else
+						{
+							Managers.DataStream.PVP_Request_FriendList(Managers.UserData.UserNickName, Managers.UserData.GetUserMaxClearStage());
+						}
+					};
+					Managers.DataStream.PVP_Request_FriendList(Managers.UserData.UserNickName, Managers.UserData.GetUserMaxClearStage());
+				}else
+				{
+					Managers.DataStream.PVP_Request_Recommend(Managers.UserData.UserNickName, Managers.UserData.GetUserMaxClearStage());
+				}
+			};
+			Managers.DataStream.PVP_Request_Recommend(Managers.UserData.UserNickName, Managers.UserData.GetUserMaxClearStage());
+			SwitchToPVPUI();
+		}else
+		{
+			SwitchToGameMainUI();
+		}
 	}
 
 	void Update()

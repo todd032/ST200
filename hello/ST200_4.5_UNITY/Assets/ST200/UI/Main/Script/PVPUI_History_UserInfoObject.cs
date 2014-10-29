@@ -10,6 +10,7 @@ public class PVPUI_History_UserInfoObject : MonoBehaviour {
 	public UILabel m_ResultLabel;
 	
 	public GameObject m_RevengeButton;
+	public UISprite m_RevengeSprite;
 	public GameObject m_FixButton;
 	public UILabel m_FixTimeLabel;
 
@@ -38,6 +39,14 @@ public class PVPUI_History_UserInfoObject : MonoBehaviour {
 			m_ResultLabel.text = TextManager.Instance.GetString(263);
 			NGUITools.SetActive (m_RevengeButton.gameObject, true);
 			NGUITools.SetActive (m_FixButton.gameObject, false);
+		}
+
+		if(m_UserInfoData.AttackHistory)
+		{
+			m_RevengeSprite.spriteName = "pvp_list_pvp_button";
+		}else
+		{
+			m_RevengeSprite.spriteName = "pvp_log_list_pvp_button3";
 		}
 
 		if(m_UserInfoData.m_UserInfoData.RepairSecond > 0)

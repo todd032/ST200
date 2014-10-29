@@ -2265,6 +2265,28 @@ public struct UserHistoryData
 			return decryptBool;
 		}
 	}
+
+	private string m_AttackHistory;
+	public bool AttackHistory {
+		set { 
+			string encryptString = LoadingWindows.NextE(value.ToString(),Constant.DefalutAppName) ;
+			m_AttackHistory = encryptString ;
+		}
+		get { 
+			if(m_AttackHistory == null || m_AttackHistory.Equals("")){
+				return false ;	
+			}
+			string decryptString = LoadingWindows.NextD(m_AttackHistory,Constant.DefalutAppName) ;
+			
+			bool decryptBool = false ;
+			if(decryptString.Equals("True")){
+				decryptBool = true ;
+			}else if(decryptString.Equals("False")){
+				decryptBool = false ;
+			}
+			return decryptBool;
+		}
+	}
 }
 
 public struct UserInfoData

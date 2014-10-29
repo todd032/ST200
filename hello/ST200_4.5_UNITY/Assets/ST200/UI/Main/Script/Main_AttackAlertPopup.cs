@@ -8,7 +8,7 @@ public class Main_AttackAlertPopup : MonoBehaviour {
 	public UILabel m_DescriptionLabel2;
 	public UILabel m_TimerLabel;
 	public UILabel m_OkLabel;
-
+	public UILabel m_CloseLabel;
 	public UISprite m_CharacterSprite;
 	public UISprite m_ShipSprite;
 	public UILabel m_NickNameLabel;
@@ -20,7 +20,8 @@ public class Main_AttackAlertPopup : MonoBehaviour {
 		m_TitleLabel.text = TextManager.Instance.GetString(278);
 		m_DescriptionLabel1.text = TextManager.Instance.GetString(279);
 		m_DescriptionLabel2.text = TextManager.Instance.GetString(280);
-		m_OkLabel.text = TextManager.Instance.GetString(147);
+		m_OkLabel.text = TextManager.Instance.GetString(281);
+		m_CloseLabel.text = TextManager.Instance.GetString(135);
 	}
 	
 	// Update is called once per frame
@@ -55,7 +56,43 @@ public class Main_AttackAlertPopup : MonoBehaviour {
 		NGUITools.SetActive(gameObject, false);
 	}
 
+	protected bool m_ClickOk = false;
 	public void OnClickOkButton()
+	{
+		if ( Managers.Audio != null) Managers.Audio.PlayFXSound(AudioManager.FX_SOUND.FX_Button_Common,false);
+		if(m_ClickOk)
+		{
+			return;
+		}
+
+		m_ClickOk = true;
+		Managers.DataStream.Event_Delegate_DataStreamManager_PVP += (int intResult_Code_Input, string strResult_Extend_Input) => 
+		{
+			if(intResult_Code_Input == Constant.NETWORK_RESULTCODE_OK)
+			{					
+				Managers.DataStream.Event_Delegate_DataStreamManager_PVP += (int intResult_Code_Input2, string strResult_Extend_Input2) => 
+				{
+					if(intResult_Code_Input2 == Constant.NETWORK_RESULTCODE_OK)
+					{							
+						GameUIManager.Instance.SwitchToPVPUI();
+						GameUIManager.Instance.m_PVPUI.ShowHistoryUI(false);
+						RemoveUI();
+					}else
+					{
+						Managers.DataStream.PVP_Request_FriendList(Managers.UserData.UserNickName, Managers.UserData.GetUserMaxClearStage());
+					}
+				};
+				Managers.DataStream.PVP_Request_FriendList(Managers.UserData.UserNickName, Managers.UserData.GetUserMaxClearStage());
+			}else
+			{
+				Managers.DataStream.PVP_Request_Recommend(Managers.UserData.UserNickName, Managers.UserData.GetUserMaxClearStage());
+			}
+		};
+		Managers.DataStream.PVP_Request_Recommend(Managers.UserData.UserNickName, Managers.UserData.GetUserMaxClearStage());
+		//RemoveUI();
+	}
+
+	public void OnClickCloseButton()
 	{
 		if ( Managers.Audio != null) Managers.Audio.PlayFXSound(AudioManager.FX_SOUND.FX_Button_Common,false);
 		RemoveUI();

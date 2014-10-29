@@ -56,14 +56,14 @@ public class PVPUI : MonoBehaviour {
 		m_HistoryButton.SetSelected(false);
 	}
 
-	public void ShowHistoryUI()
+	public void ShowHistoryUI(bool _attack)
 	{
 		m_PVPUI.RemoveUI();
 		
 		m_PVPRankingUI.RemoveUI();
 
 		m_HistoryUI.ShowUI();
-		m_HistoryUI.InitUI();
+		m_HistoryUI.InitUI(_attack);
 
 		m_DetailUI.RemoveUI();
 
@@ -113,12 +113,12 @@ public class PVPUI : MonoBehaviour {
 	public void OnClickHistoryButton()
 	{
 		if ( Managers.Audio != null) Managers.Audio.PlayFXSound(AudioManager.FX_SOUND.FX_Button_Common,false);
-		ShowHistoryUI();
+		ShowHistoryUI(true);
 	}
 	public void OnClickKakaoInviteButton()
 	{
 		if ( Managers.Audio != null) Managers.Audio.PlayFXSound(AudioManager.FX_SOUND.FX_Button_Common,false);
-		ST200KakaoLink.g_Instance.InitLink(TextManager.Instance.GetString(246), TextManager.Instance.GetString (247),
+		ST200KakaoLink.g_Instance.InitLink(TextManager.Instance.GetString(246), TextManager.Instance.GetReplaceString(247, Managers.UserData.UserNickName),
 		                                   TextManager.Instance.GetString(250));
 		ST200KakaoLink.g_Instance.SendKakaoLinkMessage();
 	}

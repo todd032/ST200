@@ -22,7 +22,7 @@ public class StageItemManager : MonoBehaviour {
 		instance = null;
 	}
 
-	public void TrySpawnItem(int _spawnitemindex, Vector3 _worldpos)
+	public void TrySpawnItem(int _teamindex, int _spawnitemindex, Vector3 _worldpos)
 	{
 		if(_spawnitemindex == 0)
 		{
@@ -54,16 +54,16 @@ public class StageItemManager : MonoBehaviour {
 
 		if(selectedindex != 0)
 		{
-			SpawnStageItem(Managers.GameBalanceData.GetStageItemData(selectedindex), _worldpos);
+			SpawnStageItem(_teamindex, Managers.GameBalanceData.GetStageItemData(selectedindex), _worldpos);
 		}
 	}
 
 	public List<StageItem> m_StageItemObjectList = new List<StageItem>();	
 	protected List<StageItem> m_StageItem_Unused = new List<StageItem>();
 
-	public StageItem SpawnStageItem(StageItemData _data, Vector3 _worldpos)
+	public StageItem SpawnStageItem(int _teamindex, StageItemData _data, Vector3 _worldpos)
 	{
-		StageItem stageitem = GetStageItem(_data);
+		StageItem stageitem = GetStageItem(_teamindex, _data);
 		stageitem.gameObject.SetActive(true);
 		stageitem.SetPosition(_worldpos);
 		return stageitem;
@@ -75,7 +75,7 @@ public class StageItemManager : MonoBehaviour {
 		m_StageItem_Unused.Add(_data);
 	}
 
-	protected StageItem GetStageItem(StageItemData _stageitemdata)
+	protected StageItem GetStageItem(int _teamindex, StageItemData _stageitemdata)
 	{
 		StageItem selectedstageitem = null;
 		for(int i = 0; i < m_StageItem_Unused.Count; i++)
@@ -100,7 +100,7 @@ public class StageItemManager : MonoBehaviour {
 				{
 					GameObject go = Instantiate(curstageitem.gameObject) as GameObject;
 					selectedstageitem = go.GetComponent<StageItem>();
-					selectedstageitem.Init(_stageitemdata);
+					selectedstageitem.Init(_teamindex, _stageitemdata);
 					break;
 				}
 			}

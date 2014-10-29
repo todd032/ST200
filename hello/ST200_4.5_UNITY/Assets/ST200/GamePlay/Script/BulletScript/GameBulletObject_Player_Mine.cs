@@ -3,7 +3,14 @@ using System.Collections;
 
 public class GameBulletObject_Player_Mine : GameBulletObject {
 	
-	
+	public tk2dSprite m_MineSprite;
+
+	public override void Init (Vector3 _worldpos, float _damage, Vector3 _movespeed, float _pushforce, float _sizeratio, int _teamindex, float _remaintime)
+	{
+		base.Init (_worldpos, _damage, _movespeed, _pushforce, _sizeratio, _teamindex, _remaintime);
+		m_MineSprite.SetSprite(m_MineSprite.GetSpriteIdByName(ImageResourceManager.Instance.GetGamePlayMineSpriteName(_teamindex))); 
+	}
+
 	public void OnEnemyShipCrash(GameStageEnemyObject _enemyobject)
 	{
 		GamePlayFXManager.Instance.StartExplosionFX(GamePlayExplosionFX_Type.Explosion3, _enemyobject.transform.position);

@@ -67,10 +67,12 @@ public class PlayerShipAI : MonoBehaviour {
 		if(Vector3.Distance(m_AIShip.transform.position, Vector3.zero) > Managers.GameBalanceData.GamePlayReturnToBattleMaxDistance)
 		{
 			newstate = RETURNTOBATTLESTATE;
-		}else if(GamePathManager2.Instance.CollideWithLine(m_AIShip.transform.position, m_PlayerShip.transform.position))
-		{
-			newstate = DEFENDSTATE;
-		}else if(m_PlayerShip.m_CurHealth < m_AIShip.m_CurHealth * 0.8f)
+		}
+		//else if(GamePathManager2.Instance.CollideWithLine(m_AIShip.transform.position, m_PlayerShip.transform.position))
+		//{
+		//	newstate = DEFENDSTATE;
+		//}
+		else if(m_PlayerShip.m_CurHealth < m_AIShip.m_CurHealth * 0.8f)
 		{
 			newstate = ATTACKSTATE;
 		}else if(m_AIShip.m_CurHealth < m_AIShip.MaxHealth * 0.5f && m_PlayerShip.m_CurHealth > m_AIShip.m_CurHealth * 1.5f)
@@ -111,7 +113,7 @@ public class PlayerShipAI : MonoBehaviour {
 			float distance = Vector2.Distance(m_AIShip.transform.position, m_PlayerShip.transform.position);
 			if(distance > m_AIShip.m_ShipStatInfo.BulletSpeed)
 			{
-				Vector3 deltadirection = m_PlayerShip.transform.position - m_AIShip.transform.position;
+				Vector3 deltadirection = GamePathManager2.Instance.GetTargetPos(m_AIShip.transform.position, m_PlayerShip.transform.position) - m_AIShip.transform.position;
 				Vector3 curdir = m_AIShip.m_LookingVector;
 
 				float angle = Vector2.Angle(curdir, deltadirection);
@@ -127,7 +129,7 @@ public class PlayerShipAI : MonoBehaviour {
 				}
 			}else
 			{
-				Vector3 deltadirection = m_PlayerShip.transform.position - m_AIShip.transform.position;
+				Vector3 deltadirection = GamePathManager2.Instance.GetTargetPos(m_AIShip.transform.position, m_PlayerShip.transform.position) - m_AIShip.transform.position;
 				deltadirection.z = 0f;
 				
 				int selectedattackdirectionindex = 0;
@@ -178,7 +180,7 @@ public class PlayerShipAI : MonoBehaviour {
 			float distance = Vector2.Distance(m_AIShip.transform.position, m_PlayerShip.transform.position);
 			if(distance > m_AIShip.m_ShipStatInfo.BulletSpeed * 0.9f)
 			{
-				Vector3 deltadirection = m_PlayerShip.transform.position - m_AIShip.transform.position;
+				Vector3 deltadirection = GamePathManager2.Instance.GetTargetPos(m_AIShip.transform.position, m_PlayerShip.transform.position) - m_AIShip.transform.position;
 				Vector3 curdir = m_AIShip.m_LookingVector;
 				
 				float angle = Vector2.Angle(curdir, deltadirection);
@@ -198,7 +200,7 @@ public class PlayerShipAI : MonoBehaviour {
 				m_AIShip.AddRowGauge(false, Managers.GameBalanceData.GamePlayRowPressAmount, 1);
 			}else
 			{
-				Vector3 deltadirection = m_PlayerShip.transform.position - m_AIShip.transform.position;
+				Vector3 deltadirection = GamePathManager2.Instance.GetTargetPos(m_AIShip.transform.position, m_PlayerShip.transform.position) - m_AIShip.transform.position;
 				deltadirection.z = 0f;
 				
 				int selectedattackdirectionindex = 0;
@@ -249,7 +251,7 @@ public class PlayerShipAI : MonoBehaviour {
 			float distance = Vector2.Distance(m_AIShip.transform.position, m_PlayerShip.transform.position);
 			if(distance > m_AIShip.m_ShipStatInfo.BulletSpeed * 1.1f)
 			{
-				Vector3 deltadirection = m_PlayerShip.transform.position - m_AIShip.transform.position;
+				Vector3 deltadirection = GamePathManager2.Instance.GetTargetPos(m_AIShip.transform.position, m_PlayerShip.transform.position) - m_AIShip.transform.position;
 				Vector3 curdir = m_AIShip.m_LookingVector;
 				
 				float angle = Vector2.Angle(curdir, deltadirection);
@@ -268,7 +270,7 @@ public class PlayerShipAI : MonoBehaviour {
 				m_AIShip.AddRowGauge(false, Managers.GameBalanceData.GamePlayRowPressAmount, 0);
 			}else
 			{
-				Vector3 deltadirection = m_PlayerShip.transform.position - m_AIShip.transform.position;
+				Vector3 deltadirection = GamePathManager2.Instance.GetTargetPos(m_AIShip.transform.position, m_PlayerShip.transform.position) - m_AIShip.transform.position;
 				deltadirection.z = 0f;
 				
 				int selectedattackdirectionindex = 0;
@@ -458,11 +460,16 @@ public class PlayerShipAI : MonoBehaviour {
 		//check angle and find closest rotation
 		while(true)
 		{
-			Vector3 deltadirection = -(m_PlayerShip.transform.position - m_AIShip.transform.position);
+			Vector3 deltadirection = -(m_PlayerShip.transform.position - m_AIShip.transform.position).normalized;
+			Vector3 deltarunpoint = m_AIShip.transform.position + deltadirection * 5f;
+
+			Vector3 actualrunpoint = GamePathManager2.Instance.GetTargetPos(m_AIShip.transform.position, deltarunpoint);
+
+			Vector3 rundirection = actualrunpoint - m_AIShip.transform.position;
 			Vector3 curdir = m_AIShip.m_LookingVector;
 			
-			float angle = Vector2.Angle(curdir, deltadirection);
-			if(angle > 5f && Vector3.Cross(curdir, deltadirection).z < 0f)
+			float angle = Vector2.Angle(curdir, rundirection);
+			if(angle > 5f && Vector3.Cross(curdir, rundirection).z < 0f)
 			{
 				m_AIShip.SetRotationInput(-1f);
 			}else if(angle > 5f)
@@ -485,11 +492,16 @@ public class PlayerShipAI : MonoBehaviour {
 		//check angle and find closest rotation
 		while(true)
 		{
-			Vector3 deltadirection = -(m_PlayerShip.transform.position - m_AIShip.transform.position);
+			Vector3 deltadirection = -(m_PlayerShip.transform.position - m_AIShip.transform.position).normalized;
+			Vector3 deltarunpoint = m_AIShip.transform.position + deltadirection * 5f;
+			
+			Vector3 actualrunpoint = GamePathManager2.Instance.GetTargetPos(m_AIShip.transform.position, deltarunpoint);
+			
+			Vector3 rundirection = actualrunpoint - m_AIShip.transform.position;
 			Vector3 curdir = m_AIShip.m_LookingVector;
 			
-			float angle = Vector2.Angle(curdir, deltadirection);
-			if(angle > 5f && Vector3.Cross(curdir, deltadirection).z < 0f)
+			float angle = Vector2.Angle(curdir, rundirection);
+			if(angle > 5f && Vector3.Cross(curdir, rundirection).z < 0f)
 			{
 				m_AIShip.SetRotationInput(-1f);
 			}else if(angle > 5f)
@@ -512,11 +524,16 @@ public class PlayerShipAI : MonoBehaviour {
 		//check angle and find closest rotation
 		while(true)
 		{
-			Vector3 deltadirection = -(m_PlayerShip.transform.position - m_AIShip.transform.position);
+			Vector3 deltadirection = -(m_PlayerShip.transform.position - m_AIShip.transform.position).normalized;
+			Vector3 deltarunpoint = m_AIShip.transform.position + deltadirection * 5f;
+			
+			Vector3 actualrunpoint = GamePathManager2.Instance.GetTargetPos(m_AIShip.transform.position, deltarunpoint);
+			
+			Vector3 rundirection = actualrunpoint - m_AIShip.transform.position;
 			Vector3 curdir = m_AIShip.m_LookingVector;
 			
-			float angle = Vector2.Angle(curdir, deltadirection);
-			if(angle > 5f && Vector3.Cross(curdir, deltadirection).z < 0f)
+			float angle = Vector2.Angle(curdir, rundirection);
+			if(angle > 5f && Vector3.Cross(curdir, rundirection).z < 0f)
 			{
 				m_AIShip.SetRotationInput(-1f);
 			}else if(angle > 5f)

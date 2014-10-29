@@ -2250,7 +2250,7 @@ public class GameManager : MonoBehaviour
 
 			//spawn item
 			//StageItemManager.Instance.TrySpawnItem(_enemy.m_StageEnemyData.ItemSpawnIndex, _enemy.transform.position);
-			StageItemManager.Instance.TrySpawnItem(_enemy.m_StageEnemyData.ItemSpawnIndex, _enemy.transform.position);
+			StageItemManager.Instance.TrySpawnItem(m_Player.TeamIndex, _enemy.m_StageEnemyData.ItemSpawnIndex, _enemy.transform.position);
 		}
 	}
 
@@ -2645,18 +2645,25 @@ public class GameManager : MonoBehaviour
 		pvphealthbuff.BuffType = GameShipBuffType.HEALTH_INCREASE;
 		pvphealthbuff.Value1 = Managers.GameBalanceData.PVPHealthIncreaseRatio;
 		pvphealthbuff.Value2 = Managers.GameBalanceData.PVPHealthIncreaseRatio;
+
+		GameShipBuff pvpsubshiphealthbuff = new GameShipBuff();
+		pvpsubshiphealthbuff.BuffRemainType = GameShipBuffRemainType.INFINITE;
+		pvpsubshiphealthbuff.BuffType = GameShipBuffType.HEALTH_INCREASE;
+		pvpsubshiphealthbuff.Value1 = Managers.GameBalanceData.PVPSubshipHealthIncreaseRatio;
+		pvpsubshiphealthbuff.Value2 = Managers.GameBalanceData.PVPSubshipHealthIncreaseRatio;
+
 		m_Player.AddBuff(pvphealthbuff);
 		m_Player.Revive();
 		for(int i = 0; i < GamePlayerManager.Instance.m_SubShipList.Count; i++)
 		{
-			GamePlayerManager.Instance.m_SubShipList[i].AddBuff(pvphealthbuff);
+			GamePlayerManager.Instance.m_SubShipList[i].AddBuff(pvpsubshiphealthbuff);
 			GamePlayerManager.Instance.m_SubShipList[i].Revive();
 		}
 		GamePlayerManager.Instance.m_OppPlayerShip.AddBuff(pvphealthbuff);
 		GamePlayerManager.Instance.m_OppPlayerShip.Revive();
 		for(int i = 0; i < GamePlayerManager.Instance.m_OppSubShipList.Count; i++)
 		{
-			GamePlayerManager.Instance.m_OppSubShipList[i].AddBuff(pvphealthbuff);
+			GamePlayerManager.Instance.m_OppSubShipList[i].AddBuff(pvpsubshiphealthbuff);
 			GamePlayerManager.Instance.m_OppSubShipList[i].Revive();
 		}
 
@@ -2753,6 +2760,7 @@ public class GameManager : MonoBehaviour
 		PVPRemainTimer = Managers.GameBalanceData.PVPPlayTime;
 		_guiManager.UpdatePVPUI(remainopp, totalopp, (int)PVPRemainTimer);
 
+		GamePathManager2.Instance.Init();
 		yield return null ;
 		
 		while(_gameState == GameState.PVP_INIT) {		
@@ -3073,9 +3081,9 @@ public class GameManager : MonoBehaviour
 		//GamePathManager.Instance.InitPath(Managers.GameBalanceData.GamePlayReturnToBattleMaxDistance * 2f);
 		m_BackgroundManager.SetBackgroundObject(Managers.GameBalanceData.GetStageData(Managers.UserData.SelectedStageIndex).BackgroundType);
 		m_BackgroundManager.InitLineObstacle(Managers.GameBalanceData.GamePlayReturnToBattleMaxDistance);
-
-		
+				
 		_guiManager.InitItemButton(HaveShoutItem, HaveSingijeon, HaveInvincible);
+		GamePathManager2.Instance.Init();
 		yield return null ;
 		
 		while(_gameState == GameState.GameInitialize) {		
