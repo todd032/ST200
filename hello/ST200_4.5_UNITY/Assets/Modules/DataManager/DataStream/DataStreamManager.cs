@@ -11,7 +11,7 @@ using SimpleJSON ;
 
 public class DataStreamManager : MonoBehaviour {
 	
-	
+
 	[HideInInspector]
 	public delegate void DataStreamIAPOkManagerDelegate(string productIdentifier,int state);
 	
@@ -878,7 +878,7 @@ public class DataStreamManager : MonoBehaviour {
 		#if UNITY_EDITOR
 		if (Input.GetKeyDown(KeyCode.Space)) {
 			//testcodeinituserdata();
-			testcodeinitbalancedata();
+			//testcodeinitbalancedata();
 			//			gachatestcode();
 			//StartCoroutine(LuckyTestCode());
 			//Managers.UserData.SetPurchaseGameSubmarine(4);
@@ -4159,14 +4159,15 @@ public class DataStreamManager : MonoBehaviour {
 					
 					
 					JSONNode root = JSON.Parse(returndata);
-					
+
 					JSONNode friendlist = root["FriendsList"];
+					//Debug.Log("TOTAL: " + friendlist.Count);
 
 					PVPDataManager.Instance.m_FriendInfoList.Clear();
 					for(int friendindexno = 0; friendindexno < friendlist.Count; friendindexno++)
 					{
 						JSONNode userdata = friendlist[friendindexno];
-						//Debug.Log("TOTAL: " + userdata.ToString());
+						//Debug.Log("friendata: " + userdata.ToString());
 						
 						int userindex = userdata["pvp_user_index"].AsInt;
 						string nickname = userdata["nickname"];
@@ -4230,7 +4231,7 @@ public class DataStreamManager : MonoBehaviour {
 				}
 				
 			} else if (clsReturn.result == false) {
-				
+				//Debug.Log("clsretunr false!");
 				if(clsReturn.error_msg == Constant.NETWORK_RESULTCODE_Error_UserSequence_Message)
 				{
 					if (_delegate_DataStreamManager_PVP != null) {
@@ -4447,7 +4448,7 @@ public class DataStreamManager : MonoBehaviour {
 		bodydic.Add("UserIndex", _userindex.ToString());
 		
 		string body = TextManager.CreateJsonData(bodydic);
-		//Debug.Log("body: " + body);
+		Debug.Log("body: " + body);
 		string extend = "";
 		
 		string check = getParameterCheckSum(header + body + extend);   //checksum 코드 생성...
@@ -4493,13 +4494,13 @@ public class DataStreamManager : MonoBehaviour {
 			clsReturn = JsonMapper.ToObject<ClsReturn>(www.text);
 			//리턴 오브젝트..
 			if (clsReturn.result == true) {
-
+				Debug.Log("Friend add added");
 				if (_delegate_DataStreamManager_PVP != null) {
 					_delegate_DataStreamManager_PVP(Constant.NETWORK_RESULTCODE_OK, "");
 				}
 				
 			} else if (clsReturn.result == false) {
-				
+				Debug.Log("Friend add cls error");
 				if(clsReturn.error_msg == Constant.NETWORK_RESULTCODE_Error_UserSequence_Message)
 				{
 					if (_delegate_DataStreamManager_PVP != null) {
@@ -4516,7 +4517,7 @@ public class DataStreamManager : MonoBehaviour {
 		} else {
 			
 			addMessageBuffer("RESPONSE ERROR: " + www.error);
-			
+			Debug.Log("Friend add error");
 			if (_delegate_DataStreamManager_PVP != null) {
 				_delegate_DataStreamManager_PVP(Constant.NETWORK_RESULTCODE_Error_Network, "");
 			}
@@ -5207,7 +5208,7 @@ public class DataStreamManager : MonoBehaviour {
 					for(int friendindexno = 0; friendindexno < friendlist.Count; friendindexno++)
 					{
 						JSONNode userdata = friendlist[friendindexno];
-						//Debug.Log("TOTAL: " + userdata.ToString());
+						Debug.Log("TOTAL: " + userdata.ToString());
 						
 						int userindex = userdata["pvp_user_index"].AsInt;
 						string nickname = userdata["nickname"];
@@ -5380,6 +5381,110 @@ public class DataStreamManager : MonoBehaviour {
 				
 				if (returndata != null && !returndata.Equals("")) {
 
+					if (_delegate_DataStreamManager_PVP != null) {
+						_delegate_DataStreamManager_PVP(Constant.NETWORK_RESULTCODE_OK, returndata);
+					}
+					
+				} else {
+					
+					if (_delegate_DataStreamManager_PVP != null) {
+						_delegate_DataStreamManager_PVP(Constant.NETWORK_RESULTCODE_Error_Result_Extend, "");
+					}
+				}
+				
+			} else if (clsReturn.result == false) {
+				
+				if(clsReturn.error_msg == Constant.NETWORK_RESULTCODE_Error_UserSequence_Message)
+				{
+					if (_delegate_DataStreamManager_PVP != null) {
+						_delegate_DataStreamManager_PVP(Constant.NETWORK_RESULTCODE_Error_UserSequence, "");
+					}
+				}else
+				{
+					if (_delegate_DataStreamManager_PVP != null) {
+						_delegate_DataStreamManager_PVP(Constant.NETWORK_RESULTCODE_Error_Result_False, "");
+					}
+				}
+			}
+			
+		} else {
+			
+			addMessageBuffer("RESPONSE ERROR: " + www.error);
+			
+			if (_delegate_DataStreamManager_PVP != null) {
+				_delegate_DataStreamManager_PVP(Constant.NETWORK_RESULTCODE_Error_Network, "");
+			}
+		}
+		
+		www.Dispose();
+		www = null;
+	}
+
+	public void PVP_Request_Friend_Add_Popup()
+	{
+		StartCoroutine(IEPVP_Request_Friend_Add_Popup());
+	}
+	// 유저 데이터 통신 (user_data.php) - SaveUserData.
+	protected IEnumerator IEPVP_Request_Friend_Add_Popup() 
+	{
+		
+		msgHeader.Ct = Managers.UserData.GetSyncServerTime();
+		string header = JsonMapper.ToJson(msgHeader);
+		
+		string body = "";
+		//Debug.Log("body: " + body);
+		string extend = "";
+		
+		string check = getParameterCheckSum(header + body + extend);   //checksum 코드 생성...
+		
+		yield return null;
+		
+		//서버에 저장.
+		string sendMode = Constant.NETWORK_SENDMODE_PVPFriendAddPopup;
+		addMessageBuffer("REQUEST MODE : " + sendMode);
+		addMessageBuffer("REQUEST HEADER : " + header);
+		addMessageBuffer("REQUEST BODY : " + body);
+		addMessageBuffer("REQUEST EXTEND : " + extend);
+		
+		WWWForm form = new WWWForm();
+		form.AddField("mode", sendMode);
+		form.AddField("head", header);
+		form.AddField("body", body);
+		form.AddField("extend", extend);
+		form.AddField("check", check);
+		
+		if (Constant.PROJECTMODE_Develop) {
+			
+			m_strURL = Constant.URL_DEVELOP_PvpInfo;
+			
+		} else {
+			
+			m_strURL = Constant.URL_RELEASE_PvpInfo;
+		}
+		
+		WWW www = new WWW(m_strURL, form);
+		yield return www;
+		
+		//Debug.Log ("ST200k DataStreamManager SaveUserData sendMode = " + sendMode);
+		//Debug.Log ("ST200k DataStreamManager SaveUserData header = " + header);
+		//Debug.Log ("ST200k DataStreamManager SaveUserData body = " + body);
+		//Debug.Log ("ST200k DataStreamManager SaveUserData extend = " + extend);
+		//Debug.Log ("ST200k DataStreamManager SaveUserData check = " + check);
+		//Debug.Log ("ST200k DataStreamManager SaveUserData www.text = " + www.text);
+		
+		if (www.error == null) {
+			
+			clsReturn.init();  //초기화..
+			clsReturn = JsonMapper.ToObject<ClsReturn>(www.text);
+			
+			//리턴 오브젝트..
+			if (clsReturn.result == true) {
+				//Debug.Log("mark");
+				string returndata = clsReturn.data;
+				string strExtendJson = clsReturn.extend;
+				
+				if (returndata != null && !returndata.Equals("")) {
+					
 					if (_delegate_DataStreamManager_PVP != null) {
 						_delegate_DataStreamManager_PVP(Constant.NETWORK_RESULTCODE_OK, returndata);
 					}

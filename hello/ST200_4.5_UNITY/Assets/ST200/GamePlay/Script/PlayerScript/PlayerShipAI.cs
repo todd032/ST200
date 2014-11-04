@@ -24,14 +24,14 @@ public class PlayerShipAI : MonoBehaviour {
 		m_AIShip = _aiship;
 		m_PlayerShip = _playership;
 
-		//ATTACKSTATE = Random.Range((int)PlayerShipAIState.ATTACK_EASY,(int)PlayerShipAIState.ATTACK_HARD + 1);
-		//DEFENDSTATE = Random.Range((int)PlayerShipAIState.DEFEND_EASY, (int)PlayerShipAIState.DEFEND_HARD + 1);
-		//RUNSTATE = Random.Range((int)PlayerShipAIState.RUN_EASY, (int)PlayerShipAIState.RUN_HARD + 1);
-		//AVOIDSTATE = Random.Range((int)PlayerShipAIState.AVOID_EASY, (int)PlayerShipAIState.AVOID_HARD + 1);
-		ATTACKSTATE = (int)PlayerShipAIState.ATTACK_HARD;
-		DEFENDSTATE = (int)PlayerShipAIState.DEFEND_HARD;
-		RUNSTATE = (int)PlayerShipAIState.RUN_HARD;
-		AVOIDSTATE = (int)PlayerShipAIState.AVOID_HARD;
+		ATTACKSTATE = Random.Range((int)PlayerShipAIState.ATTACK_EASY,(int)PlayerShipAIState.ATTACK_HARD + 1);
+		DEFENDSTATE = Random.Range((int)PlayerShipAIState.DEFEND_EASY, (int)PlayerShipAIState.DEFEND_HARD + 1);
+		RUNSTATE = Random.Range((int)PlayerShipAIState.RUN_EASY, (int)PlayerShipAIState.RUN_HARD + 1);
+		AVOIDSTATE = Random.Range((int)PlayerShipAIState.AVOID_EASY, (int)PlayerShipAIState.AVOID_HARD + 1);
+		//ATTACKSTATE = (int)PlayerShipAIState.ATTACK_HARD;
+		//DEFENDSTATE = (int)PlayerShipAIState.DEFEND_HARD;
+		//RUNSTATE = (int)PlayerShipAIState.RUN_HARD;
+		//AVOIDSTATE = (int)PlayerShipAIState.AVOID_HARD;
 
 		RETURNTOBATTLESTATE = (int)PlayerShipAIState.RETURN_TO_BATTLE;
 		ChangeState(ATTACKSTATE);

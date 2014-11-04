@@ -109,7 +109,7 @@ public class PVPUI_FriendTapUI : MonoBehaviour {
 			}else
 			{
 				newpos.y = m_StartYPos - deltaindex * m_FriendUIObjectHeight;
-				if(!NGUITools.GetActive(ui.gameObject))
+				if(ui.gameObject.activeSelf == false)
 				{
 					updateui = true;
 				}

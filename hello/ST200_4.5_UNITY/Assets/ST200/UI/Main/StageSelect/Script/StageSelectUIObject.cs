@@ -55,6 +55,7 @@ public class StageSelectUIObject : MonoBehaviour {
 
 	public void OnClickStage()
 	{
+		if ( Managers.Audio != null) Managers.Audio.PlayFXSound(AudioManager.FX_SOUND.FX_Button_Common,false);
 		m_StageSelectUI.SelectStage(m_StageData);
 	}
 }

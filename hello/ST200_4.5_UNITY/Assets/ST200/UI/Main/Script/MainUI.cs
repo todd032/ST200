@@ -29,6 +29,7 @@ public class MainUI : MonoBehaviour {
 	public AttendPopupView m_AttendPopupView;
 	public EventPopupView m_EventPopupView;
 	public Main_AttackAlertPopup m_AttackAlertPopup;
+	public Main_FriendAddPopup m_FriendAddPopup;
 
 	public MainUI_ModeSelect m_ModeSelectUI;
 	// Use this for initialization
@@ -91,6 +92,9 @@ public class MainUI : MonoBehaviour {
 			{
 				return true;
 			}else if(m_AttackAlertPopup.OnEscapePress())
+			{
+				return true;
+			}else if(m_FriendAddPopup.OnEscapePress())
 			{
 				return true;
 			}else if(m_WorldRankingUI.OnEscapePress())
@@ -415,12 +419,95 @@ public class MainUI : MonoBehaviour {
 					}
 					m_AttackAlertPopup.ShowUI();
 					m_AttackAlertPopup.InitUI(historydata);
+				}else
+				{
+					CheckFriendAddPopup();
+				}
+			}else
+			{
+				CheckFriendAddPopup();
+			}
+		};
+		Managers.DataStream.PVP_Request_Popup();
+	}
+
+	public void CheckFriendAddPopup()
+	{
+		Managers.DataStream.Event_Delegate_DataStreamManager_PVP += (int intResult_Code_Input, string strResult_Extend_Input) => 
+		{
+			if(intResult_Code_Input == Constant.NETWORK_RESULTCODE_OK)
+			{	
+				//Debug.Log("stresult: " + strResult_Extend_Input);
+				JSONNode root = JSON.Parse(strResult_Extend_Input);			
+				
+				JSONNode friendlist = root["PopUpList"];
+				//Debug.Log("TOTAL FRIEND SEARCH COUNT: " + friendlist.Count);
+				if(friendlist.Count > 0)
+				{
+					List<UserHistoryData> friendaddedlist = new List<UserHistoryData>();
+					UserHistoryData historydata = new UserHistoryData();
+					for(int friendindexno = 0; friendindexno < friendlist.Count; friendindexno++)
+					{
+						JSONNode userdata = friendlist[friendindexno];
+						//Debug.Log("TOTAL: " + userdata.ToString());
+						
+						int userindex = userdata["pvp_user_index"].AsInt;
+						string nickname = userdata["nickname"];
+						int battlecount = userdata["battle_count"].AsInt;
+						int wincount = userdata["win_count"].AsInt;
+						int losecount = userdata["lose_count"].AsInt;
+						JSONNode armdata = userdata["armed_data"];
+						int characterindex = armdata["CharacterIndex"].AsInt;
+						int tacticindex = armdata["TacticIndex"].AsInt;
+						int shipindex = armdata["ShipIndex"].AsInt;
+						int shiplevel = armdata["ShipLevel"].AsInt;
+						JSONArray subshipindex = armdata["SubShipIndexList"].AsArray;
+						JSONArray subshiplevel = armdata["SubShipLeveList"].AsArray;
+						int reward = userdata["winning_reward"].AsInt;
+						int repairsec = userdata["sec_under_repair"].AsInt;
+						
+						UserInfoData infodata = new UserInfoData();
+						infodata.UserIndex = userindex;
+						infodata.UserNickName = nickname;
+						infodata.CharacterIndex = characterindex;
+						infodata.TacticIndex = tacticindex;
+						infodata.ShipIndex = shipindex;
+						infodata.ShipLevel = shiplevel;
+						int[] subshipindexlist = new int[]{0,0,0,0};
+						int[] subshiplevellist = new int[]{0,0,0,0};
+						for(int j = 0; j < subshipindexlist.Length; j++)
+						{
+							if(subshipindex.Count > j)
+							{
+								subshipindexlist[j] = subshipindex[j].AsInt;
+							}
+						}
+						for(int j = 0; j < subshiplevellist.Length; j++)
+						{
+							if(subshiplevel.Count > j)
+							{
+								subshiplevellist[j] = subshiplevel[j].AsInt;
+							}
+						}
+						infodata.SubShipIndexList = subshipindexlist;
+						infodata.SubShipLevelList = subshiplevellist;
+						
+						infodata.RewardAmount = reward;
+						infodata.RepairSecond = repairsec;
+						//Debug.Log("REARD: " +infodata.RewardAmount + " COME: " + reward);
+						historydata.m_UserInfoData = infodata;
+						historydata.PastSecond = 0;//userdata["psec"].AsInt;
+						friendaddedlist.Add(historydata);
+					}
+
+					m_FriendAddPopup.ShowUI();
+					m_FriendAddPopup.InitUI(friendaddedlist);
 				}
 			}else
 			{
 				
 			}
 		};
-		Managers.DataStream.PVP_Request_Popup();
+		Managers.DataStream.PVP_Request_Friend_Add_Popup();
 	}
 }

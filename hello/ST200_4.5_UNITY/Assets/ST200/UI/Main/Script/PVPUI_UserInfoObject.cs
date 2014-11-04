@@ -47,10 +47,12 @@ public class PVPUI_UserInfoObject : MonoBehaviour {
 		{
 			m_AddFriendSprite.spriteName = "pvp_list_add_2";
 			friend_addedflag = true;
+			//Debug.Log("hi3");
 		}else
 		{
 			m_AddFriendSprite.spriteName = "pvp_list_add";
 			friend_addedflag = false;
+			//Debug.Log("hi2");
 		}
 
 	}
@@ -86,6 +88,7 @@ public class PVPUI_UserInfoObject : MonoBehaviour {
 		if(!friend_addedflag)
 		{
 			m_AddFriendSprite.spriteName = "pvp_list_add_2";
+			//Debug.Log("hi1");
 			PVPDataManager.Instance.AddToFriend(m_UserInfoData);
 			GameUIManager.Instance.LoadUIRootAlertView(Constant.ST200_POPUP_PVP_FRIENDADD_SUCCESS,
 			                                           new string[]{m_UserInfoData.UserNickName});

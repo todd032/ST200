@@ -121,64 +121,33 @@ public class ResultUI : MonoBehaviour {
 				UserDataManager.UserDataStruct userDataStruct = Managers.UserData.GetUserDataStruct();
 				
 				int intExperienceMode = PlayerPrefs.GetInt(Constant.PREFKEY_ExperiencePopup_Mode_INT);
-				
-				// 체험전 모드 여부 - false.
-				if (intExperienceMode == Constant.INT_False) {
-					
-					// 영어학원 쿠폰 주기 기능 추가 (by 최원석 14.05.27) ========= Start.
-					Managers.DataStream.Event_Delegate_DataStreamManager_SaveUserData += (intResult_Code_Input, strResult_Extend_Input) => {
-						
-						//_indicatorPopupView.RemoveIndicatorPopupView();
-						
-						if (intResult_Code_Input == Constant.NETWORK_RESULTCODE_OK) {
-							
-							ST200KLogManager.Instance.SendToServer();
-							Application.LoadLevel("Ranking");
-							Time.timeScale = 1f;
-							
-						} else if (intResult_Code_Input == Constant.NETWORK_RESULTCODE_Error_Network) {
-							
-							//_uiRootAlertView.LoadUIRootAlertView(11); 
-							
-						} else if(intResult_Code_Input == Constant.NETWORK_RESULTCODE_Error_UserSequence)
-						{
-							GameManager.Instance.GUIManager._uiRootAlertView.LoadUIRootAlertView(Constant.ST200_POPUP_ERROR_USERSEQUENCE_ERROR); 
-						} else {
-							
-							//_uiRootAlertView.LoadUIRootAlertView(21); 
-						}
-					};
-					
-					Managers.DataStream.Network_SaveUserData_Input_1(userDataStruct);
-				} else {
-					
-					Managers.DataStream.Event_Delegate_DataStreamManager_ReadUserData += (intNetworkResultCode_Input) => {
-						
-						PlayerPrefs.SetInt(Constant.PREFKEY_ExperiencePopup_Mode_INT, Constant.INT_False);
-						
-						// 통신 결과.
-						if (intNetworkResultCode_Input == Constant.NETWORK_RESULTCODE_OK) {
-							// 성공.
-							PlayerPrefs.SetInt(Constant.PREFKEY_ExperiencePopup_Mode_INT, Constant.INT_False);
-							ST200KLogManager.Instance.SendToServer();
-							Application.LoadLevel("Ranking");
-							Time.timeScale = 1f;
-							
-						} else if (intNetworkResultCode_Input == Constant.NETWORK_RESULTCODE_Error_Network) {
-							
-							//_uiRootAlertView.LoadUIRootAlertView(11); 
-							
-						} else if(intNetworkResultCode_Input == Constant.NETWORK_RESULTCODE_Error_UserSequence)
-						{
-							GameManager.Instance.GUIManager._uiRootAlertView.LoadUIRootAlertView(Constant.ST200_POPUP_ERROR_USERSEQUENCE_ERROR); 
-						} else {
 
-							//_uiRootAlertView.LoadUIRootAlertView(21); 
-						}
-					};
+				// 영어학원 쿠폰 주기 기능 추가 (by 최원석 14.05.27) ========= Start.
+				Managers.DataStream.Event_Delegate_DataStreamManager_SaveUserData += (intResult_Code_Input, strResult_Extend_Input) => {
 					
-					StartCoroutine(Managers.DataStream.Network_ReadUserData());
-				}
+					//_indicatorPopupView.RemoveIndicatorPopupView();
+					
+					if (intResult_Code_Input == Constant.NETWORK_RESULTCODE_OK) {
+						
+						ST200KLogManager.Instance.SendToServer();
+						Application.LoadLevel("Ranking");
+						Time.timeScale = 1f;
+						
+					} else if (intResult_Code_Input == Constant.NETWORK_RESULTCODE_Error_Network) {
+						
+						//_uiRootAlertView.LoadUIRootAlertView(11); 
+						
+					} else if(intResult_Code_Input == Constant.NETWORK_RESULTCODE_Error_UserSequence)
+					{
+						GameManager.Instance.GUIManager._uiRootAlertView.LoadUIRootAlertView(Constant.ST200_POPUP_ERROR_USERSEQUENCE_ERROR); 
+					} else {
+						
+						//_uiRootAlertView.LoadUIRootAlertView(21); 
+					}
+				};
+				
+				Managers.DataStream.Network_SaveUserData_Input_1(userDataStruct);
+
 			}
 		}
 	}

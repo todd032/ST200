@@ -96,16 +96,16 @@ public class Main_AttackAlertPopup : MonoBehaviour {
 	{
 		if ( Managers.Audio != null) Managers.Audio.PlayFXSound(AudioManager.FX_SOUND.FX_Button_Common,false);
 		RemoveUI();
+		GameUIManager.Instance.m_MainUI.CheckFriendAddPopup();
 	}
 
 	public bool OnEscapePress()
 	{
 		if(gameObject.activeSelf)
 		{
-			OnClickOkButton();
+			OnClickCloseButton();
 			return true;
 		}
 		return false;
-
 	}
 }

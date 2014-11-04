@@ -41,7 +41,7 @@ public class PVPUI_History_UserInfoObject : MonoBehaviour {
 			NGUITools.SetActive (m_FixButton.gameObject, false);
 		}
 
-		if(m_UserInfoData.AttackHistory)
+		if(true)//m_UserInfoData.AttackHistory)
 		{
 			m_RevengeSprite.spriteName = "pvp_list_pvp_button";
 		}else

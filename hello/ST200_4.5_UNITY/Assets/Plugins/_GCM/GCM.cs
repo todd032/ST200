@@ -196,6 +196,17 @@ public class GCM {
 			#endif
      }
  }
+
+	public static void SetNotificationMessage(string _title, string _content,string _ticker, double _delaymilli)
+	{
+		if (Application.platform == RuntimePlatform.Android) {
+			#if UNITY_ANDROID && !UNITY_EDITOR
+			using (AndroidJavaClass cls = new AndroidJavaClass ("com.kskkbys.unitygcmplugin.UnityGCMNotificationManager")) {
+				cls.CallStatic ("SetNotificationAlarm", _title,  _content,_ticker, _delaymilli.ToString());
+			}
+			#endif
+		}
+	}
  
 	/// <summary>
 	/// Sets the error callback.

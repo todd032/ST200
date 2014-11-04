@@ -148,7 +148,7 @@ public class PVPDataManager : MonoBehaviour {
 				AddPVPFriendList(_data);
 				RemoveFriendSearchList(_data);
 
-				if(GameUIManager.Instance != null)
+				if(GameUIManager.Instance != null && GameUIManager.Instance.m_PVPUI.gameObject.activeSelf)
 				{
 					GameUIManager.Instance.m_PVPUI.UpdateUI();
 					//Debug.Log("WTF..?");

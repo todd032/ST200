@@ -76,6 +76,6 @@ public class PVPUI_DetailUI : MonoBehaviour {
 	public void OnClickCloseButton()
 	{
 		if ( Managers.Audio != null) Managers.Audio.PlayFXSound(AudioManager.FX_SOUND.FX_Button_Common,false);
-		GameUIManager.Instance.m_PVPUI.ShowPVPUI();
+		GameUIManager.Instance.m_PVPUI.ShowPVPUI(false);
 	}
 }

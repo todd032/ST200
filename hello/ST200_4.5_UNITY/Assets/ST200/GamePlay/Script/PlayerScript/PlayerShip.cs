@@ -665,7 +665,10 @@ public class PlayerShip : MonoBehaviour {
 
 	public virtual void OnStageItemEnter(StageItem _stageitem)
 	{
-		GameManager.Instance.PlayerStageItemGetEvent(this, _stageitem);
+		if(_stageitem.TeamIndex == TeamIndex)
+		{
+			GameManager.Instance.PlayerStageItemGetEvent(this, _stageitem);
+		}
 	}
 
 	protected virtual void OnTriggerEnter2D(Collider2D _col)

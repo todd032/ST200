@@ -59,6 +59,8 @@ public class AudioManager : MonoBehaviour
 		FX_ARROW_HIT,
 
 		FX_START_GAME,
+
+		FX_BULLET_SHOOT_GUN,
 	}
 
 

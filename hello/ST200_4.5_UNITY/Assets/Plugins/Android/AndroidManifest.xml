@@ -104,6 +104,11 @@
                 <!--category android:name="android.intent.category.LAUNCHER" / -->
             </intent-filter>
         </activity>
+        
+        <service android:name="com.kskkbys.unitygcmplugin.AlarmPushService"
+        		android:enabled="true" />
+		<receiver android:name="com.kskkbys.unitygcmplugin.AlarmPushReceiver"/>      
+        	
         <!-- Android GCM Plugin -->
 		<activity android:name="com.prime31.GoogleIABProxyActivity" android:configChanges="orientation"></activity>
 		

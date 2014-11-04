@@ -20,9 +20,15 @@ public class PVPUI_PVPList : MonoBehaviour {
 		m_FriendLabel.text = TextManager.Instance.GetString(265);
 	}
 
-	public void InitUI()
+	public void InitUI(bool _showfriend)
 	{
-		ShowRecommandUI();
+		if(!_showfriend)
+		{
+			ShowRecommandUI();
+		}else
+		{
+			ShowFriendUI();
+		}
 	}
 
 	public void UpdateUI()

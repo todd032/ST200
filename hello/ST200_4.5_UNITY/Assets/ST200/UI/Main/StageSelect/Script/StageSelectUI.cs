@@ -222,11 +222,11 @@ public class StageSelectUI : MonoBehaviour {
 			if(Input.GetMouseButton(0))
 			{
 				#if UNITY_EDITOR
-				m_DestPivotProgress += (-Input.mousePosition.y + prevpos.y) / 200f;
+				m_DestPivotProgress += (-Input.mousePosition.y + prevpos.y) / 300f;
 				m_DestPivotProgress = Mathf.Clamp(m_DestPivotProgress, 0f, m_MaxPivotProgress);
 				prevpos = Input.mousePosition;
 				#else
-				m_DestPivotProgress -= Input.GetTouch(0).deltaPosition.y / 100f;
+				m_DestPivotProgress -= Input.GetTouch(0).deltaPosition.y / 300f;
 				m_DestPivotProgress = Mathf.Clamp(m_DestPivotProgress, 0f, m_MaxPivotProgress);
 				#endif
 			}

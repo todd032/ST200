@@ -38,7 +38,11 @@ public class PVPUI_RecommandTapUI : MonoBehaviour {
 		//}
 		//
 		//initflag = true;		
-		m_FirstRecommandUserInfo.Init(PVPDataManager.Instance.m_PVPRecommendInfoList[0]);
+		if(PVPDataManager.Instance.m_PVPRecommendInfoList.Count > 0)
+		{
+			m_FirstRecommandUserInfo.Init(PVPDataManager.Instance.m_PVPRecommendInfoList[0]);
+		}
+
 		if(PVPDataManager.Instance.m_PVPRecommendInfoList.Count > 1)
 		{
 			NGUITools.SetActive(m_SecondObject.gameObject, true);

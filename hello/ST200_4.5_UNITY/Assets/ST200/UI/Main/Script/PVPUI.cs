@@ -14,7 +14,7 @@ public class PVPUI : MonoBehaviour {
 
 	public void Init()
 	{
-		ShowPVPUI();
+		ShowPVPUI(false);
 
 	}
 
@@ -24,10 +24,10 @@ public class PVPUI : MonoBehaviour {
 		m_PVPUI.UpdateUI();
 	}
 
-	public void ShowPVPUI()
+	public void ShowPVPUI(bool _showfriend)
 	{
 		m_PVPUI.ShowUI();
-		m_PVPUI.InitUI();
+		m_PVPUI.InitUI(_showfriend);
 
 		m_PVPRankingUI.RemoveUI();
 
@@ -103,7 +103,7 @@ public class PVPUI : MonoBehaviour {
 	public void OnClickPVPListButton()
 	{
 		if ( Managers.Audio != null) Managers.Audio.PlayFXSound(AudioManager.FX_SOUND.FX_Button_Common,false);
-		ShowPVPUI();
+		ShowPVPUI(false);
 	}
 	public void OnClickRankButton()
 	{

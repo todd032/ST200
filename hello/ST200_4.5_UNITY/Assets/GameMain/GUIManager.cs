@@ -1028,66 +1028,32 @@ public class GUIManager : MonoBehaviour {
 
 				ST200AdmobManager.Instance.ShowInterstitial();
 
-				// 체험전 모드 여부 - false.
-				if (intExperienceMode == Constant.INT_False) {
+				// 영어학원 쿠폰 주기 기능 추가 (by 최원석 14.05.27) ========= Start.
+				Managers.DataStream.Event_Delegate_DataStreamManager_SaveUserData += (intResult_Code_Input, strResult_Extend_Input) => {
+					
+					_indicatorPopupView.RemoveIndicatorPopupView();
 
-					// 영어학원 쿠폰 주기 기능 추가 (by 최원석 14.05.27) ========= Start.
-					Managers.DataStream.Event_Delegate_DataStreamManager_SaveUserData += (intResult_Code_Input, strResult_Extend_Input) => {
-						
-						_indicatorPopupView.RemoveIndicatorPopupView();
+					if (intResult_Code_Input == Constant.NETWORK_RESULTCODE_OK) {
 
-						if (intResult_Code_Input == Constant.NETWORK_RESULTCODE_OK) {
+						ST200KLogManager.Instance.SendToServer();
+						Application.LoadLevel("Ranking");
+						Time.timeScale = 1f;
+						
+					} else if (intResult_Code_Input == Constant.NETWORK_RESULTCODE_Error_Network) {
+						
+						_uiRootAlertView.LoadUIRootAlertView(Constant.ST200_POPUP_MESSAGE_NETWORK_NOT_GOOD); 
+						
+					}else if(intResult_Code_Input == Constant.NETWORK_RESULTCODE_Error_UserSequence)
+					{
+						_uiRootAlertView.LoadUIRootAlertView(Constant.ST200_POPUP_ERROR_USERSEQUENCE_ERROR); 
+					} else {
+						
+						_uiRootAlertView.LoadUIRootAlertView(Constant.ST200_POPUP_MESSAGE_INCORRECTDATA); 
+					}
+				};
+				
+				Managers.DataStream.Network_SaveUserData_Input_1(userDataStruct);
 
-							ST200KLogManager.Instance.SendToServer();
-							Application.LoadLevel("Ranking");
-							Time.timeScale = 1f;
-							
-						} else if (intResult_Code_Input == Constant.NETWORK_RESULTCODE_Error_Network) {
-							
-							_uiRootAlertView.LoadUIRootAlertView(Constant.ST200_POPUP_MESSAGE_NETWORK_NOT_GOOD); 
-							
-						}else if(intResult_Code_Input == Constant.NETWORK_RESULTCODE_Error_UserSequence)
-						{
-							_uiRootAlertView.LoadUIRootAlertView(Constant.ST200_POPUP_ERROR_USERSEQUENCE_ERROR); 
-						} else {
-							
-							_uiRootAlertView.LoadUIRootAlertView(Constant.ST200_POPUP_MESSAGE_INCORRECTDATA); 
-						}
-					};
-					
-					Managers.DataStream.Network_SaveUserData_Input_1(userDataStruct);
-					// 영어학원 쿠폰 주기 기능 추가 (by 최원석 14.05.27) ========= End.
-					
-					// 체험전 모드 여부 - true.
-				} else {
-					
-					Managers.DataStream.Event_Delegate_DataStreamManager_ReadUserData += (intNetworkResultCode_Input) => {
-						
-						PlayerPrefs.SetInt(Constant.PREFKEY_ExperiencePopup_Mode_INT, Constant.INT_False);
-						
-						// 통신 결과.
-						if (intNetworkResultCode_Input == Constant.NETWORK_RESULTCODE_OK) {
-							// 성공.
-							PlayerPrefs.SetInt(Constant.PREFKEY_ExperiencePopup_Mode_INT, Constant.INT_False);
-							ST200KLogManager.Instance.SendToServer();
-							Application.LoadLevel("Ranking");
-							Time.timeScale = 1f;
-							
-						} else if (intNetworkResultCode_Input == Constant.NETWORK_RESULTCODE_Error_Network) {
-							
-							_uiRootAlertView.LoadUIRootAlertView(Constant.ST200_POPUP_MESSAGE_NETWORK_NOT_GOOD); 
-							
-						}else if(intNetworkResultCode_Input == Constant.NETWORK_RESULTCODE_Error_UserSequence)
-						{
-							_uiRootAlertView.LoadUIRootAlertView(Constant.ST200_POPUP_ERROR_USERSEQUENCE_ERROR); 
-						}  else {
-							
-							_uiRootAlertView.LoadUIRootAlertView(Constant.ST200_POPUP_MESSAGE_INCORRECTDATA); 
-						}
-					};
-					
-					StartCoroutine(Managers.DataStream.Network_ReadUserData());
-				}
 			}
 		}
 	}
