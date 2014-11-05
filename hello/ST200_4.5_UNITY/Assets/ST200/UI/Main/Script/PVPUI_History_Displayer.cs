@@ -104,7 +104,7 @@ public class PVPUI_History_Displayer : MonoBehaviour {
 		}
 	}
 	
-	protected void UpdateUIInfo()
+	public void UpdateUIInfo()
 	{
 		int m_curuserindex = (int)m_CurScrollPointer;
 		for(int i = m_curuserindex; i < m_UserInfoUIList.Count + m_curuserindex; i++)

@@ -15,7 +15,9 @@ public class PVPUI_History_UserInfoObject : MonoBehaviour {
 	public UILabel m_FixTimeLabel;
 
 	public UILabel m_FightTime;
-	
+
+	public UISprite m_FriendAddSprite;
+
 	public UserHistoryData m_UserInfoData;
 	public void Init(UserHistoryData _userinfodata)
 	{
@@ -61,6 +63,18 @@ public class PVPUI_History_UserInfoObject : MonoBehaviour {
 			NGUITools.SetActive(m_FixButton.gameObject, false);
 		}
 
+		if(PVPDataManager.Instance.IsInFriendList(m_UserInfoData.m_UserInfoData.UserIndex))
+		{
+			m_FriendAddSprite.spriteName = "pvp_list_add_2";
+			friend_addedflag = true;
+			//Debug.Log("hi3");
+		}else
+		{
+			m_FriendAddSprite.spriteName = "pvp_list_add";
+			friend_addedflag = false;
+			//Debug.Log("hi2");
+		}
+
 		string[] timestring = TextManager.GetDHM(m_UserInfoData.PastSecond);
 		m_FightTime.text = Constant.COLOR_RED + timestring[0] + TextManager.Instance.GetString(270) + " " + 
 			timestring[1] + TextManager.Instance.GetString(271) + " " + 
@@ -74,5 +88,20 @@ public class PVPUI_History_UserInfoObject : MonoBehaviour {
 		if ( Managers.Audio != null) Managers.Audio.PlayFXSound(AudioManager.FX_SOUND.FX_Button_Common,false);
 		PVPDataManager.Instance.SetSelectPVPUserInfo(m_UserInfoData.m_UserInfoData);
 		GameUIManager.Instance.m_PVPUI.ShowDetailUI();
+	}
+
+	bool friend_addedflag = false;
+	public void OnClickAddFriendButton()
+	{
+		if ( Managers.Audio != null) Managers.Audio.PlayFXSound(AudioManager.FX_SOUND.FX_Button_Common,false);
+		if(!friend_addedflag)
+		{
+			m_FriendAddSprite.spriteName = "pvp_list_add_2";
+			//Debug.Log("hi1");
+			PVPDataManager.Instance.AddToFriend(m_UserInfoData.m_UserInfoData);
+			GameUIManager.Instance.LoadUIRootAlertView(Constant.ST200_POPUP_PVP_FRIENDADD_SUCCESS,
+			                                           new string[]{m_UserInfoData.m_UserInfoData.UserNickName});
+			friend_addedflag = true;
+		}
 	}
 }

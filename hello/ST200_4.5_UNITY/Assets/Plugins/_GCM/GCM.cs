@@ -197,12 +197,23 @@ public class GCM {
      }
  }
 
-	public static void SetNotificationMessage(string _title, string _content,string _ticker, double _delaymilli)
+	public static void SetAlarmNotificationMessage(int _requestid, string _title, string _content,string _ticker, double _delaymilli)
 	{
 		if (Application.platform == RuntimePlatform.Android) {
 			#if UNITY_ANDROID && !UNITY_EDITOR
 			using (AndroidJavaClass cls = new AndroidJavaClass ("com.kskkbys.unitygcmplugin.UnityGCMNotificationManager")) {
-				cls.CallStatic ("SetNotificationAlarm", _title,  _content,_ticker, _delaymilli.ToString());
+				cls.CallStatic ("SetNotificationAlarm", _requestid.ToString(), _title,  _content,_ticker, _delaymilli.ToString());
+			}
+			#endif
+		}
+	}
+
+	public static void ClearAlarmNotification(int _requestid)
+	{
+		if (Application.platform == RuntimePlatform.Android) {
+			#if UNITY_ANDROID && !UNITY_EDITOR
+			using (AndroidJavaClass cls = new AndroidJavaClass ("com.kskkbys.unitygcmplugin.UnityGCMNotificationManager")) {
+				cls.CallStatic ("ClearNotificationAlarm", _requestid.ToString());
 			}
 			#endif
 		}

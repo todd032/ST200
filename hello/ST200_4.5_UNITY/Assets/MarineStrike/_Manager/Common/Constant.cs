@@ -7,12 +7,12 @@ public class Constant : MonoBehaviour {
 	/// CHEATING MODE ON/OFF
 	/// </summary>
 	/// 
-	public readonly static bool VALTEST1 = false;
+	public readonly static bool VALTEST1 = true;
     // 프로젝트 정보 ----------------------------------------------------------------------------------------------------------------
-    public readonly static string AppVersionInfo = "1.2.7";
+    public readonly static string AppVersionInfo = "1.2.8";
     public readonly static string DefalutAppName = "defalut_app_name" ;
     
-    public readonly static string AppNameString = "35" ; //VersionCode...
+    public readonly static string AppNameString = "36" ; //VersionCode...
     public readonly static string CURRENT_MARKET = "2" ; // 2 : PlayStore   3 : TStore  4 : Naver.
 
     
@@ -23,10 +23,10 @@ public class Constant : MonoBehaviour {
 	public static readonly bool PROJECTMODE_OutDebugMessage = true; //상용시 false로..
 	public static readonly bool PROJECTMODE_IabTest = true; //상용시 false로..
 #else
-	public static readonly bool PROJECTMODE_Develop = false; //상용시 false로..
-	public static readonly bool PROJECTMODE_BalanceTest = false; //상용시 false, 테스트용 벨런스 데이터를 가지고 옴..
-	public static readonly bool PROJECTMODE_OutDebugMessage = false; //상용시 false로..
-	public static readonly bool PROJECTMODE_IabTest = false; //상용시 false로..
+	public static readonly bool PROJECTMODE_Develop = true; //상용시 false로..
+	public static readonly bool PROJECTMODE_BalanceTest = true; //상용시 false, 테스트용 벨런스 데이터를 가지고 옴..
+	public static readonly bool PROJECTMODE_OutDebugMessage = true; //상용시 false로..
+	public static readonly bool PROJECTMODE_IabTest = true; //상용시 false로..
 #endif
     
     // Scene ----------------------------------------------------------------------------------------------------------------
@@ -2211,5 +2211,10 @@ public class Constant : MonoBehaviour {
 	#region ST200 GAME MODE
 	public readonly static int ST200_GAMEMODE_STAGE_NORMAL						= 0;
 	public readonly static int ST200_GAMEMODE_PVP								= 1;
+	#endregion
+
+	#region GCM Code
+	public static readonly int FLAG_RECHARGE_PUSH								= 1;
+
 	#endregion
 }

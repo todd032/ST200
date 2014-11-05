@@ -38,8 +38,6 @@ public class TorpedoManager : MonoBehaviour {
 	private void Update () {
 	
 	}
-
-
 	
 	public void RechargeInitTorpedo(){
 		
@@ -204,6 +202,31 @@ public class TorpedoManager : MonoBehaviour {
 		
 		if (pause == false) {
 			RechargeInitTorpedo() ;
+
+			//lalal
+			GCM.ClearAlarmNotification(Constant.FLAG_RECHARGE_PUSH);
+		}else
+		{
+
+			//set notification
+			if(Managers.UserData.PushFlag)
+			{
+				int ServerTime = Managers.UserData.GetSyncServerTime() ;
+				int rechargetime = Managers.UserData.TorpedoRechargeNextTime + 
+					Mathf.Max(0, Managers.GameBalanceData.NextRechargeTorpedoBaseTime * (Managers.GameBalanceData.TorpedoMaxValue - 1 - Managers.UserData.TorpedoCount));
+				
+				if(rechargetime > ServerTime)
+				{
+					int aftersecond = rechargetime - ServerTime;
+					double delay = aftersecond * 1000f;
+					//Debug.Log("set push noti: " + aftersecond);
+					GCM.SetAlarmNotificationMessage(Constant.FLAG_RECHARGE_PUSH, 
+					                                TextManager.Instance.GetString(286),
+					                                TextManager.Instance.GetString(287),
+					                                TextManager.Instance.GetString(288),
+					                                delay);
+				}
+			}
 		}
 		
 	}

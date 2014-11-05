@@ -125,7 +125,7 @@ public class PaymentManager : MonoBehaviour {
 	private void Awake(){
 #if UNITY_IPHONE
 		// IAP Module..
-		var productIdentifiers = new string[] { "com.polycube.st200.crystal.10", "com.polycube.st200.crystal.30", "com.polycube.st200.crystal.50", "com.polycube.st200.crystal.100", "com.polycube.st200.crystal.300", "com.polycube.st200.crystal.500" };
+		var productIdentifiers = new string[] { "com.polycube.st200.Bullion.10", "com.polycube.st200.Bullion.33", "com.polycube.st200.Bullion.60", "com.polycube.st200.Bullion.130", "com.polycube.st200.Bullion.420", "com.polycube.st200.Bullion.750" };
 		StoreKitBinding.requestProductData( productIdentifiers );
 #elif UNITY_ANDROID 
 		var key = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAhTzuulU3SGashsszdsirruxWLPRX+01HUr5FaDVwusYl/NxqwzI7dCC0yEfOi6i/mZv2K0yW/zHWXZ6s09liZaysRJzqAMIYLnHYh463FWPaCP2hspo6XsgkJXnA1Qtljq4bnR4nGGJVzITIiXey1v3EHN3t/0gYpizoDSp3s9DIEz3geggFv50skQ0hUdj8KSHtQV+1O7J/mOIQZoIXrDF2D/wqaurVOWw/cNj26ju4Ge+T6SsL5MU7vQKHcjgok/sJMvldkjEO0WIAXdZvXck5EXEvMNMLt/uWa+5+uBZxVba+jkKshskRrfcCkBIxHmOMUZhjkM92hUdreDNDZQIDAQAB";
@@ -438,12 +438,12 @@ public class PaymentManager : MonoBehaviour {
 		if (!_isPayment){
 			// IAP Module..
 			var productIdentifiers = new string[] { 
-				"com.polycube.st200.crystal.10",
-				"com.polycube.st200.crystal.30",
-				"com.polycube.st200.crystal.50", 
-				"com.polycube.st200.crystal.100",
-				"com.polycube.st200.crystal.300",
-				"com.polycube.st200.crystal.500" };
+				"com.polycube.st200.Bullion.10",
+				"com.polycube.st200.Bullion.33",
+				"com.polycube.st200.Bullion.60", 
+				"com.polycube.st200.Bullion.130",
+				"com.polycube.st200.Bullion.420",
+				"com.polycube.st200.Bullion.750" };
 			// ========== iOS 결재 모듈 수정부분 (by 최원석14.04.18 ) END ==========
 
 			StoreKitBinding.requestProductData( productIdentifiers );

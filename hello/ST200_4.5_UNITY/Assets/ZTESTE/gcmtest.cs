@@ -25,11 +25,14 @@ public class gcmtest : MonoBehaviour {
 	string titletext = "title";
 	string contenttext = "content";
 	string time = "0";
+	string requestcodestring = "1";
 	public double actualtimeinmilli = 0;
+	public int requestcode = 1;
 	void OnGUI()
 	{
 		float width = Screen.width;
-		float height = Screen.height/4f;
+		float height = Screen.height/5f;
+
 		titletext = GUI.TextField(new Rect(0f,0f,width, height), titletext);
 		contenttext = GUI.TextField(new Rect(0f,height,width, height), contenttext);
 		time = GUI.TextField(new Rect(0f, height + height,width, height), time);
@@ -39,14 +42,19 @@ public class gcmtest : MonoBehaviour {
 		double.TryParse(time, out inttime);
 		CurTime = CurTime.AddSeconds(inttime);
 		actualtimeinmilli = (double)(CurTime - epochStart).TotalMilliseconds;
-		if(GUI.Button(new Rect(0f,height + height + height,width / 2f, height), "Send GCM"))
+
+		requestcode = 0;
+		requestcodestring = GUI.TextField(new Rect(0f,height + height + height,width, height), requestcodestring);
+		int.TryParse(requestcodestring, out requestcode);
+
+		if(GUI.Button(new Rect(0f,height + height + height + height,width / 2f, height), "Send GCM"))
 		{
 			showmessage();
 		}
 
-		if(GUI.Button(new Rect(width / 2f,height + height + height,width / 2f, height), "clear noti"))
+		if(GUI.Button(new Rect(width / 2f,height + height + height + height,width / 2f, height), "clear noti"))
 		{
-			showmessage();
+			clearnoti();
 		}
 	}
 
@@ -55,11 +63,11 @@ public class gcmtest : MonoBehaviour {
 		double cutdouble = actualtimeinmilli - (actualtimeinmilli % 1f);
 			Debug.Log("Actual milli: " + cutdouble);
 
-		GCM.SetNotificationMessage(titletext, contenttext, titletext, cutdouble);
+		GCM.SetAlarmNotificationMessage(requestcode, titletext, contenttext, titletext, cutdouble);
 	}
 
 	void clearnoti()
 	{
-		GCM.ClearAllNotifications();
+		GCM.ClearAlarmNotification(requestcode);
 	}
 }

@@ -48,7 +48,7 @@ public class TstoreAndroidBridgeManager : MonoBehaviour {
 
 	// ==================== 전역 변수 선언 - Start ====================
 	AndroidJavaObject AndroidPlugin= null;
-	private readonly string INAPP_AppID = "OA00663816"; // T store에 등록한 게임 ID.
+	private readonly string INAPP_AppID = "OA00676935"; // T store에 등록한 게임 ID.
 
 	// ==================== 전역 변수 선언 - End ====================
 

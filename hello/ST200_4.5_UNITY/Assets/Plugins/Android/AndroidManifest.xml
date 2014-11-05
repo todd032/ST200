@@ -45,11 +45,15 @@
     
 	<!-- T store IAP Plugin 
    <uses-permission android:name="android.permission.RECEIVE_SMS" />
+   <uses-permission android:name="android.permission.INTERNET" />
+   <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-	<uses-permission android:name="com.tmoney.vending.INBILLING" />  
+   <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+   <uses-permission android:name="com.tmoney.vending.INBILLING" />  
    <permission android:name="com.tmoney.vending.INBILLING" />
+   <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
    -->
    <!-- - Naver InApp - Start
    <uses-permission android:name="android.permission.READ_CONTACTS" />
@@ -106,8 +110,13 @@
         </activity>
         
         <service android:name="com.kskkbys.unitygcmplugin.AlarmPushService"
-        		android:enabled="true" />
-		<receiver android:name="com.kskkbys.unitygcmplugin.AlarmPushReceiver"/>      
+        		android:enabled="true">
+        		</service>
+		<receiver android:name="com.kskkbys.unitygcmplugin.AlarmPushReceiver">
+			<intent-filter>
+			<category android:name="com.polycube.st200" />
+			</intent-filter>
+		</receiver>      
         	
         <!-- Android GCM Plugin -->
 		<activity android:name="com.prime31.GoogleIABProxyActivity" android:configChanges="orientation"></activity>
@@ -145,7 +154,7 @@
             android:excludeFromRecents="true"            
             android:windowSoftInputMode="stateHidden" >
         </activity>   
-        --> 
+        -->
 		<!--- TStore plugin -->
 
       <!-- - Naver InApp - Start 

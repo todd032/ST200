@@ -4448,7 +4448,7 @@ public class DataStreamManager : MonoBehaviour {
 		bodydic.Add("UserIndex", _userindex.ToString());
 		
 		string body = TextManager.CreateJsonData(bodydic);
-		Debug.Log("body: " + body);
+		//Debug.Log("body: " + body);
 		string extend = "";
 		
 		string check = getParameterCheckSum(header + body + extend);   //checksum 코드 생성...
@@ -5208,7 +5208,7 @@ public class DataStreamManager : MonoBehaviour {
 					for(int friendindexno = 0; friendindexno < friendlist.Count; friendindexno++)
 					{
 						JSONNode userdata = friendlist[friendindexno];
-						Debug.Log("TOTAL: " + userdata.ToString());
+						//Debug.Log("TOTAL: " + userdata.ToString());
 						
 						int userindex = userdata["pvp_user_index"].AsInt;
 						string nickname = userdata["nickname"];

@@ -719,32 +719,32 @@ public class PaymentPopupView : MonoBehaviour {
 		// 크리스탈 10.
 		if (m_paymentBuyInfoBalance.PaymentItemIndex == 1){
 			
-			m_strInApp_Code = "com.polycube.st200.crystal.10" ;
+			m_strInApp_Code = "com.polycube.st200.Bullion.10" ;
 			
 			// 크리스탈 33.
 		} else if (m_paymentBuyInfoBalance.PaymentItemIndex == 2){
 			
-			m_strInApp_Code = "com.polycube.st200.crystal.30" ;
+			m_strInApp_Code = "com.polycube.st200.Bullion.33" ;
 			
 			// 크리스탈 60.
 		} else if (m_paymentBuyInfoBalance.PaymentItemIndex == 3){
 			
-			m_strInApp_Code = "com.polycube.st200.crystal.50" ;
+			m_strInApp_Code = "com.polycube.st200.Bullion.60" ;
 			
 			// 크리스탈 130.
 		} else if (m_paymentBuyInfoBalance.PaymentItemIndex == 4){
 			
-			m_strInApp_Code = "com.polycube.st200.crystal.100" ;
+			m_strInApp_Code = "com.polycube.st200.Bullion.130" ;
 			
 			// 크리스탈 420.
 		} else if (m_paymentBuyInfoBalance.PaymentItemIndex == 5){
 			
-			m_strInApp_Code = "com.polycube.st200.crystal.300" ;
+			m_strInApp_Code = "com.polycube.st200.Bullion.420" ;
 			
 			// 크리스탈 750.
 		} else if (m_paymentBuyInfoBalance.PaymentItemIndex == 6){
 			
-			m_strInApp_Code = "com.polycube.st200.crystal.500" ;
+			m_strInApp_Code = "com.polycube.st200.Bullion.750" ;
 		}
 
 #elif UNITY_ANDROID
@@ -755,32 +755,32 @@ public class PaymentPopupView : MonoBehaviour {
 			// 크리스탈 10.
 			if (m_paymentBuyInfoBalance.PaymentItemIndex == 1){
 				
-				m_strInApp_Code = "0910015853" ;
+				m_strInApp_Code = "0910023020" ;
 				
 				// 크리스탈 33.
 			} else if (m_paymentBuyInfoBalance.PaymentItemIndex == 2){
 				
-				m_strInApp_Code = "0910015854" ;
+				m_strInApp_Code = "0910023021" ;
 				
 				// 크리스탈 60.
 			} else if (m_paymentBuyInfoBalance.PaymentItemIndex == 3){
 				
-				m_strInApp_Code = "0910015855" ;
+				m_strInApp_Code = "0910023022" ;
 				
 				// 크리스탈 130.
 			} else if (m_paymentBuyInfoBalance.PaymentItemIndex == 4){
 				
-				m_strInApp_Code = "0910015856" ;
+				m_strInApp_Code = "0910023023" ;
 				
 				// 크리스탈 420.
 			} else if (m_paymentBuyInfoBalance.PaymentItemIndex == 5){
 				
-				m_strInApp_Code = "0910015857" ;
+				m_strInApp_Code = "0910023024" ;
 				
 				// 크리스탈 750.
 			} else if (m_paymentBuyInfoBalance.PaymentItemIndex == 6){
 				
-				m_strInApp_Code = "0910015858" ;
+				m_strInApp_Code = "0910023025" ;
 			}
 			
 			// Naver InApp.

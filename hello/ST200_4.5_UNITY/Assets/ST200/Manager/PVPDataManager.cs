@@ -151,6 +151,7 @@ public class PVPDataManager : MonoBehaviour {
 				if(GameUIManager.Instance != null && GameUIManager.Instance.m_PVPUI.gameObject.activeSelf)
 				{
 					GameUIManager.Instance.m_PVPUI.UpdateUI();
+					GameUIManager.Instance.m_PVPUI.m_HistoryUI.m_Displayer.UpdateUIInfo();
 					//Debug.Log("WTF..?");
 				}
 			}else
