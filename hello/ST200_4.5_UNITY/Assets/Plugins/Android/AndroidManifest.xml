@@ -43,7 +43,7 @@
     <!--- READ_PHONE_STATE is used to get unique device id-->
     
     
-	<!-- T store IAP Plugin 
+	<!-- T store IAP Plugin -->
    <uses-permission android:name="android.permission.RECEIVE_SMS" />
    <uses-permission android:name="android.permission.INTERNET" />
    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -54,13 +54,17 @@
    <uses-permission android:name="com.tmoney.vending.INBILLING" />  
    <permission android:name="com.tmoney.vending.INBILLING" />
    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-   -->
+   
    <!-- - Naver InApp - Start
    <uses-permission android:name="android.permission.READ_CONTACTS" />
   -->
     <!-- - Naver InApp - End -->
 
-
+	<!-- TapJoy 
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    -->
+    <!-- TapJoy -->
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
@@ -83,6 +87,9 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+        
+        <meta-data android:name="com.kakao.sdk.AppKey" android:value="@string/kakao_app_key"/>
+        
         <activity
             android:name="com.kakao.unity.plugin.ThirdPartyPostStoryActivity"
             android:theme="@android:style/Theme.Translucent.NoTitleBar"
@@ -133,8 +140,7 @@
  		
  		<activity android:name="com.tnkfactory.ad.AdWallActivity" android:screenOrientation="portrait"/><!-- Tnk -->
         <activity android:name="com.tnkfactory.ad.AdMediaActivity" android:screenOrientation="landscape"/><!-- Tnk -->
- 		
- 		<meta-data android:name="com.kakao.sdk.AppKey" android:value="@string/kakao_app_key"/>
+ 		 		
  		<meta-data android:name="tnkad_app_id" android:value="f0d070a0-d091-5438-8345-190d080e0a06" /><!-- Tnk -->
  		
  		<meta-data android:name="unityplayer.UnityActivity" android:value="true" /> <!-- Tnk -->
@@ -182,6 +188,37 @@
         	<meta-data android:name="com.google.android.gms.version"
                android:value="@integer/google_play_services_version"/>
             <!-- admob end -->
+            
+            <activity android:name="com.tapjoy.easyapp.TapjoyEasyApp"></activity>
+
+ 		<!-- Tapjoy 
+ 		<activity android:name="com.tapjoy.easyapp.TapjoyEasyApp"></activity>
+		<meta-data android:name="com.google.android.gms.version" android:value="4452000" />
+        <activity
+            android:name="com.tapjoy.TJCOffersWebView"
+            android:configChanges="keyboardHidden|orientation|screenSize" />
+        <activity
+            android:name="com.tapjoy.TapjoyFullScreenAdWebView"
+            android:configChanges="keyboardHidden|orientation|screenSize" />
+        <activity
+            android:name="com.tapjoy.TapjoyDailyRewardAdWebView"
+            android:configChanges="keyboardHidden|orientation|screenSize" />
+        <activity
+            android:name="com.tapjoy.TapjoyVideoView"
+            android:configChanges="keyboardHidden|orientation|screenSize" />
+        <activity
+            android:name="com.tapjoy.TJAdUnitView"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen"
+            android:hardwareAccelerated="true" />
+        <activity
+            android:name="com.tapjoy.mraid.view.ActionHandler"
+            android:configChanges="keyboardHidden|orientation|screenSize" />
+        <activity
+            android:name="com.tapjoy.mraid.view.Browser"
+            android:configChanges="keyboardHidden|orientation|screenSize" />
+            -->
+    	<!-- Tapjoy end-->
     </application>
 
 </manifest>

@@ -526,6 +526,19 @@ public class UIRootAlertView : MonoBehaviour {
 				
 				_uiRootAlertViewMessageLabel.text = TextManager.Instance.GetString(277);
 			}
+		}else if(intAlertType_Input == Constant.ST200_POPUP_INSTALL_KAKAO)
+		{
+			if ( Managers.Audio != null) Managers.Audio.PlayFXSound(AudioManager.FX_SOUND.FX_Etc_Alert,false);
+			
+			NGUITools.SetActive(_uiRootAlertViewCancelButton.gameObject, false) ;
+			_uiRootAlertViewOkButton.transform.localPosition = new Vector3(0f, _uiRootAlertViewOkButton.transform.localPosition.y, _uiRootAlertViewOkButton.transform.localPosition.z) ;
+			
+			if (Managers.UserData != null){
+				
+				string languageCode = Managers.UserData.LanguageCode ;
+				
+				_uiRootAlertViewMessageLabel.text = TextManager.Instance.GetString(301);
+			}
 		}
 	}
 	

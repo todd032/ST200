@@ -118,9 +118,14 @@ public class PVPUI : MonoBehaviour {
 	public void OnClickKakaoInviteButton()
 	{
 		if ( Managers.Audio != null) Managers.Audio.PlayFXSound(AudioManager.FX_SOUND.FX_Button_Common,false);
-		ST200KakaoLink.g_Instance.InitLink(TextManager.Instance.GetString(246), TextManager.Instance.GetReplaceString(247, Managers.UserData.UserNickName),
-		                                   TextManager.Instance.GetString(250));
-		ST200KakaoLink.g_Instance.SendKakaoLinkMessage();
+		if(ST200KakaoLink.g_Instance.InitLink(TextManager.Instance.GetString(246), TextManager.Instance.GetReplaceString(247, Managers.UserData.UserNickName),
+		                                      TextManager.Instance.GetString(250)))
+		{
+			ST200KakaoLink.g_Instance.SendKakaoLinkMessage();
+		}else
+		{
+			GameUIManager.Instance.LoadUIRootAlertView(Constant.ST200_POPUP_INSTALL_KAKAO);
+		}
 	}
 
 	public bool OnEscapePress()

@@ -92,6 +92,16 @@ public class GamePathManager2 : MonoBehaviour {
 			}
 		}
 
+
+		//maybe pre-calculate paths?
+		//for(int startnodeindex = 0; startnodeindex < m_TurnPointList.Count; startnodeindex++)
+		//{
+		//	for(int targetnodeindex = 0; targetnodeindex < m_TurnPointList.Count; targetnodeindex++)
+		//	{
+		//		GraphManager.GetPath(startnodeindex, targetnodeindex);
+		//	}
+		//}
+
 		Debug.Log("INIT COMPLETE total " + linecount);
 	}
 

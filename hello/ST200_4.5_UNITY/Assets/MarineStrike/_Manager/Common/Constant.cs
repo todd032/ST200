@@ -2142,6 +2142,7 @@ public class Constant : MonoBehaviour {
 	public readonly static int ST200_POPUP_RECHARGE_HEART 						= 4;
 	public readonly static int ST200_POPUP_RECHARGE_HEART_TOP_UI				= 5;
 	public readonly static int ST200_POPUP_RECHARGE_HEART_NOTICE				= 6;
+	public readonly static int ST200_POPUP_INSTALL_KAKAO						= 7;
 
 	public readonly static int ST200_POPUP_MESSAGE_INCORRECTDATA 				= 1001;
 	public readonly static int ST200_POPUP_MESSAGE_NETWORK_NOT_GOOD				= 1002;

@@ -14,7 +14,7 @@ public class PFP_AdmobManager : MonoBehaviour {
 	private readonly string AndroidAdID = "ca-app-pub-2011841791699165/8038213738";
 	private readonly string IOSAdID = "ca-app-pub-2011841791699165/8038213738";
 	private readonly string AndroidIniAdId = "ca-app-pub-6476722427938963/3575545537";
-
+	private readonly string IOSIniAdId = "ca-app-pub-6476722427938963/6117198334";
 
 	private static PFP_AdmobManager instance;
 	public static PFP_AdmobManager Instance
@@ -90,7 +90,7 @@ public class PFP_AdmobManager : MonoBehaviour {
 		#elif UNITY_ANDROID
 		string adUnitId = AndroidIniAdId;
 		#elif UNITY_IPHONE
-		string adUnitId = IOSAdID;
+		string adUnitId = IOSIniAdId;
 		#else
 		string adUnitId = "unexpected_platform";
 		#endif
