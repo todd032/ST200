@@ -17,7 +17,7 @@ public class ST200KakaoLink {
 	//private static extern void iOS_InitKakaoLink( string imgageURL, string linkText, string linkBtnText );
 	
 	[DllImport("__Internal")]
-	private static extern void iOS_SendKakaoLink( string imgageURL, string linkText, string linkBtnText );
+	private static extern bool iOS_SendKakaoLink( string imgageURL, string linkText, string linkBtnText );
 
 	public static ST200KakaoLink g_Instance
 	{
@@ -82,7 +82,14 @@ public class ST200KakaoLink {
 		}
 		//NativeHelper.Instance.activity.Call( "InitKakaoLink", m_ImageUrl, m_LinkText , m_ButtonText);
 #elif UNITY_IPHONE
-		iOS_SendKakaoLink( _imageurl, _text, _buttontext );
+		if( iOS_SendKakaoLink( _imageurl, _text, _buttontext ) )
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
 #endif
 		return true;
 	}

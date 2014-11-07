@@ -246,9 +246,9 @@ public class MainTitleManager : MonoBehaviour {
 	private void Start_01_Save_Token(){
 		
 		 //Debug.Log("ST110 MainTitleManager.Start_01_Save_Token() Run!!");
-		
+		//StartCoroutine(Managers.DataStream.Network_SaveToken()) ;
 		#if UNITY_IPHONE && !UNITY_EDITOR
-		
+		Debug.Log( "Hello Start SaveToken" );
 		StartCoroutine(Managers.DataStream.Network_SaveToken()) ;
 		
 		#elif UNITY_ANDROID && !UNITY_EDITOR	

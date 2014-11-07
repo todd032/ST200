@@ -47,8 +47,20 @@ public class PVPUI_Rank_InfoObject : MonoBehaviour {
 			}
 		}
 
+		string winstring = "0";
+		string losestring = "0";
+		if(_win != 0)
+		{
+			winstring = _win.ToString("#,#");
+		}
+
+		if(_lose != 0)
+		{
+			losestring = _lose.ToString("#,#");
+		}
+
 		m_ShipLabel.text = Managers.GameBalanceData.GetShipDescriptionInfo(_shipindex).ShipName + " LV. " + _shiplevel.ToString();
-		m_RateLabel.text = _win.ToString() + TextManager.Instance.GetString(248) + 
-			_lose.ToString() + TextManager.Instance.GetString(249);
+		m_RateLabel.text = winstring + TextManager.Instance.GetString(248) + 
+			losestring + TextManager.Instance.GetString(249);
 	}
 }

@@ -2801,15 +2801,21 @@ public class DataStreamManager : MonoBehaviour {
 		//http://14.49.41.8/st100/token.php?mode=SaveToken&service=ST100&ostype=2&mtype=2&udid=db4c3a4f8f1d1f54ceae4981d6e3672c&token=APA91bEDE_94TUNouLbv7WTD342ayYzwf-llPQgTMGi1JeL3uR4pX161zvX5ypAWCJwFz3V6g9S44XQ8-ehKF5t3xUUq73F0UuDeqdK-w2lLY5-LQXaBaijd7H6L09lBJ1_OBTlnXmROktgVtfLhNZd7K_Q6n7fHwuU00nvqAK5-q_MxKh8gxuc
 		
 		string urlStr = "";
-		
+		//Managers.IOSDeviceToken
+		//Debug.Log( "token = " + token );
+		//Debug.Log( "Hello???" );
 		#if UNITY_IPHONE && !UNITY_EDITOR   
 		
-		var token  = NotificationServices.deviceToken;
+		//var token  = NotificationServices.deviceToken;
+		bool acceptPush = Managers.IOSPushAccept;
+		//Debug.Log( "token = " + token );
+		//Debug.Log( "Hello???" );
 		
-		if (token != null) {
+		if (acceptPush) {
 			
-			string hexToken  =  System.BitConverter.ToString(token).Replace("-","");
-			
+			//string hexToken  =  System.BitConverter.ToString(token).Replace("-","");
+			string hexToken = Managers.IOSDeviceToken;
+
 			if (Constant.PROJECTMODE_Develop) {
 				
 				m_strURL = Constant.URL_DEVELOP_Token;
@@ -2826,7 +2832,11 @@ public class DataStreamManager : MonoBehaviour {
 					"mtype="+mType+"&"+
 					"udid="+SystemInfo.deviceUniqueIdentifier+"&"+
 					"token="+hexToken;
-		}else {
+
+			//Debug.Log( "URLStr = " +  urlStr );
+		}
+		else 
+		{
 			
 		}
 		

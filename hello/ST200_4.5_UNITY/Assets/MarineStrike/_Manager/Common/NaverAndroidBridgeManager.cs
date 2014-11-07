@@ -26,7 +26,7 @@ public class NaverAndroidBridgeManager : MonoBehaviour {
 	// ==================== 전역 변수 선언 - End ====================
 
 	void Awake() {
-		#if UNITY_ANDROID
+#if UNITY_ANDROID && !UNITY_EDITOR
 		AndroidJavaClass androidJavaClass = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
 		m_androidJavaObject = androidJavaClass.GetStatic<AndroidJavaObject>("currentActivity");
 #endif
@@ -48,7 +48,7 @@ public class NaverAndroidBridgeManager : MonoBehaviour {
 		Debug.Log ("ST110 NaverAndroidBridgeManager.NaverInApp_requestPayment.strInAppCode_Input = " + strInAppCode_Input);
 		Debug.Log ("ST110 NaverAndroidBridgeManager.NaverInApp_requestPayment.intInAppPrice_Input = " + intInAppPrice_Input.ToString());
 		Debug.Log ("ST110 NaverAndroidBridgeManager.NaverInApp_requestPayment.strInAppExtra_Input = " + strInAppExtra_Input);
-		#if UNITY_ANDROID
+	#if UNITY_ANDROID && !UNITY_EDITOR
 		if (m_androidJavaObject != null) {
 
 			m_androidJavaObject.Call("naverInApp_CallAction_RequestPayment", strInAppCode_Input, intInAppPrice_Input, strInAppExtra_Input);

@@ -73,8 +73,7 @@ public class TorpedoManager : MonoBehaviour {
 		}
 		
 	}
-	
-	
+		
 	public void RechargeAllTorpedo(){
 		
 		if(Managers.UserData.TorpedoCount < Managers.GameBalanceData.TorpedoMaxValue){
@@ -207,8 +206,22 @@ public class TorpedoManager : MonoBehaviour {
 			GCM.ClearAlarmNotification(Constant.FLAG_RECHARGE_PUSH);
 		}else
 		{
+			SetTorpedoPushNotification();
+		}
+		
+	}
+		
+	void OnApplicationQuit()
+	{
+		SetTorpedoPushNotification();
+	}
 
-			//set notification
+	public void SetTorpedoPushNotification()
+	{
+		//set notification
+		if(Application.loadedLevelName != Constant.SCENE_Polycube &&
+		   Application.loadedLevelName != Constant.SCENE_Main )
+		{
 			if(Managers.UserData.PushFlag)
 			{
 				int ServerTime = Managers.UserData.GetSyncServerTime() ;
@@ -228,9 +241,7 @@ public class TorpedoManager : MonoBehaviour {
 				}
 			}
 		}
-		
 	}
-
 
 	public void AddTorpedo(int _heart)
 	{

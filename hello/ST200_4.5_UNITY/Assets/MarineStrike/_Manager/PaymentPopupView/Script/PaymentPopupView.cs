@@ -789,37 +789,37 @@ public class PaymentPopupView : MonoBehaviour {
 			// 크리스탈 10.
 			if (m_paymentBuyInfoBalance.PaymentItemIndex == 1){
 				
-				m_strInApp_Code = "1000007663" ;
+				m_strInApp_Code = "1000011895" ;
 				m_intInApp_Price = 1100;
 				
 				// 크리스탈 33.
 			} else if (m_paymentBuyInfoBalance.PaymentItemIndex == 2){
 				
-				m_strInApp_Code = "1000007664" ;
+				m_strInApp_Code = "1000011896" ;
 				m_intInApp_Price = 3300;
 				
 				// 크리스탈 60.
 			} else if (m_paymentBuyInfoBalance.PaymentItemIndex == 3){
 				
-				m_strInApp_Code = "1000007665" ;
+				m_strInApp_Code = "1000011897" ;
 				m_intInApp_Price = 5500;
 				
 				// 크리스탈 130.
 			} else if (m_paymentBuyInfoBalance.PaymentItemIndex == 4){
 				
-				m_strInApp_Code = "1000007666" ;
+				m_strInApp_Code = "1000011898" ;
 				m_intInApp_Price = 11000;							
 				
 				// 크리스탈 420.
 			} else if (m_paymentBuyInfoBalance.PaymentItemIndex == 5){
 				
-				m_strInApp_Code = "1000007667" ;
+				m_strInApp_Code = "1000011899" ;
 				m_intInApp_Price = 33000;							
 				
 				// 크리스탈 750.
 			} else if (m_paymentBuyInfoBalance.PaymentItemIndex == 6){
 				
-				m_strInApp_Code = "1000007668" ;
+				m_strInApp_Code = "1000011900" ;
 				m_intInApp_Price = 55000;
 			}
 

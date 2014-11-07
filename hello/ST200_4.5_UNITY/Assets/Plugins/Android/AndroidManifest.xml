@@ -6,6 +6,13 @@
     android:versionCode="6"
     
     android:versionName="1.0.1" >    
+	<!--
+[WARNING]
+Tstore 용과 Google용 kakaolink 키가 다르기 때문에 kakao_strings의 주석도 같이 해재해줄 것.
+
+
+-->
+
 	<!-- android:installLocation="preferExternal" -->
     <uses-sdk
         android:minSdkVersion="10"
@@ -43,7 +50,7 @@
     <!--- READ_PHONE_STATE is used to get unique device id-->
     
     
-	<!-- T store IAP Plugin -->
+	<!-- T store IAP Plugin 
    <uses-permission android:name="android.permission.RECEIVE_SMS" />
    <uses-permission android:name="android.permission.INTERNET" />
    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -54,17 +61,17 @@
    <uses-permission android:name="com.tmoney.vending.INBILLING" />  
    <permission android:name="com.tmoney.vending.INBILLING" />
    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-   
-   <!-- - Naver InApp - Start
+   -->
+   <!-- - Naver InApp - Start -->
    <uses-permission android:name="android.permission.READ_CONTACTS" />
-  -->
+  
     <!-- - Naver InApp - End -->
 
 	<!-- TapJoy 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     -->
-    <!-- TapJoy -->
+    <!-- TapJoy end-->
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
@@ -163,7 +170,7 @@
         -->
 		<!--- TStore plugin -->
 
-      <!-- - Naver InApp - Start 
+      <!-- - Naver InApp - Start -->
         <activity android:name="com.nhn.android.appstore.iap.sample.PaymentActivity">
         </activity>
         <activity android:name="com.nhn.android.appstore.iap.sample.RestorePaymentActivity" >
@@ -171,7 +178,7 @@
         <activity
             android:name="com.nhn.android.appstore.iap.cpa.NIAPCPAActivity"
             android:configChanges="keyboardHidden|orientation|screenSize" />
-            -->
+            
       <!-- - Naver InApp - End -->
 		
             <!-- Admob -->
@@ -188,8 +195,7 @@
         	<meta-data android:name="com.google.android.gms.version"
                android:value="@integer/google_play_services_version"/>
             <!-- admob end -->
-            
-            <activity android:name="com.tapjoy.easyapp.TapjoyEasyApp"></activity>
+           
 
  		<!-- Tapjoy 
  		<activity android:name="com.tapjoy.easyapp.TapjoyEasyApp"></activity>

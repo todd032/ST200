@@ -68,6 +68,23 @@ public class Managers : MonoBehaviour
 	}
 	// 네이버 인앱 추가 (by 최원석 in 14.06.11) - End ==========
 
+	private static string m_IOSDeviceToken;
+	public static string IOSDeviceToken
+	{
+		get
+		{
+			return m_IOSDeviceToken;
+		}
+	}
+
+	private static bool m_AcceptIOSPush = false;
+	public static bool IOSPushAccept
+	{
+		get
+		{
+			return m_AcceptIOSPush;
+		}
+	}
 	
 	//android gcm sender id
 	private string[] SENDER_IDS = {"188643008643"};
@@ -113,15 +130,23 @@ public class Managers : MonoBehaviour
 		DontDestroyOnLoad(gameObject);
 		
 	}
+
+	public void SetDeviceToken( string deviceToken )
+	{
+		m_IOSDeviceToken = deviceToken;
+		m_AcceptIOSPush = true;
+	}
 	
 	private void Start(){
 
-		//Debug.Log("ST110 Managers.Start() Run!!!");
+		Debug.Log("ST110 Managers.Start() Run!!!");
 
 		#if UNITY_IPHONE && !UNITY_EDITOR
+		/*
 		NotificationServices.RegisterForRemoteNotificationTypes(RemoteNotificationType.Alert | 
 		                                                        RemoteNotificationType.Badge | 
 		                                                        RemoteNotificationType.Sound);
+		                                                        */
 
 		#elif UNITY_ANDROID && !UNITY_EDITOR
 

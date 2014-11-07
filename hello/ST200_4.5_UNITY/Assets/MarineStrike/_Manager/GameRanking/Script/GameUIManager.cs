@@ -25,6 +25,8 @@ public class GameUIManager : MonoBehaviour {
 	public LuckyCouponAlertView m_LuckyCouponAlertView;
 	public UIRootAlertView m_UIRootAlertView;
 	public MainUI_FreeChargeNoticeWindow m_FreeChargeNoticeWindow;
+
+	public GameObject m_FreeGoldButton;
 	void OnDestroy()
 	{
 		instance = null;
@@ -49,6 +51,10 @@ public class GameUIManager : MonoBehaviour {
 		m_UIRootAlertView.UIRootAlertViewEvent += UIRootAlertViewDelegate;
 
 		InitializeGameTorpedoInfo();
+
+#if UNITY_IPHONE
+		NGUITools.SetActive(m_FreeGoldButton.gameObject, false);
+#endif
 
 		if(Managers.UserData.SelectedGameType == Constant.ST200_GAMEMODE_PVP)
 		{

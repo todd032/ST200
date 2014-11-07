@@ -13,7 +13,7 @@ public class Constant : MonoBehaviour {
     public readonly static string DefalutAppName = "defalut_app_name" ;
     
     public readonly static string AppNameString = "36" ; //VersionCode...
-    public readonly static string CURRENT_MARKET = "2" ; // 2 : PlayStore   3 : TStore  4 : Naver.
+    public readonly static string CURRENT_MARKET = "4" ; // 2 : PlayStore   3 : TStore  4 : Naver.
 
     
     // 개발 or 상용 모드 ----------------------------------------------------------------------------------------------------------------

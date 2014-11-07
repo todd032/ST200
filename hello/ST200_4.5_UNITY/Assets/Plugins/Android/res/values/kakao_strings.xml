@@ -7,11 +7,20 @@
 -->
 <!-- google play end -->
 
-<!-- T store link -->
+<!-- T store link 
 <resources>
     <string name="kakao_app_key">b9c0215347ac1346e5afd07c6edaf6a6</string>
     <string name="kakao_scheme">kakaob9c0215347ac1346e5afd07c6edaf6a6</string>
     <string name="kakaolink_host">kakaolink</string>
 </resources>
-
+-->
 <!-- Tstore link end -->
+
+<!-- Naver Link-->
+<resources>
+    <string name="kakao_app_key">dedc9537de27f0fbf7c5f948692272b2</string>
+    <string name="kakao_scheme">kakaodedc9537de27f0fbf7c5f948692272b2</string>
+    <string name="kakaolink_host">kakaolink</string>
+</resources>
+
+<!-- Naver link end -->
