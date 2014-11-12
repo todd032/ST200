@@ -382,7 +382,8 @@ public class GameUIManager : MonoBehaviour {
 		InitTnkData();
 		ShowFreeGoldChargeInfoWindow();
 #if UNITY_ANDROID && !UNITY_EDITOR
-		TnkAd.Plugin.Instance.showAdList("무료 금괴 받기");
+		//TnkAd.Plugin.Instance.showAdList("무료 금괴 받기");
+        TapjoyPlugin.ShowOffers();
 #endif
 	}
 

@@ -68,10 +68,10 @@ Tstore 용과 Google용 kakaolink 키가 다르기 때문에 kakao_strings의 �
   
     <!-- - Naver InApp - End -->
 
-	<!-- TapJoy 
+	<!-- TapJoy     -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    -->
+
     <!-- TapJoy end-->
     <application
         android:allowBackup="true"
@@ -198,7 +198,7 @@ Tstore 용과 Google용 kakaolink 키가 다르기 때문에 kakao_strings의 �
             <!-- admob end -->
            
 
- 		<!-- Tapjoy 
+ 		<!-- Tapjoy -->
  		<activity android:name="com.tapjoy.easyapp.TapjoyEasyApp"></activity>
 		<meta-data android:name="com.google.android.gms.version" android:value="4452000" />
         <activity
@@ -224,7 +224,7 @@ Tstore 용과 Google용 kakaolink 키가 다르기 때문에 kakao_strings의 �
         <activity
             android:name="com.tapjoy.mraid.view.Browser"
             android:configChanges="keyboardHidden|orientation|screenSize" />
-            -->
+            
     	<!-- Tapjoy end-->
     </application>
 
