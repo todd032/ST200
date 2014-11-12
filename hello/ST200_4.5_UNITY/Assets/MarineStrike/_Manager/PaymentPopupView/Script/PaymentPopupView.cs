@@ -1110,7 +1110,7 @@ public class PaymentPopupView : MonoBehaviour {
 							Managers.DataStream.Network_SaveUserData_Input_1(userDataStruct);
 						}
 					}
-
+					_paymentPopupAlertView.LoadPaymentPopupAlertView(Constant.ST200_POPUP_MESSAGE_INAPP_SUCCESS);
 				}else{
 
 					Debug.Log("st200 PaymentPopupView.InApp_CallIAP_Tstore().TstoreAndroidBridgeManagerOkEvent");
@@ -1197,7 +1197,7 @@ public class PaymentPopupView : MonoBehaviour {
 							Managers.DataStream.Network_SaveUserData_Input_1(userDataStruct);
 						}
 					}
-
+					_paymentPopupAlertView.LoadPaymentPopupAlertView(Constant.ST200_POPUP_MESSAGE_INAPP_SUCCESS);
 				} else {
 					
 					//1: 통신이 원활하지 않습니다. 다시 결제해주세요.

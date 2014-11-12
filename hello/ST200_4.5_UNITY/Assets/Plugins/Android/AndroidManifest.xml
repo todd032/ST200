@@ -62,6 +62,7 @@ Tstore 용과 Google용 kakaolink 키가 다르기 때문에 kakao_strings의 �
    <permission android:name="com.tmoney.vending.INBILLING" />
    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
    -->
+   
    <!-- - Naver InApp - Start -->
    <uses-permission android:name="android.permission.READ_CONTACTS" />
   

@@ -84,17 +84,16 @@ public class CIManager : MonoBehaviour {
 
 	private void setImage_BI(){
 
-		if (Constant.CURRENT_MARKET.Equals ("4")) {
-		
-			Texture basicTexture = Resources.Load("Image/PolycubeCISplashImage_Naver") as Texture ;
-			_polycubeCI_Texture.mainTexture = basicTexture;
-
-		} else {
-
-			Texture basicTexture = Resources.Load("Image/PolycubeCISplashImage") as Texture ;
-			_polycubeCI_Texture.mainTexture = basicTexture;
-		}
-
+		//if (Constant.CURRENT_MARKET.Equals ("4")) {
+		//
+		//	Texture basicTexture = Resources.Load("Image/PolycubeCISplashImage_Naver") as Texture ;
+		//	_polycubeCI_Texture.mainTexture = basicTexture;
+		//
+		//} else {
+		//
+		//	Texture basicTexture = Resources.Load("Image/PolycubeCISplashImage") as Texture ;
+		//	_polycubeCI_Texture.mainTexture = basicTexture;
+		//}
 	}
 
 	

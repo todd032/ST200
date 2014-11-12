@@ -16,7 +16,7 @@
 -->
 <!-- Tstore link end -->
 
-<!-- Naver Link-->
+<!-- Naver Link -->
 <resources>
     <string name="kakao_app_key">dedc9537de27f0fbf7c5f948692272b2</string>
     <string name="kakao_scheme">kakaodedc9537de27f0fbf7c5f948692272b2</string>

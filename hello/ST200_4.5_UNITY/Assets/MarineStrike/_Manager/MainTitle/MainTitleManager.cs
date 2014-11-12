@@ -21,6 +21,8 @@ public class MainTitleManager : MonoBehaviour {
 	public BannerView _bannerView ;
 	public MessageAlertPopupView _messageAlertPopupView ;
 	public UISprite _title_Touch_Screen ;
+
+	public UISprite m_MainBg;
 	// ==================== Layout 관련 변수 선언 - End ====================
 	
 	// ==================== PushInfo 통신 Data 관련 변수 선언 - Start ====================
@@ -100,7 +102,16 @@ public class MainTitleManager : MonoBehaviour {
 		Awake_02_Set_Delegate();
 		Awake_03_Initialize_View();
 		Awake_91_Initialize_Etc();
-		
+
+#if UNITY_ANDROID
+		if(!Constant.CURRENT_MARKET.Equals("2"))
+		{
+			m_MainBg.spriteName = "main_age";
+		}else
+		{
+			m_MainBg.spriteName = "main";
+		}
+#endif
 	}
 	
 	private void Start () {
