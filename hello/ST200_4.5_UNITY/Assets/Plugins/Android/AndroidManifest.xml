@@ -63,9 +63,9 @@ Tstore 용과 Google용 kakaolink 키가 다르기 때문에 kakao_strings의 �
    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
    -->
    
-   <!-- - Naver InApp - Start -->
+   <!-- - Naver InApp - Start 
    <uses-permission android:name="android.permission.READ_CONTACTS" />
-  
+  -->
     <!-- - Naver InApp - End -->
 
 	<!-- TapJoy     -->
@@ -171,7 +171,7 @@ Tstore 용과 Google용 kakaolink 키가 다르기 때문에 kakao_strings의 �
         -->
 		<!--- TStore plugin -->
 
-      <!-- - Naver InApp - Start -->
+      <!-- - Naver InApp - Start 
         <activity android:name="com.nhn.android.appstore.iap.sample.PaymentActivity">
         </activity>
         <activity android:name="com.nhn.android.appstore.iap.sample.RestorePaymentActivity" >
@@ -179,7 +179,7 @@ Tstore 용과 Google용 kakaolink 키가 다르기 때문에 kakao_strings의 �
         <activity
             android:name="com.nhn.android.appstore.iap.cpa.NIAPCPAActivity"
             android:configChanges="keyboardHidden|orientation|screenSize" />
-            
+            -->
       <!-- - Naver InApp - End -->
 		
             <!-- Admob -->

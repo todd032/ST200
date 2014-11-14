@@ -19,6 +19,7 @@ public class PVPUI_FriendTapUI : MonoBehaviour {
 	public float m_MaxScrollPointer = 0f;
 	public float m_StartYPos = 100f;
 	public List<PVPUI_UserInfoObject> m_FriendUIList = new List<PVPUI_UserInfoObject>();
+	public UISprite m_LoadingSprite;
 	// Use this for initialization
 	void Start () {
 	
@@ -38,6 +39,26 @@ public class PVPUI_FriendTapUI : MonoBehaviour {
 		m_CurScrollPointer = m_CurScrollPointer + (m_DestScrollPointer - m_CurScrollPointer) * 0.5f;
 
 		UpdateFriendUIList();
+
+		UpdateLoadingImage();
+	}
+
+	public int m_LoadingCurFrame = 0;
+	public int m_LoadingUpdateframe = 3;
+	public void UpdateLoadingImage()
+	{
+		if(m_CurInfoList.Count == 0)
+		{
+			NGUITools.SetActive(m_LoadingSprite.gameObject, true);
+			m_LoadingCurFrame++;
+			if(m_LoadingCurFrame % m_LoadingUpdateframe == 0)
+			{
+				m_LoadingSprite.transform.Rotate(Vector3.forward, 24f);
+			}
+		}else
+		{
+			NGUITools.SetActive(m_LoadingSprite.gameObject, false);
+		}
 	}
 
 	public void ShowUI()

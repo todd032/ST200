@@ -126,7 +126,10 @@ public class GameUIManager : MonoBehaviour {
 
 	public bool OnEscapePress()
 	{
-		if(m_MainUI.OnEscapePress())
+		if(m_FreeChargeNoticeWindow.OnEscapePress())
+		{
+			return true;
+		}else if(m_MainUI.OnEscapePress())
 		{
 			return true;
 		}else if(m_PVPUI.OnEscapePress())
@@ -381,10 +384,6 @@ public class GameUIManager : MonoBehaviour {
 		
 		InitTnkData();
 		ShowFreeGoldChargeInfoWindow();
-#if UNITY_ANDROID && !UNITY_EDITOR
-		//TnkAd.Plugin.Instance.showAdList("무료 금괴 받기");
-        TapjoyPlugin.ShowOffers();
-#endif
 	}
 
 	protected void ShowFreeGoldChargeInfoWindow()

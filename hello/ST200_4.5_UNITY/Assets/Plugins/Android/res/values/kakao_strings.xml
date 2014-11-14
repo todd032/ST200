@@ -1,10 +1,10 @@
-<!-- Google play 
+<!-- Google play -->
 <resources>
     <string name="kakao_app_key">be462870a772449fb762a0bdfc536c41</string>
     <string name="kakao_scheme">kakaobe462870a772449fb762a0bdfc536c41</string>
     <string name="kakaolink_host">kakaolink</string>
 </resources>
--->
+
 <!-- google play end -->
 
 <!-- T store link 
@@ -16,11 +16,11 @@
 -->
 <!-- Tstore link end -->
 
-<!-- Naver Link -->
+<!-- Naver Link 
 <resources>
     <string name="kakao_app_key">dedc9537de27f0fbf7c5f948692272b2</string>
     <string name="kakao_scheme">kakaodedc9537de27f0fbf7c5f948692272b2</string>
     <string name="kakaolink_host">kakaolink</string>
 </resources>
-
+-->
 <!-- Naver link end -->
