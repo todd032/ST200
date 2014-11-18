@@ -1,19 +1,19 @@
-<!-- Google play -->
+<!-- Google play 
 <resources>
     <string name="kakao_app_key">be462870a772449fb762a0bdfc536c41</string>
     <string name="kakao_scheme">kakaobe462870a772449fb762a0bdfc536c41</string>
     <string name="kakaolink_host">kakaolink</string>
 </resources>
-
+-->
 <!-- google play end -->
 
-<!-- T store link 
+<!-- T store link -->
 <resources>
     <string name="kakao_app_key">b9c0215347ac1346e5afd07c6edaf6a6</string>
     <string name="kakao_scheme">kakaob9c0215347ac1346e5afd07c6edaf6a6</string>
     <string name="kakaolink_host">kakaolink</string>
 </resources>
--->
+
 <!-- Tstore link end -->
 
 <!-- Naver Link 

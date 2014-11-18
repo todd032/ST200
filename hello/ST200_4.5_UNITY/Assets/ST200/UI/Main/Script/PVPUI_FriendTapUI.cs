@@ -53,7 +53,7 @@ public class PVPUI_FriendTapUI : MonoBehaviour {
 			m_LoadingCurFrame++;
 			if(m_LoadingCurFrame % m_LoadingUpdateframe == 0)
 			{
-				m_LoadingSprite.transform.Rotate(Vector3.forward, 24f);
+				m_LoadingSprite.transform.Rotate(Vector3.forward, -24f);
 			}
 		}else
 		{
