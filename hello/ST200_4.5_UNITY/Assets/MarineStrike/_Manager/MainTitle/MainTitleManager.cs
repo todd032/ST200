@@ -184,7 +184,7 @@ public class MainTitleManager : MonoBehaviour {
 		
 		strUserID =  SystemInfo.deviceUniqueIdentifier;
 #if UNITY_EDITOR
-		strUserID = "2222222";
+		strUserID = "22222229";
 #endif
 
 		Data_PostData_Push_Set ();

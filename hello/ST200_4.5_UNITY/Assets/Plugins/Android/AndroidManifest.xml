@@ -50,7 +50,7 @@ Tstore 용과 Google용 kakaolink 키가 다르기 때문에 kakao_strings의 �
     <!--- READ_PHONE_STATE is used to get unique device id-->
     
     
-	<!-- T store IAP Plugin -->
+	<!-- T store IAP Plugin 
    <uses-permission android:name="android.permission.RECEIVE_SMS" />
    <uses-permission android:name="android.permission.INTERNET" />
    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -58,7 +58,8 @@ Tstore 용과 Google용 kakaolink 키가 다르기 때문에 kakao_strings의 �
    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-   <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+   <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />   
+   -->
    <!-- T store IAP End -->
    
    <!-- - Naver InApp - Start 
@@ -154,7 +155,7 @@ Tstore 용과 Google용 kakaolink 키가 다르기 때문에 kakao_strings의 �
         
         <!-- Tnk -->
         		
-	<!--- TStore plugin -->
+	<!--- TStore plugin 
 		<meta-data
             android:name="iap:api_version"
             android:value="2" />
@@ -166,7 +167,7 @@ Tstore 용과 Google용 kakaolink 키가 다르기 때문에 kakao_strings의 �
             android:excludeFromRecents="true"            
             android:windowSoftInputMode="stateHidden" >
         </activity>   
-        
+        -->
 		<!--- TStore plugin -->
 
       <!-- - Naver InApp - Start 

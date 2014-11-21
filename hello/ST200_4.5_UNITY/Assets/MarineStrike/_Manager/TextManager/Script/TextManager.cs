@@ -41,6 +41,11 @@ public class TextManager : MonoBehaviour {
 		m_TextList = _list;
 	}
 
+	public List<string> TextList()
+	{
+		return m_TextList;
+	}
+
 	public string GetString(int _index)
 	{
 		if(_index >= m_TextList.Count)

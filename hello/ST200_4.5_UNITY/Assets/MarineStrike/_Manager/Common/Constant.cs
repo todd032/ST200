@@ -9,11 +9,11 @@ public class Constant : MonoBehaviour {
 	/// 
 	public readonly static bool VALTEST1 = false;
     // 프로젝트 정보 ----------------------------------------------------------------------------------------------------------------
-    public readonly static string AppVersionInfo = "1.2.9";
+    public readonly static string AppVersionInfo = "1.3.0";
     public readonly static string DefalutAppName = "defalut_app_name" ;
     
-    public readonly static string AppNameString = "37" ; //VersionCode...
-    public readonly static string CURRENT_MARKET = "3" ; // 2 : PlayStore   3 : TStore  4 : Naver.
+    public readonly static string AppNameString = "38" ; //VersionCode...
+    public readonly static string CURRENT_MARKET = "2" ; // 2 : PlayStore   3 : TStore  4 : Naver.
 
     
     // 개발 or 상용 모드 ----------------------------------------------------------------------------------------------------------------

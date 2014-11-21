@@ -537,7 +537,7 @@ public class UIRootAlertView : MonoBehaviour {
 				
 				string languageCode = Managers.UserData.LanguageCode ;
 				
-				_uiRootAlertViewMessageLabel.text = TextManager.Instance.GetString(301);
+				_uiRootAlertViewMessageLabel.text = TextManager.Instance.GetString(304);
 			}
 		}
 	}

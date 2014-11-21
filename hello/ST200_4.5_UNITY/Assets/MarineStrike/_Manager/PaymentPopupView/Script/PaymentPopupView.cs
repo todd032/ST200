@@ -134,6 +134,8 @@ public class PaymentPopupView : MonoBehaviour {
 						Managers.UserData.SetPurchaseGold(m_productValue) ;
 					}else if(m_productValueType == 2){ //Jewel
 						Managers.UserData.SetPurchaseJewel(m_productValue) ;
+						Managers.UserData.FirstInAppPurchaseFlag = 0;
+						NGUITools.SetActive(m_PaymentEventObject.gameObject, false);
 					}
 					
 					if ( Managers.Audio != null) Managers.Audio.PlayFXSound(AudioManager.FX_SOUND.FX_Etc_Gain,false);
@@ -197,6 +199,8 @@ public class PaymentPopupView : MonoBehaviour {
 						ST200KLogManager.Instance.SaveShopSpendCrystal("GOLD", (int)m_paymentItemValue);
 					}else if(m_productValueType == 2){ //Jewel
 						Managers.UserData.SetPurchaseJewel(m_productValue) ;
+						Managers.UserData.FirstInAppPurchaseFlag = 0;
+						NGUITools.SetActive(m_PaymentEventObject.gameObject, false);
 					}
 					
 					if ( Managers.Audio != null) Managers.Audio.PlayFXSound(AudioManager.FX_SOUND.FX_Etc_Gain,false);
@@ -280,6 +284,8 @@ public class PaymentPopupView : MonoBehaviour {
 						Managers.UserData.SetPurchaseGold(m_productValue) ;
 					}else if(m_productValueType == 2){ //Jewel
 						Managers.UserData.SetPurchaseJewel(m_productValue) ;
+						Managers.UserData.FirstInAppPurchaseFlag = 0;
+						NGUITools.SetActive(m_PaymentEventObject.gameObject, false);
 					}
 					
 					if ( Managers.Audio != null) Managers.Audio.PlayFXSound(AudioManager.FX_SOUND.FX_Etc_Gain,false);
@@ -322,6 +328,8 @@ public class PaymentPopupView : MonoBehaviour {
 						Managers.UserData.SetPurchaseGold(m_productValue) ;
 					}else if(m_productValueType == 2){ //Jewel
 						Managers.UserData.SetPurchaseJewel(m_productValue) ;
+						Managers.UserData.FirstInAppPurchaseFlag = 0;
+						NGUITools.SetActive(m_PaymentEventObject.gameObject, false);
 					}
 					
 					if ( Managers.Audio != null) Managers.Audio.PlayFXSound(AudioManager.FX_SOUND.FX_Etc_Gain,false);
@@ -669,11 +677,9 @@ public class PaymentPopupView : MonoBehaviour {
 		NGUITools.SetActive(gameObject, true) ;
 
 		//check time and show 10th event
-		if(Managers.GameBalanceData.TenthDownloadEventFlag == 1 &&
-			Managers.UserData.GetSyncServerTime() > Managers.GameBalanceData.TenthDownloadEventStartTimer &&
-		   Managers.UserData.GetSyncServerTime() < Managers.GameBalanceData.TenthDownloadEventEndTimer)
+		if(Managers.UserData.FirstInAppPurchaseFlag == 1)
 		{
-			NGUITools.SetActive(m_PaymentEventObject.gameObject, false);
+			NGUITools.SetActive(m_PaymentEventObject.gameObject, true);
 		}else
 		{
 			NGUITools.SetActive(m_PaymentEventObject.gameObject, false);
@@ -882,6 +888,8 @@ public class PaymentPopupView : MonoBehaviour {
 				} else if (m_productValueType == 2){ //Jewel
 					
 					Managers.UserData.SetPurchaseJewel(m_productValue) ;
+					Managers.UserData.FirstInAppPurchaseFlag = 0;
+					NGUITools.SetActive(m_PaymentEventObject.gameObject, false);
 				}
 				
 				if ( Managers.Audio != null) Managers.Audio.PlayFXSound(AudioManager.FX_SOUND.FX_Etc_Gain,false);
@@ -963,6 +971,8 @@ public class PaymentPopupView : MonoBehaviour {
 					Managers.UserData.SetPurchaseGold(m_productValue) ;
 				}else if(m_productValueType == 2){ //Jewel
 					Managers.UserData.SetPurchaseJewel(m_productValue) ;
+					Managers.UserData.FirstInAppPurchaseFlag = 0;
+					NGUITools.SetActive(m_PaymentEventObject.gameObject, false);
 				}
 				
 				if ( Managers.Audio != null) Managers.Audio.PlayFXSound(AudioManager.FX_SOUND.FX_Etc_Gain,false);
@@ -1096,6 +1106,8 @@ public class PaymentPopupView : MonoBehaviour {
 						Managers.UserData.SetPurchaseGold(m_productValue) ;
 					}else if(m_productValueType == 2){ //Jewel
 						Managers.UserData.SetPurchaseJewel(m_productValue) ;
+						Managers.UserData.FirstInAppPurchaseFlag = 0;
+						NGUITools.SetActive(m_PaymentEventObject.gameObject, false);
 					}
 					
 					if ( Managers.Audio != null) Managers.Audio.PlayFXSound(AudioManager.FX_SOUND.FX_Etc_Gain,false);
@@ -1183,6 +1195,8 @@ public class PaymentPopupView : MonoBehaviour {
 					} else if (m_productValueType == 2){ //Jewel
 						
 						Managers.UserData.SetPurchaseJewel(m_productValue) ;
+						Managers.UserData.FirstInAppPurchaseFlag = 0;
+						NGUITools.SetActive(m_PaymentEventObject.gameObject, false);
 					}
 					
 					if ( Managers.Audio != null) Managers.Audio.PlayFXSound(AudioManager.FX_SOUND.FX_Etc_Gain,false);

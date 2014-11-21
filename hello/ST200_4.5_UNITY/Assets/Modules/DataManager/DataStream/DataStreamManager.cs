@@ -3346,10 +3346,11 @@ public class DataStreamManager : MonoBehaviour {
 		if (www.error == null) {
 			
 			addMessageBuffer("RESPONSE OK: " + www.text);
-			
+
 			clsReturn.init();  //초기화..
 			clsReturn = JsonMapper.ToObject<ClsReturn>(www.text);
-			
+			//Debug.Log("Log: " + clsReturn.data);
+			//Debug.Log("extend: " + clsReturn.extend);
 //						  Debug.Log ("ST200k DataStreamManager ReadUserData clsReturn.extend = " + clsReturn.extend);
 			
 			//리턴 오브젝트..
@@ -3362,9 +3363,12 @@ public class DataStreamManager : MonoBehaviour {
 						UserDataManager.UserDataStruct userDataStruct = Managers.UserData.GetUserDataStruct();
 						userDataStruct = Managers.UserData.GetUserDataStruct();
 						userDataStruct = JsonMapper.ToObject<UserDataManager.UserDataStruct>(clsReturn.data);  //한 번더 디코딩(실제 body data).
-						
+
 						JSONNode jsonExtend_Root = JSON.Parse(clsReturn.extend);
-						
+
+						Managers.UserData.FirstInAppPurchaseFlag = (jsonExtend_Root["FirstInAppPurchase"].AsBool ? 1 : 0);
+						Debug.Log(jsonExtend_Root["FirstInAppPurchase"].AsBool);
+
 						int intMainScene_To_RankingScene = PlayerPrefs.GetInt(Constant.PREFKEY_MainScene_To_RankingScene_INT);
 						
 						// 게임시작하고 난 직후의 Main Scene인지 여부. - true.
@@ -3466,7 +3470,7 @@ public class DataStreamManager : MonoBehaviour {
 		if (www.error == null) {
 			
 			addMessageBuffer("RESPONSE OK: " + www.text);
-			
+			Debug.Log("LOG: " + www.text);
 			clsReturn.init();  //초기화..
 			clsReturn = JsonMapper.ToObject<ClsReturn>(www.text);
 			
