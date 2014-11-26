@@ -57,7 +57,6 @@ public class MainUI_ModeSelect : MonoBehaviour {
 					if (intResult_Code_Input == Constant.NETWORK_RESULTCODE_OK){
 						
 						//	_indicatorPopupView.RemoveIndicatorPopupView() ;
-						GameUIManager.Instance.SwitchToStageSelectManager();
 					} else if (intResult_Code_Input == Constant.NETWORK_RESULTCODE_Error_Network){
 						
 						//	_uiRootAlertView.LoadUIRootAlertView(11) ; // 통신상태가 불안정합니다. 다시 실행해 주세요.
@@ -79,6 +78,7 @@ public class MainUI_ModeSelect : MonoBehaviour {
 				UserDataManager.UserDataStruct userDataStruct = Managers.UserData.GetUserDataStruct() ;
 				
 				Managers.DataStream.Network_SaveUserData_Input_1(userDataStruct);
+				GameUIManager.Instance.SwitchToStageSelectManager();
 				// 영어학원 쿠폰 주기 기능 추가 (by 최원석 14.05.27) ========= End.
 			}
 		}

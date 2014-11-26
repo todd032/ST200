@@ -155,7 +155,7 @@ Tstore 용과 Google용 kakaolink 키가 다르기 때문에 kakao_strings의 �
         
         <!-- Tnk -->
         		
-	<!--- TStore plugin 
+	<!--- TStore plugin
 		<meta-data
             android:name="iap:api_version"
             android:value="2" />

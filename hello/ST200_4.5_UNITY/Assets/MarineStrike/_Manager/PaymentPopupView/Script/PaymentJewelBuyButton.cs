@@ -151,7 +151,6 @@ public class PaymentJewelBuyButton : MonoBehaviour {
 			//	productValueString = Mathf.CeilToInt(productValue * 1.5f).ToString("#,#");
 			//}
 #endif
-			int originval = 10;
 			int curval = paymentBuyInfoBalance.ProductValue;
 
 			int originproductval = (int)(curval * 100 / (100 + (float)paymentBuyInfoBalance.BonusPercent));

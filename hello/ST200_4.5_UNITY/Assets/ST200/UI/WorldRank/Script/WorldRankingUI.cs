@@ -42,6 +42,31 @@ public class WorldRankingUI : MonoBehaviour {
 			OnClickPrevButton();
 		}
 #endif
+
+		UpdateLoadingImage();
+	}
+
+
+	public UISprite m_LoadingSprite;
+	public int m_LoadingCurFrame = 0;
+	public int m_LoadingUpdateframe = 3;
+	public void UpdateLoadingImage()
+	{
+		m_LoadingCurFrame++;
+		if(m_LoadingCurFrame % m_LoadingUpdateframe == 0)
+		{
+			m_LoadingSprite.transform.Rotate(Vector3.forward, -24f);
+		}
+	}
+	
+	public void ShowLoadingUI()
+	{
+		NGUITools.SetActive(m_LoadingSprite.gameObject, true);
+	}
+	
+	public void HideLoadingUI()
+	{
+		NGUITools.SetActive(m_LoadingSprite.gameObject, false);
 	}
 
 	public void ShowUI()
@@ -77,10 +102,12 @@ public class WorldRankingUI : MonoBehaviour {
 		//	totalscore = 1;
 		//}
 		//Debug.Log("SAVE SCORE: " + totalscore);
+		HideLoadingUI();
 		WorldRankManager.Instance.SaveWorldRankingEvent += (int _result) => 
 		{
 			WorldRankManager.Instance.GetWorldRankingEvent += GetWorldRankData;
 			WorldRankManager.Instance.GetWorldRanking(Managers.UserData.UserID);
+			ShowLoadingUI();
 		};
 
 		int maxstageopenindex = 0;
@@ -133,6 +160,8 @@ public class WorldRankingUI : MonoBehaviour {
 		{
 
 		}
+
+		HideLoadingUI();
 	}
 
 	protected IEnumerator IEGetWorldRank()

@@ -25,7 +25,7 @@ public class InboxPopupView : MonoBehaviour {
 	public UILabel m_TitleLabel;
 	public UILabel m_DescriptionLabel;
 	public UILabel m_ReceiveAllLabel;
-	
+
 	// GetMessageList
 	public struct GetMessageListDataStruct {
 		
@@ -125,8 +125,33 @@ public class InboxPopupView : MonoBehaviour {
 	}
 	
 	private void Update() {
+
+		UpdateLoadingImage();
+
 	}
-	
+
+	public UISprite m_LoadingSprite;
+	public int m_LoadingCurFrame = 0;
+	public int m_LoadingUpdateframe = 3;
+	public void UpdateLoadingImage()
+	{
+		m_LoadingCurFrame++;
+		if(m_LoadingCurFrame % m_LoadingUpdateframe == 0)
+		{
+			m_LoadingSprite.transform.Rotate(Vector3.forward, -24f);
+		}
+	}
+
+	public void ShowLoadingUI()
+	{
+		NGUITools.SetActive(m_LoadingSprite.gameObject, true);
+	}
+
+	public void HideLoadingUI()
+	{
+		NGUITools.SetActive(m_LoadingSprite.gameObject, false);
+	}
+
 	//Delegate
 	private void PresentReceivePopupViewDelegate(PresentReceivePopupView presentReceivePopupView, int state) {
 		//Nothing..
@@ -267,7 +292,7 @@ public class InboxPopupView : MonoBehaviour {
 	private void SetInboxPopupView(){
 		
 		_inboxListPanel.DeleteAllInboxListGrid(false) ;
-		
+		HideLoadingUI();
 		
 		// 만약 RankManager에서 수신함 데이터를 처리할 시..
 		
@@ -335,9 +360,14 @@ public class InboxPopupView : MonoBehaviour {
 				}
 			}
 
+			//hide loading ui
+			HideLoadingUI();
 		};
 		
 		StartCoroutine(Managers.DataStream.Network_GetMessageList()) ;
+
+		//show loading ui
+		ShowLoadingUI();
 	}
 	
 	

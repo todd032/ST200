@@ -27,10 +27,9 @@ public class PaymentGoldBuyButton : MonoBehaviour {
 	public UISprite m_EffectSprite;
 	public UILabel _cashValueInfoLabel ;
 	public UILabel _valueInfoLabel ;
-	
-	public UISprite _bonusIconSprite ;
-	public UILabel _bonusValueInfoLabel ;
-	
+
+	public UISprite m_BonusSprite;
+	public UILabel m_BonusLabel;
 	
 	private int _paymentBuyButtonIndexNumber ;
 	public int PaymentBuyButtonIndexNumber{
@@ -131,6 +130,32 @@ public class PaymentGoldBuyButton : MonoBehaviour {
 				productValueString += productValue.ToString("#,#") ;
 			}
 			_valueInfoLabel.text = Constant.COLOR_STORE_ITEMCOUNT + TextManager.Instance.GetReplaceString(90,productValueString) ;
+
+			int curval = paymentBuyInfoBalance.ProductValue;
+			
+			int originproductval = (int)(curval * 100 / (100 + (float)paymentBuyInfoBalance.BonusPercent));
+			int bonusamount = curval - originproductval;
+			//Debug.Log("ORIGIN: " + originproductval);
+			
+			productValueString = originproductval.ToString("#,#") + TextManager.Instance.GetString(217);
+			if(bonusamount != 0)
+			{
+				productValueString += " +" + bonusamount.ToString("#,#");
+			}
+			
+			_valueInfoLabel.text = Constant.COLOR_STORE_ITEMCOUNT + "x" + productValueString ;
+			
+			if(paymentBuyInfoBalance.BonusPercent == 0f)
+			{
+				NGUITools.SetActive (m_BonusLabel.gameObject, false);
+				NGUITools.SetActive (m_BonusSprite.gameObject, false);
+			}else
+			{
+				NGUITools.SetActive (m_BonusLabel.gameObject, true);
+				NGUITools.SetActive (m_BonusSprite.gameObject, true);
+				m_BonusLabel.text = paymentBuyInfoBalance.BonusPercent.ToString() + "%";
+			}
+
 		}
 		
 	}
