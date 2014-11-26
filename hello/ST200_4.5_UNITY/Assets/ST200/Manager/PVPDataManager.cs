@@ -8,6 +8,7 @@ public class PVPDataManager : MonoBehaviour {
 	public int MyLoseCount = 0;
 
 	public List<UserInfoData> m_PVPRecommendInfoList = new List<UserInfoData>();
+	public bool IsLoadingFriendInfoList = false;
 	public List<UserInfoData> m_FriendInfoList = new List<UserInfoData>();
 	public List<UserInfoData> m_FriendSearchInfoList = new List<UserInfoData>();
 	public List<UserInfoData> m_PVPUserInfoList = new List<UserInfoData>();

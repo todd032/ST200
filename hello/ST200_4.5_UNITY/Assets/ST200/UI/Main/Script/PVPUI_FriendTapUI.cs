@@ -47,18 +47,28 @@ public class PVPUI_FriendTapUI : MonoBehaviour {
 	public int m_LoadingUpdateframe = 3;
 	public void UpdateLoadingImage()
 	{
-		if(m_CurInfoList.Count == 0)
+		m_LoadingCurFrame++;
+		if(m_LoadingCurFrame % m_LoadingUpdateframe == 0)
 		{
-			NGUITools.SetActive(m_LoadingSprite.gameObject, true);
-			m_LoadingCurFrame++;
-			if(m_LoadingCurFrame % m_LoadingUpdateframe == 0)
-			{
-				m_LoadingSprite.transform.Rotate(Vector3.forward, -24f);
-			}
+			m_LoadingSprite.transform.Rotate(Vector3.forward, -24f);
+		}
+		if(PVPDataManager.Instance.IsLoadingFriendInfoList)
+		{
+			ShowLoadingUI();
 		}else
 		{
-			NGUITools.SetActive(m_LoadingSprite.gameObject, false);
+			HideLoadingUI();
 		}
+	}
+
+	public void ShowLoadingUI()
+	{
+		NGUITools.SetActive(m_LoadingSprite.gameObject, true);
+	}
+	
+	public void HideLoadingUI()
+	{
+		NGUITools.SetActive(m_LoadingSprite.gameObject, false);
 	}
 
 	public void ShowUI()

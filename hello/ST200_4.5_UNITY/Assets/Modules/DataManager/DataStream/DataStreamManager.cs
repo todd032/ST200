@@ -4105,7 +4105,7 @@ public class DataStreamManager : MonoBehaviour {
 	// 유저 데이터 통신 (user_data.php) - SaveUserData.
 	protected IEnumerator IEPVP_Request_FriendList(string _usernickname, int _maxstage) 
 	{
-		
+		PVPDataManager.Instance.IsLoadingFriendInfoList = true;
 		msgHeader.Ct = Managers.UserData.GetSyncServerTime();
 		string header = JsonMapper.ToJson(msgHeader);
 		
@@ -4177,6 +4177,7 @@ public class DataStreamManager : MonoBehaviour {
 					JSONNode friendlist = root["FriendsList"];
 					//Debug.Log("TOTAL: " + friendlist.Count);
 
+					PVPDataManager.Instance.IsLoadingFriendInfoList = false;
 					PVPDataManager.Instance.m_FriendInfoList.Clear();
 					for(int friendindexno = 0; friendindexno < friendlist.Count; friendindexno++)
 					{
@@ -4556,7 +4557,7 @@ public class DataStreamManager : MonoBehaviour {
 		bodydic.Add("UserIndex", _userindex.ToString());
 		
 		string body = TextManager.CreateJsonData(bodydic);
-		Debug.Log("body: " + body);
+		//Debug.Log("body: " + body);
 		string extend = "";
 		
 		string check = getParameterCheckSum(header + body + extend);   //checksum 코드 생성...

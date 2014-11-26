@@ -64,6 +64,7 @@ public class MainTutorial : MonoBehaviour {
 		m_SelectStageGameObject.SetActive (false);
 		m_ItemBuyGameObject.SetActive (true);
 		Managers.UserData.SelectedStageIndex = 1;
+		Managers.UserData.SelectedGameType = Constant.ST200_GAMEMODE_STAGE_NORMAL;
 		GameUIManager.Instance.SwitchToGameShopManager();
 	}
 
