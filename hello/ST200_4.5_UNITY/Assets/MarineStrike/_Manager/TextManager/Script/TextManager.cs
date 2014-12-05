@@ -22,7 +22,7 @@ public class TextManager : MonoBehaviour {
 		}
 	}
 
-	private List<string> m_TextList = new List<string>();
+	private Dictionary<int, string> m_TextList = new Dictionary<int, string>();
 
 	void Start()
 	{
@@ -38,80 +38,97 @@ public class TextManager : MonoBehaviour {
 
 	public void SetTextList(List<string> _list)
 	{
-		m_TextList = _list;
+		//m_TextList = _list;
 	}
 
-	public List<string> TextList()
+	public void SetTextWithCSV(string _csvstring)
+	{
+		foreach(string parsedstring in _csvstring.Split(new char[]{'\n'}))
+		{
+			string[] datastring = parsedstring.Split(new char[]{','});
+			int index = int.Parse(datastring[0]);
+			string data = datastring[1];
+			if(m_TextList.ContainsKey(index))
+			{
+				m_TextList[index] = data;
+			}else
+			{
+				m_TextList.Add(index, data);
+			}
+		}
+	}
+
+	public Dictionary<int, string> TextList()
 	{
 		return m_TextList;
 	}
 
 	public string GetString(int _index)
 	{
-		if(_index >= m_TextList.Count)
+		if(m_TextList.ContainsKey(_index))
 		{
-			return "null " + _index;
+			return GetEnterReplaced(m_TextList[_index]);
 		}
 
-		return GetEnterReplaced(m_TextList[_index]);
+		return "null " + _index.ToString();
 	}
 
 	public string GetReplaceString(int _index, string value)
 	{
 		//special replacing texts will be marked with &mark
-		if(_index >= m_TextList.Count)
-		{
-			return "null " + _index;
-		}
-		
-		string stringtoreplace = m_TextList[_index];
-		stringtoreplace = stringtoreplace.Replace("&mark", value);
-		int valuesindex = 0;
-		//int index = stringtoreplace.Replace("&mark", value);
-		//while(index != -1)
-		//{
-		//	stringtoreplace.Remove(index,5);
-		//	stringtoreplace.Insert(index, values[valuesindex++]);
-		//}
 
-		return GetEnterReplaced(stringtoreplace);
+		if(m_TextList.ContainsKey(_index))
+		{
+			string stringtoreplace = m_TextList[_index];
+			stringtoreplace = stringtoreplace.Replace("&mark", value);
+			int valuesindex = 0;
+			//int index = stringtoreplace.Replace("&mark", value);
+			//while(index != -1)
+			//{
+			//	stringtoreplace.Remove(index,5);
+			//	stringtoreplace.Insert(index, values[valuesindex++]);
+			//}
+			
+			return GetEnterReplaced(stringtoreplace);
+		}
+
+		return "null " + _index;
 	}
 
 	public string GetReplaceString(int _index, string[] values)
 	{
-		//special replacing texts will be marked with &mark
-		if(_index >= m_TextList.Count)
+		if(m_TextList.ContainsKey(_index))
 		{
-			return "null " + _index;
-		}
+			string stringtoreplace = m_TextList[_index];
 
-		string stringtoreplace = m_TextList[_index];
+			int valuesindex = 0;
+			int index = stringtoreplace.IndexOf("&mark");
+			//Debug.Log(stringtoreplace);
+			while(index != -1)
+			{
+				stringtoreplace = stringtoreplace.Remove(index,5);
+				//Debug.Log("STring: " + stringtoreplace + " LENGTH: " + stringtoreplace.Length);
+				if(stringtoreplace.Length > index)
+				{
+					stringtoreplace = stringtoreplace.Insert(index, values[valuesindex]);
+				}else
+				{
+					stringtoreplace += values[valuesindex];
+				}
 
-		int valuesindex = 0;
-		int index = stringtoreplace.IndexOf("&mark");
-		//Debug.Log(stringtoreplace);
-		while(index != -1)
-		{
-			stringtoreplace = stringtoreplace.Remove(index,5);
-			//Debug.Log("STring: " + stringtoreplace + " LENGTH: " + stringtoreplace.Length);
-			if(stringtoreplace.Length > index)
-			{
-				stringtoreplace = stringtoreplace.Insert(index, values[valuesindex]);
-			}else
-			{
-				stringtoreplace += values[valuesindex];
+				index = stringtoreplace.IndexOf("&mark");
+				valuesindex++;
 			}
 
-			index = stringtoreplace.IndexOf("&mark");
-			valuesindex++;
+			return GetEnterReplaced(stringtoreplace);
 		}
 
-		return GetEnterReplaced(stringtoreplace);
+		return "null " + _index;
 	}
 
 	protected string GetEnterReplaced(string _input)
 	{
-		string output = _input.Replace("&enter","\n");
+		string output = _input.Replace("&enter","\n").Replace("&comma",",");
 		return output;
 	}
 

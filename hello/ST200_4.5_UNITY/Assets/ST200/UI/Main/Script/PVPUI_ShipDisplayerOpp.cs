@@ -56,6 +56,6 @@ public class PVPUI_ShipDisplayerOpp : MonoBehaviour {
 			
 			m_SubShipUIDisplayObject[i].transform.position = newpos;
 		}
-		m_TacticLabel.text = "<" + subshiptactic.TacticName + ">";
+		m_TacticLabel.text = "<" + TextManager.Instance.GetString(subshiptactic.TacticNameTextIndex) + ">";
 	}
 }

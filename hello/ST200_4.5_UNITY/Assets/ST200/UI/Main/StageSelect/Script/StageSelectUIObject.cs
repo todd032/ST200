@@ -36,12 +36,12 @@ public class StageSelectUIObject : MonoBehaviour {
 		{
 			m_StageBackgroundSprite.spriteName = "stageselect_stage_bar";
 			NGUITools.SetActive(m_LockedSprite.gameObject, false);
-			m_StageNameLabel.text = Constant.COLOR_STAGESELECT_ACTIVE + m_StageData.StageName;
+			m_StageNameLabel.text = Constant.COLOR_STAGESELECT_ACTIVE + TextManager.Instance.GetReplaceString(309, m_StageData.Index.ToString());
 		}else
 		{
 			m_StageBackgroundSprite.spriteName = "stageselect_stage_bg_locked";
 			NGUITools.SetActive(m_LockedSprite.gameObject, true);
-			m_StageNameLabel.text = Constant.COLOR_STAGESELECT_INACTIVE + m_StageData.StageName;
+			m_StageNameLabel.text = Constant.COLOR_STAGESELECT_INACTIVE + TextManager.Instance.GetReplaceString(309, m_StageData.Index.ToString());
 		}
 
 		if(userstagedata.IsClear)

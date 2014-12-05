@@ -137,13 +137,13 @@ public class PaymentGoldBuyButton : MonoBehaviour {
 			int bonusamount = curval - originproductval;
 			//Debug.Log("ORIGIN: " + originproductval);
 			
-			productValueString = originproductval.ToString("#,#") + TextManager.Instance.GetString(217);
+			productValueString = originproductval.ToString("#,#");// + TextManager.Instance.GetString(217);
 			if(bonusamount != 0)
 			{
 				productValueString += " +" + bonusamount.ToString("#,#");
 			}
 			
-			_valueInfoLabel.text = Constant.COLOR_STORE_ITEMCOUNT + "x" + productValueString ;
+			_valueInfoLabel.text = Constant.COLOR_STORE_ITEMCOUNT + productValueString ;
 			
 			if(paymentBuyInfoBalance.BonusPercent == 0f)
 			{

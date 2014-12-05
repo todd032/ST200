@@ -27,6 +27,8 @@ public class GameUIManager : MonoBehaviour {
 	public MainUI_FreeChargeNoticeWindow m_FreeChargeNoticeWindow;
 
 	public GameObject m_FreeGoldButton;
+
+	public FacebookLink m_FacebookLink;
 	void OnDestroy()
 	{
 		instance = null;
@@ -55,6 +57,10 @@ public class GameUIManager : MonoBehaviour {
 #if UNITY_IPHONE
 		NGUITools.SetActive(m_FreeGoldButton.gameObject, false);
 #endif
+		if(Managers.UserData.CountryString != "kr")
+		{
+			NGUITools.SetActive(m_FreeGoldButton.gameObject, false);
+		}
 
 		if(Managers.UserData.SelectedGameType == Constant.ST200_GAMEMODE_PVP)
 		{
@@ -84,6 +90,10 @@ public class GameUIManager : MonoBehaviour {
 		{
 			SwitchToGameMainUI();
 		}
+
+		m_FacebookLink.SetData(TextManager.Instance.GetString(305),
+		                       TextManager.Instance.GetString(306),
+                               TextManager.Instance.GetString(307));
 	}
 
 	void Update()
@@ -614,4 +624,26 @@ public class GameUIManager : MonoBehaviour {
 	}
 
 	#endregion
+
+	public void OnClickKakaoInviteButton()
+	{
+		if ( Managers.Audio != null) Managers.Audio.PlayFXSound(AudioManager.FX_SOUND.FX_Button_Common,false);
+
+		//kakao
+		if(ST200KakaoLink.g_Instance.InitLink(TextManager.Instance.GetString(246), TextManager.Instance.GetReplaceString(247, Managers.UserData.UserNickName),
+		                                      TextManager.Instance.GetString(250)))
+		{
+			ST200KakaoLink.g_Instance.SendKakaoLinkMessage();
+		}else
+		{
+			GameUIManager.Instance.LoadUIRootAlertView(Constant.ST200_POPUP_INSTALL_KAKAO);
+		}
+		
+	}
+
+	public void OnClickFacebookInviteButton()
+	{
+		if ( Managers.Audio != null) Managers.Audio.PlayFXSound(AudioManager.FX_SOUND.FX_Button_Common,false);
+		m_FacebookLink.OnClickInviteFacebookFriend();
+	}
 }

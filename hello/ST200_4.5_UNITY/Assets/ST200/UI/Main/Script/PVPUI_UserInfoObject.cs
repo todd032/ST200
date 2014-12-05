@@ -15,6 +15,7 @@ public class PVPUI_UserInfoObject : MonoBehaviour {
 	public GameObject m_RemoveFriendButton;
 	public GameObject m_FixButton;
 	public UILabel m_FixTimeLabel;
+	public UISprite m_FlagSprite;
 
 	public UserInfoData m_UserInfoData;
 	public void Init(UserInfoData _userinfodata)

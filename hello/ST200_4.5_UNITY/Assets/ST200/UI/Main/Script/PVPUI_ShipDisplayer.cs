@@ -72,6 +72,6 @@ public class PVPUI_ShipDisplayer : MonoBehaviour {
 				NGUITools.SetActive(m_SubShipUIDisplayObject[i].gameObject, false);
 			}
 		}
-		m_TacticLabel.text = "<" + subshiptactic.TacticName + ">";
+		m_TacticLabel.text = "<" + TextManager.Instance.GetString(subshiptactic.TacticNameTextIndex) + ">";
 	}
 }

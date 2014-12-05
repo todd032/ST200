@@ -5,6 +5,7 @@ public class PVPUI_Rank_InfoObject : MonoBehaviour {
 
 	public UISprite m_BackgroundSprite;
 	public UISprite m_CharacterSprite;
+	public UISprite m_FlagSprite;
 
 	public UISprite m_RankSprite;
 	public UILabel m_RankLabel;
@@ -17,6 +18,7 @@ public class PVPUI_Rank_InfoObject : MonoBehaviour {
 		if(_ismine)
 		{
 			m_BackgroundSprite.spriteName = "pvp_rank_myranking_list_bg";
+			Debug.Log("MY RANK: " + _rank);
 		}else
 		{
 			m_BackgroundSprite.spriteName = "pvp_list_bg";
@@ -26,14 +28,14 @@ public class PVPUI_Rank_InfoObject : MonoBehaviour {
 		//m_CharacterSprite.MakePixelPerfect();
 		m_NickNameLabel.text = _nickname;
 
-		if(_rank <= 3)
+		if(_rank <= 3 && _rank > 0)
 		{
 			NGUITools.SetActive (m_RankSprite.gameObject, true);
 			NGUITools.SetActive(m_RankLabel.gameObject, false);
 
 			m_RankSprite.spriteName = ImageResourceManager.Instance.GetPVPRankImage(_rank);
 			m_RankLabel.MakePixelPerfect();
-		}else
+		}else 
 		{
 			NGUITools.SetActive (m_RankSprite.gameObject, false);
 			NGUITools.SetActive(m_RankLabel.gameObject, true);
@@ -59,7 +61,8 @@ public class PVPUI_Rank_InfoObject : MonoBehaviour {
 			losestring = _lose.ToString("#,#");
 		}
 
-		m_ShipLabel.text = Managers.GameBalanceData.GetShipDescriptionInfo(_shipindex).ShipName + " LV. " + _shiplevel.ToString();
+		ShipDescriptionInfo shipdescription = Managers.GameBalanceData.GetShipDescriptionInfo(_shipindex);
+		m_ShipLabel.text = "[f8c751]" +  TextManager.Instance.GetString(shipdescription.ShipNameTextIndex) + " LV. " + _shiplevel.ToString();
 		m_RateLabel.text = winstring + TextManager.Instance.GetString(248) + 
 			losestring + TextManager.Instance.GetString(249);
 	}

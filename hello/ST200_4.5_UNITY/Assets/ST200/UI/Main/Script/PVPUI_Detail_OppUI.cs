@@ -18,7 +18,7 @@ public class PVPUI_Detail_OppUI : MonoBehaviour {
 		GameCharacterInfoMessageData characterdescription = Managers.GameBalanceData.GetGameCharacterInfoMessage(_userinfodata.CharacterIndex);
 		m_CharacterSprite.spriteName = ImageResourceManager.Instance.GetPVPCharacterImageName(_userinfodata.CharacterIndex);
 		m_CharacterSprite.MakePixelPerfect();
-		m_CharacterLabel.text = characterdescription.GameCharacterNameKo;
+		m_CharacterLabel.text = TextManager.Instance.GetString(characterdescription.GameCharacterName2Index);
 		m_CharacterSpecialSprite.spriteName = ImageResourceManager.Instance.GetMainUICharacterAbilityImageName(_userinfodata.CharacterIndex);
 	}
 }

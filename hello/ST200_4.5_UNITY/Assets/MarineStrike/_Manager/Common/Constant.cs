@@ -9,7 +9,7 @@ public class Constant : MonoBehaviour {
 	/// 
 	public readonly static bool VALTEST1 = true;
     // 프로젝트 정보 ----------------------------------------------------------------------------------------------------------------
-    public readonly static string AppVersionInfo = "1.3.1";
+    public readonly static string AppVersionInfo = "1.3.2";
     public readonly static string DefalutAppName = "defalut_app_name" ;
     
     public readonly static string AppNameString = "39" ; //VersionCode...
@@ -26,7 +26,7 @@ public class Constant : MonoBehaviour {
 	public static readonly bool PROJECTMODE_Develop = true; //상용시 false로..
 	public static readonly bool PROJECTMODE_BalanceTest = true; //상용시 false, 테스트용 벨런스 데이터를 가지고 옴..
 	public static readonly bool PROJECTMODE_OutDebugMessage = true; //상용시 false로..
-	public static readonly bool PROJECTMODE_IabTest = false; //상용시 false로..
+	public static readonly bool PROJECTMODE_IabTest = true; //상용시 false로..
 #endif
     
     // Scene ----------------------------------------------------------------------------------------------------------------
@@ -38,6 +38,7 @@ public class Constant : MonoBehaviour {
     public static readonly string SCENE_GameMainLoadingScene = "GameMainLoadingScene";
     public static readonly string SCENE_GameMain = "GameMain";
     public static readonly string SCENE_SubMarineSelect = "SubMarineSelect";
+	public static readonly string SCENE_AssetLoading = "AssetLoadingScene";
     
     // 환경변수(Preference) Key ------------------------------------------------------------------------------------------------------------------------
 	public static readonly string PREFKEY_Agreement_INT = "PREFKEY_Agreement_INT";
@@ -2200,6 +2201,8 @@ public class Constant : MonoBehaviour {
 	public readonly static int ST200_ITEM_CHARACTER_STARTCODE					= 1000;
 	public readonly static int ST200_ITEM_SHIP_STARTCODE						= 2000;
 	public readonly static int ST200_ITEM_SUBSHIP_STARTCODE						= 3000;
+	public readonly static int ST200_ITEM_GAME_ITEM_START_CODE					= 4000;
+	public readonly static int ST200_ITEM_SUBSHIP_TACTIC_STARTCODE				= 5000;
 	#endregion
 
 	#region ST200 Gameplay constants

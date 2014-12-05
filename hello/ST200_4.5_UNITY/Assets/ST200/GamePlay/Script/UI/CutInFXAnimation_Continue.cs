@@ -35,6 +35,7 @@ public class CutInFXAnimation_Continue: MonoBehaviour {
 		NGUITools.SetActive(m_Sprite2.gameObject, true);
 		m_Sprite.spriteName = ImageResourceManager.Instance.GetCutInFX_GOImageName(_character);
 		m_Sprite.MakePixelPerfect();
+		m_Sprite2.MakePixelPerfect();
 		
 		m_IsPlaying = true;
 		StartCoroutine(IEPlayAnimation());

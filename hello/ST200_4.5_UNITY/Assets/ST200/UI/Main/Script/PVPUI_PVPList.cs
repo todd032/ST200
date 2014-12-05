@@ -16,7 +16,7 @@ public class PVPUI_PVPList : MonoBehaviour {
 	void Awake()
 	{
 		m_TitleLabel.text = Constant.COLOR_SUBSHIP_SUBTITLE + TextManager.Instance.GetString(255);
-		m_RecommandLabel.text = TextManager.Instance.GetString(264);
+		m_RecommandLabel.text = "[f8c751]" + TextManager.Instance.GetString(264);
 		m_FriendLabel.text = TextManager.Instance.GetString(265);
 	}
 

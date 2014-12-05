@@ -15,7 +15,8 @@ public class MainTitleManager : MonoBehaviour {
 	public UIPanel _eventPopupViewObject ;
 	private EventPopupView _eventPopupView ;
 	public MainTitleNicknameView _nicknameView;
-	public AgreementPopupView _agreementPopupView ;
+	public AgreementPopupView _agreementPopupView_KR;
+	public AgreementPopupView m_AgreementPopupView_ENG;
 	public IndicatorPopupView _indicatorPopupView ;
 	public UIRootAlertView _uiRootAlertView ;
 	public BannerView _bannerView ;
@@ -206,7 +207,8 @@ public class MainTitleManager : MonoBehaviour {
 		_updateInfoPopupView.UpdateInfoPopupViewEvent += HandleDelegate_UpdateInfoPopupView ;
 		_eventPopupView.Event_Delegate_EventPopupView += HandleDelegate_EventPopupView ;
 		_nicknameView.Event_Delegate_NicknameView += HandleDelegate_NicknameView;
-		_agreementPopupView.AgreementPopupViewEvent += HandleDelegate_AgreementPopupView ;
+		_agreementPopupView_KR.AgreementPopupViewEvent += HandleDelegate_AgreementPopupView ;
+		m_AgreementPopupView_ENG.AgreementPopupViewEvent += HandleDelegate_AgreementPopupView;
 		_uiRootAlertView.UIRootAlertViewEvent += HandleDelegate_UIRootAlertView ;
 
 		// 카카오톡 에러 알림 수정(by 최원석 14.05.13) ===== Start.
@@ -227,7 +229,8 @@ public class MainTitleManager : MonoBehaviour {
 		_updateInfoPopupView.InitLoadUpdateInfoPopupView() ;
 		//		_noticePopupView.InitLoadNoticePopupView() ;
 		_eventPopupView.PopupView_Initialize() ;
-		_agreementPopupView.InitAgreementPopupView() ;
+		_agreementPopupView_KR.InitAgreementPopupView() ;
+		m_AgreementPopupView_ENG.InitAgreementPopupView();
 		_indicatorPopupView.InitLoadIndicatorPopupView() ;
 		_uiRootAlertView.InitLoadUIRootAlertView() ;
 		_bannerView.InitLoadBannerView() ;
@@ -440,8 +443,14 @@ public class MainTitleManager : MonoBehaviour {
 #endif
 
 		if (intAgreement == Constant.INT_False){
-			
-			_agreementPopupView.LoadAgreementPopupView() ;
+
+			if(PFPFileManager.Instance.m_SelectedLanguage == PFPFileManager.LANGUAGE_KOR)
+			{
+				_agreementPopupView_KR.LoadAgreementPopupView();
+			}else
+			{
+				m_AgreementPopupView_ENG.LoadAgreementPopupView();
+			}
 			
 		} else {
 			
@@ -1102,9 +1111,14 @@ public class MainTitleManager : MonoBehaviour {
 		m_PostData_PushInfo.Ostype = "1";
 		m_PostData_PushInfo.Mtype = "1";
 		m_PostData_PushInfo.Language = "ko";
-		m_PostData_PushInfo.Country = "KR";
+		string strCountryCode = "us";//r100 webview something code
+		m_PostData_PushInfo.Country = strCountryCode;
+
 		m_PostData_PushInfo.AppVersion = Constant.AppVersionInfo;
-		
+
+
+		Managers.UserData.CountryString = strCountryCode;
+
 		#elif UNITY_ANDROID && !UNITY_EDITOR
 		m_PostData_PushInfo.Deviceid = SystemInfo.deviceUniqueIdentifier;
 		m_PostData_PushInfo.ADID = "";
@@ -1120,7 +1134,9 @@ public class MainTitleManager : MonoBehaviour {
 		m_PostData_PushInfo.Country = strCountryCode;
 		
 		m_PostData_PushInfo.AppVersion = Constant.AppVersionInfo;
-		
+
+		Managers.UserData.CountryString = strCountryCode;
+
 		# else
 		m_PostData_PushInfo.Deviceid = SystemInfo.deviceUniqueIdentifier;
 		m_PostData_PushInfo.ADID = "";

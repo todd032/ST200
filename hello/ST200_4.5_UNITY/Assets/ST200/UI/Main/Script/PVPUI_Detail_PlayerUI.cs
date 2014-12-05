@@ -19,7 +19,7 @@ public class PVPUI_Detail_PlayerUI : MonoBehaviour {
 		m_CharacterSprite.spriteName = ImageResourceManager.Instance.GetPVPCharacterImageName(Managers.UserData.GetCurrentGameCharacter().IndexNumber);
 		m_CharacterSprite.MakePixelPerfect();
 		
-		m_CharacterLabel.text = characterdescription.GameCharacterNameKo;
+		m_CharacterLabel.text = TextManager.Instance.GetString(characterdescription.GameCharacterName2Index);
 		m_CharacterSpecialSprite.spriteName = ImageResourceManager.Instance.GetMainUICharacterAbilityImageName(Managers.UserData.GetCurrentGameCharacter().IndexNumber);
 	}
 }

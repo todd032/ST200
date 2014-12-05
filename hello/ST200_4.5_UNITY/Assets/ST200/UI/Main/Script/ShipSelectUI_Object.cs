@@ -119,9 +119,9 @@ public class ShipSelectUI_Object : MonoBehaviour {
 		
 		//Debug.Log("index: " + m_CurShipIndex + " INN: " +descriptioninfo.ShipIndex +  "  DESCRIP: " + descriptioninfo.ShipDescription);
 		m_PlayerShipImage.spriteName = ImageResourceManager.Instance.GetMainUIShipImageName(m_CurShipIndex);
-		m_PlayerShipNameLabel.text = Constant.COLOR_MAIN_NAME + descriptioninfo.ShipName;
-		m_PlayerShipDescriptionLabel.text =  Constant.COLOR_MAIN_SHIP_DESCRIPTION + TextManager.Instance.GetReplacedString(descriptioninfo.ShipDescription);
-		m_PlayerShipSpecialDescriptionLabel.text = Constant.COLOR_MAIN_SHIP_SPECIAL_DESCRIPTION + descriptioninfo.ShipSpecialDescription;
+		m_PlayerShipNameLabel.text = Constant.COLOR_MAIN_NAME + TextManager.Instance.GetString (descriptioninfo.ShipNameTextIndex);
+		m_PlayerShipDescriptionLabel.text =  Constant.COLOR_MAIN_SHIP_DESCRIPTION + TextManager.Instance.GetString(descriptioninfo.ShipDescriptionTextIndex);
+		m_PlayerShipSpecialDescriptionLabel.text = Constant.COLOR_MAIN_SHIP_SPECIAL_DESCRIPTION + TextManager.Instance.GetString(descriptioninfo.ShipSpecialDescriptionTextIndex);
 		m_PlayerShipLevelLabel.text = Constant.COLOR_MAIN_SHIP_LEVEL + "LV."+usershipdata.Level.ToString();
 		
 		m_AttackStatDisplay.UpdateUI(shipstatinfo.AttackGrade , 100f);

@@ -107,9 +107,10 @@ public class GameShopManager : MonoBehaviour {
 		}
 		
 		if(Managers.GameBalanceData != null){
-			
-			_itemNameLabel.text = Constant.COLOR_READY_ITEMNAME + Managers.GameBalanceData.GetGameItemName(selectItemType, languageCode) ;
-			_itemExplainLabel.text = Constant.COLOR_READY_ITEMDESCRIPTION + TextManager.Instance.GetReplacedString(Managers.GameBalanceData.GetGameItemMessage(selectItemType, languageCode));
+
+			GameBalanceDataManager.GameItemMessageData messagedata = Managers.GameBalanceData.GetGameItemMessage(selectItemType);
+			_itemNameLabel.text = Constant.COLOR_READY_ITEMNAME + TextManager.Instance.GetString ( messagedata.ItemNameTextIndex) ;
+			_itemExplainLabel.text = Constant.COLOR_READY_ITEMDESCRIPTION +  TextManager.Instance.GetString ( messagedata.ItemDescriptionTextIndex);
 			
 			GameBalanceDataManager.GameItemBalance gameItemBalance = Managers.GameBalanceData.GetGameItemBalance(selectItemType) ;
 			

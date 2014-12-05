@@ -453,6 +453,11 @@ public class DataStreamManager : MonoBehaviour {
 		private int ct ;
 		
 		public int Ct{ get { return ct; } set { ct = value; } }
+
+		private string country;
+		
+		public string Country{ get { return country; } set { country = value; } }
+
 	}
 	private MsgHeader msgHeader;
 	
@@ -878,7 +883,7 @@ public class DataStreamManager : MonoBehaviour {
 		#if UNITY_EDITOR
 		if (Input.GetKeyDown(KeyCode.Space)) {
 			//testcodeinituserdata();
-			//testcodeinitbalancedata();
+			testcodeinitbalancedata();
 			//			gachatestcode();
 			//StartCoroutine(LuckyTestCode());
 			//Managers.UserData.SetPurchaseGameSubmarine(4);
@@ -976,6 +981,18 @@ public class DataStreamManager : MonoBehaviour {
 		msgHeader.Model = SystemInfo.deviceModel;
 		msgHeader.AppVersion = ver;
 		msgHeader.CodeName = codeName;
+
+		string countrycode = "us";
+
+#if !UNITY_EDITOR && UNITY_ANDROID
+		AndroidJavaObject activity;
+		AndroidJavaClass androidJavaClass = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
+		activity = androidJavaClass.GetStatic<AndroidJavaObject>("currentActivity");
+		countrycode = activity.Call<string>("GetCountryCode");
+#elif !UNITY_EDITOR && UNITY_IOS
+		countrycode = "us";//webviewsomething
+#endif
+		msgHeader.Country = countrycode;
 		addMessageBuffer("DataStream Init. OK...");
 		
 //		  Debug.Log ("ST200k DataStreamManager.SetInitDataStream().msgHeader.Loginid = " + msgHeader.Loginid);
@@ -3367,7 +3384,7 @@ public class DataStreamManager : MonoBehaviour {
 						JSONNode jsonExtend_Root = JSON.Parse(clsReturn.extend);
 
 						Managers.UserData.FirstInAppPurchaseFlag = (jsonExtend_Root["FirstInAppPurchase"].AsBool ? 1 : 0);
-						Debug.Log(jsonExtend_Root["FirstInAppPurchase"].AsBool);
+						//Debug.Log(jsonExtend_Root["FirstInAppPurchase"].AsBool);
 
 						int intMainScene_To_RankingScene = PlayerPrefs.GetInt(Constant.PREFKEY_MainScene_To_RankingScene_INT);
 						

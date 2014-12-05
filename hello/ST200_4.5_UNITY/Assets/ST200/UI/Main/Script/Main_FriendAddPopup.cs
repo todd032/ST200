@@ -37,8 +37,11 @@ public class Main_FriendAddPopup : MonoBehaviour {
 		if(m_UserInfoDataList.Count > 0)
 		{
 			UserHistoryData curuserinfodata = m_UserInfoDataList[0];
+
+			ShipDescriptionInfo shipdescription =  Managers.GameBalanceData.GetShipDescriptionInfo(curuserinfodata.m_UserInfoData.ShipIndex);
+
 			m_NickNameLabel.text = Constant.COLOR_WHITE + curuserinfodata.m_UserInfoData.UserNickName;
-			m_ShipLabel.text = Constant.COLOR_GOLD	+ Managers.GameBalanceData.GetShipDescriptionInfo(curuserinfodata.m_UserInfoData.ShipIndex).ShipName + " Lv. " + curuserinfodata.m_UserInfoData.ShipLevel;
+			m_ShipLabel.text = Constant.COLOR_GOLD	+ TextManager.Instance.GetString(shipdescription.ShipNameTextIndex) + " Lv. " + curuserinfodata.m_UserInfoData.ShipLevel;
 			
 			m_CharacterSprite.spriteName = ImageResourceManager.Instance.GetWorldRankingCharacterImage(curuserinfodata.m_UserInfoData.CharacterIndex.ToString());
 			m_ShipSprite.spriteName = ImageResourceManager.Instance.GetMainUIShipImageName(curuserinfodata.m_UserInfoData.ShipIndex);
@@ -57,8 +60,11 @@ public class Main_FriendAddPopup : MonoBehaviour {
 		if(m_UserInfoDataList.Count > 0)
 		{
 			UserHistoryData curuserinfodata = m_UserInfoDataList[0];
+
+			ShipDescriptionInfo shipdescription = Managers.GameBalanceData.GetShipDescriptionInfo(curuserinfodata.m_UserInfoData.ShipIndex);
+
 			m_NickNameLabel.text = Constant.COLOR_WHITE + curuserinfodata.m_UserInfoData.UserNickName;
-			m_ShipLabel.text = Constant.COLOR_GOLD	+ Managers.GameBalanceData.GetShipDescriptionInfo(curuserinfodata.m_UserInfoData.ShipIndex).ShipName + " Lv. " + curuserinfodata.m_UserInfoData.ShipLevel;
+			m_ShipLabel.text = Constant.COLOR_GOLD	+ TextManager.Instance.GetString(shipdescription.ShipNameTextIndex) + " Lv. " + curuserinfodata.m_UserInfoData.ShipLevel;
 			
 			m_CharacterSprite.spriteName = ImageResourceManager.Instance.GetWorldRankingCharacterImage(curuserinfodata.m_UserInfoData.CharacterIndex.ToString());
 			m_ShipSprite.spriteName = ImageResourceManager.Instance.GetMainUIShipImageName(curuserinfodata.m_UserInfoData.ShipIndex);

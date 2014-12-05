@@ -19,7 +19,7 @@ public class CIManager : MonoBehaviour {
 
 		setImage_BI ();
 
-		string getIntroSceneState = PlayerPrefs.GetString("GoIntro") ;
+		//string getIntroSceneState = PlayerPrefs.GetString("GoIntro") ;
 		
 //if(getIntroSceneState == null || getIntroSceneState.Equals("") || getIntroSceneState.Equals("False")){
 //
@@ -30,7 +30,7 @@ public class CIManager : MonoBehaviour {
 //
 //}else if(getIntroSceneState.Equals("True")){
 //
-			_nextLevel = "Main" ;
+		_nextLevel = Constant.SCENE_AssetLoading;
 //}
 		
 		

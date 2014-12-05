@@ -12,10 +12,21 @@ public class PVPUI : MonoBehaviour {
 	public PVPUI_Menu_Button m_RankingButton;
 	public PVPUI_Menu_Button m_HistoryButton;
 
+	public GameObject m_KakaoInviteButton;
+	public GameObject m_FacebookInviteButton;
 	public void Init()
 	{
 		ShowPVPUI(false);
 
+		if(Managers.UserData.CountryString == "kr")
+		{
+			NGUITools.SetActive(m_KakaoInviteButton.gameObject, true);
+			NGUITools.SetActive(m_FacebookInviteButton.gameObject, false);
+		}else
+		{
+			NGUITools.SetActive(m_KakaoInviteButton.gameObject, false);
+			NGUITools.SetActive(m_FacebookInviteButton.gameObject, true);
+		}
 	}
 
 	public void UpdateUI()

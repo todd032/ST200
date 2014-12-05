@@ -41,7 +41,7 @@ public class WorldRankUIObject : MonoBehaviour {
 		}
 
 		m_ScoreLabel.text = Constant.COLOR_RANKING_INFOLABEL + scorestring;
-		m_StageNameLabel.text = Constant.COLOR_RANKING_INFOLABEL + Managers.GameBalanceData.GetStageData(_stage).StageName;
+		m_StageNameLabel.text = Constant.COLOR_RANKING_INFOLABEL + TextManager.Instance.GetReplaceString(309, Managers.GameBalanceData.GetStageData(_stage).Index.ToString());
 		m_CharacterSprite.spriteName = ImageResourceManager.Instance.GetWorldRankingCharacterImage (_characterindex);
 		m_CharacterSprite.MakePixelPerfect();
 	}

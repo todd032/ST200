@@ -164,6 +164,13 @@ public class ImageResourceManager : MonoBehaviour {
 		return name;
 	}
 
+	public string GetAttendDayImageName(int _itemcode)
+	{
+		string name = "";
+		name = "Day_" + _itemcode.ToString();
+		return name;
+	}
+
 	public string GetAttendPresentImageName(int _itemcode)
 	{
 		string name = "";

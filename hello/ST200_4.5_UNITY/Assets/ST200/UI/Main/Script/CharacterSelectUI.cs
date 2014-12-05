@@ -103,9 +103,9 @@ public class CharacterSelectUI : MonoBehaviour {
 		GameCharacterInfoMessageData descriptioninfo = Managers.GameBalanceData.GetGameCharacterInfoMessage(m_CurCharacterIndex);
 		//m_PlayerImage.spriteName = ImageResourceManager.Instance.GetMainUICharacterImageName(m_CurCharacterIndex);
 		m_PlayerAbilityImage.spriteName = ImageResourceManager.Instance.GetMainUICharacterAbilityImageName(m_CurCharacterIndex);
-		m_PlayerNameLabel.text = Constant.COLOR_MAIN_NAME + descriptioninfo.GameCharacterNameKo;
-		m_PlayerSubNameLabel.text = Constant.COLOR_MAIN_NAME + descriptioninfo.GameCharacterNameEn;
-		m_PlayerSpecialDescriptionLabel.text = Constant.COLOR_MAIN_SHIP_SPECIAL_DESCRIPTION + descriptioninfo.GameCharacterSpecialMessageKo;
+		m_PlayerNameLabel.text = Constant.COLOR_MAIN_NAME + TextManager.Instance.GetString(descriptioninfo.GameCharacterName2Index);
+		m_PlayerSubNameLabel.text = Constant.COLOR_MAIN_NAME +  TextManager.Instance.GetString(descriptioninfo.GameCharacterNameIndex);
+		m_PlayerSpecialDescriptionLabel.text = Constant.COLOR_MAIN_SHIP_SPECIAL_DESCRIPTION + TextManager.Instance.GetString(descriptioninfo.GameCharacterDescription2Index);
 
 		m_SubshipAvailableTitleLabel.text = Constant.COLOR_BLACK + TextManager.Instance.GetString(228);
 		m_SubshipAvailableCountLabel.text = Constant.COLOR_BLUE + characterinfo.AvailableTacticSlot.ToString() + TextManager.Instance.GetString(229);
@@ -118,7 +118,7 @@ public class CharacterSelectUI : MonoBehaviour {
 			{
 				m_TacticNameLabel.text += ", ";
 			}
-			m_TacticNameLabel.text += Managers.GameBalanceData.GetSubShipTactic(characterinfo.AvailableTacticList[i]).TacticName;
+			m_TacticNameLabel.text += TextManager.Instance.GetString(Managers.GameBalanceData.GetSubShipTactic(characterinfo.AvailableTacticList[i]).TacticNameTextIndex);
 		}
 	}
 

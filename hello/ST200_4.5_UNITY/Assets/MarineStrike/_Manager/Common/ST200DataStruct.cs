@@ -143,7 +143,71 @@ public struct GameCharacterInfoMessageData {
 			return decryptInt;
 		}
 	}
-	
+
+	private string m_GameCharacterNameIndex ;
+	public int GameCharacterNameIndex {
+		set { 
+			string encryptString = LoadingWindows.NextE(value.ToString(),Constant.DefalutAppName) ;
+			m_GameCharacterNameIndex = encryptString ;
+		}
+		get { 
+			if(m_GameCharacterNameIndex == null || m_GameCharacterNameIndex.Equals("")){
+				return 0 ;	
+			}
+			string decryptString = LoadingWindows.NextD(m_GameCharacterNameIndex,Constant.DefalutAppName) ;
+			int decryptInt = int.Parse(decryptString) ;
+			return decryptInt;
+		}
+	}
+
+	private string m_GameCharacterName2Index ;
+	public int GameCharacterName2Index {
+		set { 
+			string encryptString = LoadingWindows.NextE(value.ToString(),Constant.DefalutAppName) ;
+			m_GameCharacterName2Index = encryptString ;
+		}
+		get { 
+			if(m_GameCharacterName2Index == null || m_GameCharacterName2Index.Equals("")){
+				return 0 ;	
+			}
+			string decryptString = LoadingWindows.NextD(m_GameCharacterName2Index,Constant.DefalutAppName) ;
+			int decryptInt = int.Parse(decryptString) ;
+			return decryptInt;
+		}
+	}
+
+	private string m_GameCharacterDescription1Index ;
+	public int GameCharacterDescription1Index {
+		set { 
+			string encryptString = LoadingWindows.NextE(value.ToString(),Constant.DefalutAppName) ;
+			m_GameCharacterDescription1Index = encryptString ;
+		}
+		get { 
+			if(m_GameCharacterDescription1Index == null || m_GameCharacterDescription1Index.Equals("")){
+				return 0 ;	
+			}
+			string decryptString = LoadingWindows.NextD(m_GameCharacterDescription1Index,Constant.DefalutAppName) ;
+			int decryptInt = int.Parse(decryptString) ;
+			return decryptInt;
+		}
+	}
+
+	private string m_GameCharacterDescription2Index ;
+	public int GameCharacterDescription2Index {
+		set { 
+			string encryptString = LoadingWindows.NextE(value.ToString(),Constant.DefalutAppName) ;
+			m_GameCharacterDescription2Index = encryptString ;
+		}
+		get { 
+			if(m_GameCharacterDescription2Index == null || m_GameCharacterDescription2Index.Equals("")){
+				return 0 ;	
+			}
+			string decryptString = LoadingWindows.NextD(m_GameCharacterDescription2Index,Constant.DefalutAppName) ;
+			int decryptInt = int.Parse(decryptString) ;
+			return decryptInt;
+		}
+	}
+
 	private string _gameCharacterNameEn ;
 	public string GameCharacterNameEn {
 		get { return _gameCharacterNameEn ; }
@@ -926,16 +990,64 @@ public struct ShipDescriptionInfo
 		set { m_ShipName = value ; }
 	}
 
+	private string m_ShipNameTextIndex ;
+	public int ShipNameTextIndex {
+		set { 
+			string encryptString = LoadingWindows.NextE(value.ToString(),Constant.DefalutAppName) ;
+			m_ShipNameTextIndex = encryptString ;
+		}
+		get { 
+			if(m_ShipNameTextIndex == null || m_ShipNameTextIndex.Equals("")){
+				return 0 ;	
+			}
+			string decryptString = LoadingWindows.NextD(m_ShipNameTextIndex,Constant.DefalutAppName) ;
+			int decryptInt = int.Parse(decryptString) ;
+			return decryptInt;
+		}
+	}
+
 	private string m_ShipDescription ;
 	public string ShipDescription {
 		get { return m_ShipDescription ; }
 		set { m_ShipDescription = value ; }
 	}
 
+	private string m_ShipDescriptionTextIndex ;
+	public int ShipDescriptionTextIndex {
+		set { 
+			string encryptString = LoadingWindows.NextE(value.ToString(),Constant.DefalutAppName) ;
+			m_ShipDescriptionTextIndex = encryptString ;
+		}
+		get { 
+			if(m_ShipDescriptionTextIndex == null || m_ShipDescriptionTextIndex.Equals("")){
+				return 0 ;	
+			}
+			string decryptString = LoadingWindows.NextD(m_ShipDescriptionTextIndex,Constant.DefalutAppName) ;
+			int decryptInt = int.Parse(decryptString) ;
+			return decryptInt;
+		}
+	}
+
 	private string m_ShipSpecialDescription ;
 	public string ShipSpecialDescription {
 		get { return m_ShipSpecialDescription ; }
 		set { m_ShipSpecialDescription = value ; }
+	}
+
+	private string m_ShipSpecialDescriptionTextIndex ;
+	public int ShipSpecialDescriptionTextIndex {
+		set { 
+			string encryptString = LoadingWindows.NextE(value.ToString(),Constant.DefalutAppName) ;
+			m_ShipSpecialDescriptionTextIndex = encryptString ;
+		}
+		get { 
+			if(m_ShipSpecialDescriptionTextIndex == null || m_ShipSpecialDescriptionTextIndex.Equals("")){
+				return 0 ;	
+			}
+			string decryptString = LoadingWindows.NextD(m_ShipSpecialDescriptionTextIndex,Constant.DefalutAppName) ;
+			int decryptInt = int.Parse(decryptString) ;
+			return decryptInt;
+		}
 	}
 }
 
@@ -1282,7 +1394,55 @@ public struct SubShipDescriptionInfo
 			return decryptInt;
 		}
 	}
-	
+
+	private string m_ShipNameTextIndex ;
+	public int ShipNameTextIndex {
+		set { 
+			string encryptString = LoadingWindows.NextE(value.ToString(),Constant.DefalutAppName) ;
+			m_ShipNameTextIndex = encryptString ;
+		}
+		get { 
+			if(m_ShipNameTextIndex == null || m_ShipNameTextIndex.Equals("")){
+				return 0 ;	
+			}
+			string decryptString = LoadingWindows.NextD(m_ShipNameTextIndex,Constant.DefalutAppName) ;
+			int decryptInt = int.Parse(decryptString) ;
+			return decryptInt;
+		}
+	}
+
+	private string m_ShipDescriptionTextIndex ;
+	public int ShipDescriptionTextIndex {
+		set { 
+			string encryptString = LoadingWindows.NextE(value.ToString(),Constant.DefalutAppName) ;
+			m_ShipDescriptionTextIndex = encryptString ;
+		}
+		get { 
+			if(m_ShipDescriptionTextIndex == null || m_ShipDescriptionTextIndex.Equals("")){
+				return 0 ;	
+			}
+			string decryptString = LoadingWindows.NextD(m_ShipDescriptionTextIndex,Constant.DefalutAppName) ;
+			int decryptInt = int.Parse(decryptString) ;
+			return decryptInt;
+		}
+	}
+
+	private string m_ShipSpecialDescriptionTextIndex ;
+	public int ShipSpecialDescriptionTextIndex {
+		set { 
+			string encryptString = LoadingWindows.NextE(value.ToString(),Constant.DefalutAppName) ;
+			m_ShipSpecialDescriptionTextIndex = encryptString ;
+		}
+		get { 
+			if(m_ShipSpecialDescriptionTextIndex == null || m_ShipSpecialDescriptionTextIndex.Equals("")){
+				return 0 ;	
+			}
+			string decryptString = LoadingWindows.NextD(m_ShipSpecialDescriptionTextIndex,Constant.DefalutAppName) ;
+			int decryptInt = int.Parse(decryptString) ;
+			return decryptInt;
+		}
+	}
+
 	private string m_ShipName ;
 	public string ShipName {
 		get { return m_ShipName ; }
@@ -1646,7 +1806,23 @@ public struct SubShipTacTic
 			return decryptInt;
 		}
 	}
-	
+
+	private string m_TacticNameTextIndex ;
+	public int TacticNameTextIndex {
+		set { 
+			string encryptString = LoadingWindows.NextE(value.ToString(),Constant.DefalutAppName) ;
+			m_TacticNameTextIndex = encryptString ;
+		}
+		get {
+			if(m_TacticNameTextIndex == null || m_TacticNameTextIndex.Equals("")){
+				return 0 ;	
+			}
+			string decryptString = LoadingWindows.NextD(m_TacticNameTextIndex,Constant.DefalutAppName) ;
+			int decryptInt = int.Parse(decryptString) ;
+			return decryptInt;
+		}
+	}
+
 	private string m_TacticName ;
 	public string TacticName {
 		set {

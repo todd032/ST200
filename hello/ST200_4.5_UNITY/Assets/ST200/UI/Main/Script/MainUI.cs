@@ -32,6 +32,9 @@ public class MainUI : MonoBehaviour {
 	public Main_FriendAddPopup m_FriendAddPopup;
 
 	public MainUI_ModeSelect m_ModeSelectUI;
+
+	public GameObject m_KakaoInviteButton;
+	public GameObject m_FacebookInviteButton;
 	// Use this for initialization
 	void Start () {
 	
@@ -58,6 +61,16 @@ public class MainUI : MonoBehaviour {
 		m_CharacterSelectUI.InitUI();
 		m_SubShipSelectUI.Init();
 		UpdateUI();
+
+		if(Managers.UserData.CountryString == "kr")
+		{
+			NGUITools.SetActive(m_KakaoInviteButton.gameObject, true);
+			NGUITools.SetActive(m_FacebookInviteButton.gameObject, false);
+		}else
+		{
+			NGUITools.SetActive(m_KakaoInviteButton.gameObject, false);
+			NGUITools.SetActive(m_FacebookInviteButton.gameObject, true);
+		}
 	}
 
 	public void UpdateUI()
@@ -232,6 +245,12 @@ public class MainUI : MonoBehaviour {
 		{
 			GameUIManager.Instance.LoadUIRootAlertView(Constant.ST200_POPUP_INSTALL_KAKAO);
 		}
+	}
+
+	public void OnClickFacebookButton()
+	{
+		if ( Managers.Audio != null) Managers.Audio.PlayFXSound(AudioManager.FX_SOUND.FX_Button_Common,false);
+
 	}
 
 	/// <summary>

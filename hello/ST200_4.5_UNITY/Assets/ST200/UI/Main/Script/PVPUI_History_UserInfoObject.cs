@@ -17,6 +17,7 @@ public class PVPUI_History_UserInfoObject : MonoBehaviour {
 	public UILabel m_FightTime;
 
 	public UISprite m_FriendAddSprite;
+	public UISprite m_FlagSprite;
 
 	public UserHistoryData m_UserInfoData;
 	public void Init(UserHistoryData _userinfodata)
@@ -76,7 +77,7 @@ public class PVPUI_History_UserInfoObject : MonoBehaviour {
 		}
 
 		string[] timestring = TextManager.GetDHM(m_UserInfoData.PastSecond);
-		m_FightTime.text = Constant.COLOR_RED + timestring[0] + TextManager.Instance.GetString(270) + " " + 
+		m_FightTime.text = "[eee8da]" + timestring[0] + TextManager.Instance.GetString(270) + " " + 
 			timestring[1] + TextManager.Instance.GetString(271) + " " + 
 				timestring[2] + TextManager.Instance.GetString(272) + TextManager.Instance.GetString(273);
 	}

@@ -20,7 +20,7 @@ public class PVPUI_Rank_RewardDisplayer : MonoBehaviour {
 
 	void Awake()
 	{
-		m_TapLabel.text = Constant.COLOR_MAIN_SUBTITLE + TextManager.Instance.GetString(258);
+		m_TapLabel.text = "[7c3500]" + TextManager.Instance.GetString(258);
 		m_DescriptionLabel.text = Constant.COLOR_GOLD + TextManager.Instance.GetString(259);
 	}
 

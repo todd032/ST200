@@ -93,7 +93,7 @@ public class MainTitleNicknameView : MonoBehaviour {
 		//if ( Managers.Audio != null) Managers.Audio.PlayFXSound(AudioManager.FX_SOUND.FX_Button_Common,false);
 		if(m_NicknameLabel.text.Length > 1)
 		{
-			m_NickName = m_NicknameLabel.text.Substring(0,Mathf.Min(8, m_NicknameLabel.text.Length));
+			m_NickName = m_NicknameLabel.text.Substring(0,Mathf.Min(10, m_NicknameLabel.text.Length));
 			m_UIInput.value = m_NickName;
 		}else
 		{

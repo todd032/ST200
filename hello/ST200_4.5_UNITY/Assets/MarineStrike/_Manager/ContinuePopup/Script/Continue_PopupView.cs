@@ -39,8 +39,8 @@ public class Continue_PopupView : MonoBehaviour {
 		m_TitleLabel.text = Constant.COLOR_CONTINUE_TITLE + TextManager.Instance.GetString(136);
 		m_ReviveWordLabel1.text = Constant.COLOR_CONTINUE_DESCRIPTION + TextManager.Instance.GetString(130);
 		m_ReviveWordLabel2.text = Constant.COLOR_CONTINUE_DESCRIPTION + TextManager.Instance.GetString(131);
-		m_ReviveWordLabel3.text = Constant.COLOR_CONTINUE_REVIVE + TextManager.Instance.GetString(132);
-		m_ReviveWordLabel4.text = Constant.COLOR_CONTINUE_DESCRIPTION + TextManager.Instance.GetString(133);
+		//m_ReviveWordLabel3.text = Constant.COLOR_CONTINUE_REVIVE + TextManager.Instance.GetString(132);
+		//m_ReviveWordLabel4.text = Constant.COLOR_CONTINUE_DESCRIPTION + TextManager.Instance.GetString(133);
 		m_CloseLabel.text = Constant.COLOR_CONTINUE_BUTTON + TextManager.Instance.GetString(135);
 		m_ContinueLabel.text = Constant.COLOR_CONTINUE_BUTTON + TextManager.Instance.GetString(136);
 		m_ContinueLabel.text = Constant.COLOR_CONTINUE_BUTTON + TextManager.Instance.GetString(136);

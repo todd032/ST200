@@ -36,9 +36,9 @@ public class SubShipUpgradePopup : MonoBehaviour {
 		SubShipStatInfo cursubshipstatinfo = Managers.GameBalanceData.GetSubShipStatInfo(CurSubShipIndex, usersubshipdata.Level);
 		SubShipStatInfo nextsubshipstatinfo = Managers.GameBalanceData.GetSubShipStatInfo(CurSubShipIndex, usersubshipdata.Level + 1);
 
-		m_ShipNameLabel.text = Constant.COLOR_SUBSHIP_UPGRADE_NAME + description.ShipName;
-		m_DescriptionLabel.text = Constant.COLOR_SUBSHIP_UPGRADE_DESCRIPTION + TextManager.Instance.GetReplacedString(description.ShipDescription);
-		m_SpecialLabel.text = Constant.COLOR_SUBSHIP_UPGRADE_SPECIALDESCRIPTION + description.ShipSpecialDescription;
+		m_ShipNameLabel.text = Constant.COLOR_SUBSHIP_UPGRADE_NAME + TextManager.Instance.GetString (description.ShipNameTextIndex);
+		m_DescriptionLabel.text = Constant.COLOR_SUBSHIP_UPGRADE_DESCRIPTION + TextManager.Instance.GetString(description.ShipDescriptionTextIndex);
+		m_SpecialLabel.text = Constant.COLOR_SUBSHIP_UPGRADE_SPECIALDESCRIPTION + TextManager.Instance.GetString (description.ShipSpecialDescriptionTextIndex);
 
 		m_UISprite.spriteName = ImageResourceManager.Instance.GetMainUISubShipImageName(CurSubShipIndex);
 		m_UISprite.MakePixelPerfect();

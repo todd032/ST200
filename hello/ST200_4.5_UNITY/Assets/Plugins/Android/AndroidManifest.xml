@@ -1,56 +1,36 @@
-<?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.polycube.st200"
-	
-	android:theme="@android:style/Theme.NoTitleBar"
-    android:versionCode="6"
-    
-    android:versionName="1.0.1" >    
-	<!--
+﻿<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.polycube.st200" android:theme="@android:style/Theme.NoTitleBar" android:versionCode="6" android:versionName="1.0.1">
+  <!--
 [WARNING]
 Tstore 용과 Google용 kakaolink 키가 다르기 때문에 kakao_strings의 주석도 같이 해재해줄 것.
 
 
 -->
-
-	<!-- android:installLocation="preferExternal" -->
-    <uses-sdk
-        android:minSdkVersion="10"
-        android:targetSdkVersion="18" />
-
- 	<supports-screens
-        android:smallScreens="true"
-        android:normalScreens="true"
-        android:largeScreens="true"
-        android:xlargeScreens="true"
-        android:anyDensity="true"/>
-
-	<!--<uses-feature android:name="android.hardware.telephony" android:required="false" /> -->
-	
-    <uses-permission android:name="android.permission.INTERNET" /><!-- Tnk -->
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /><!-- Tnk -->
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="com.android.vending.BILLING"/>
-    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-	
-	<!-- Android GCM Plugin -->
-    <!-- Rewite app package name! -->
-    <permission android:name="com.polycube.st200.permission.C2D_MESSAGE" android:protectionLevel="signature" />
-    <uses-permission android:name="com.polycube.st200.permission.C2D_MESSAGE" />
-    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
-    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
-	<uses-permission android:name="android.permission.GET_TASKS" />
-	<uses-permission android:name="android.permission.VIBRATE" />
-    <!-- Android GCM Plugin -->
-    
-    
-    <!--- READ_PHONE_STATE is used to get unique device id-->
-    
-    
-	<!-- T store IAP Plugin 
+  <!-- android:installLocation="preferExternal" -->
+  <uses-sdk android:minSdkVersion="10" android:targetSdkVersion="18" />
+  <supports-screens android:smallScreens="true" android:normalScreens="true" android:largeScreens="true" android:xlargeScreens="true" android:anyDensity="true" />
+  <!--<uses-feature android:name="android.hardware.telephony" android:required="false" /> -->
+  <uses-permission android:name="android.permission.INTERNET" />
+  <!-- Tnk -->
+  <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+  <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+  <!-- Tnk -->
+  <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+  <uses-permission android:name="com.android.vending.BILLING" />
+  <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+  <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+  <!-- Android GCM Plugin -->
+  <!-- Rewite app package name! -->
+  <permission android:name="com.polycube.st200.permission.C2D_MESSAGE" android:protectionLevel="signature" />
+  <uses-permission android:name="com.polycube.st200.permission.C2D_MESSAGE" />
+  <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+  <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+  <uses-permission android:name="android.permission.WAKE_LOCK" />
+  <uses-permission android:name="android.permission.GET_TASKS" />
+  <uses-permission android:name="android.permission.VIBRATE" />
+  <!-- Android GCM Plugin -->
+  <!--- READ_PHONE_STATE is used to get unique device id-->
+  <!-- T store IAP Plugin 
    <uses-permission android:name="android.permission.RECEIVE_SMS" />
    <uses-permission android:name="android.permission.INTERNET" />
    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -60,82 +40,58 @@ Tstore 용과 Google용 kakaolink 키가 다르기 때문에 kakao_strings의 �
    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />   
    -->
-   <!-- T store IAP End -->
-   
-   <!-- - Naver InApp - Start 
+  <!-- T store IAP End -->
+  <!-- - Naver InApp - Start 
    <uses-permission android:name="android.permission.READ_CONTACTS" />
   -->
-    <!-- - Naver InApp - End -->
-
-	<!-- TapJoy     -->
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-
-    <!-- TapJoy end-->
-    <application
-        android:allowBackup="true"
-        android:icon="@drawable/ic_launcher"
-        android:label="@string/app_name" >
-        <activity
-            android:name="com.polycube.st200.MainActivity"
-            android:launchMode="singleTop" 
-            android:multiprocess="true"
-            android:screenOrientation="portrait" 
-            android:configChanges="locale|mcc|mnc|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale">
-            <data android:scheme="@string/kakao_scheme" android:host="@string/kakaolink_host" />
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-            <intent-filter>
-                <data android:scheme="kakao90928241260711424" />
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.BROWSABLE" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        
-        <meta-data android:name="com.kakao.sdk.AppKey" android:value="@string/kakao_app_key"/>
-        
-        <activity
-            android:name="com.kakao.unity.plugin.ThirdPartyPostStoryActivity"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"
-            android:windowSoftInputMode="stateAlwaysVisible" />
-		<!-- Android GCM Plugin -->
-        <!-- Rewite app package name! -->
-        <receiver android:name="com.kskkbys.unitygcmplugin.UnityGCMBroadcastReceiver" android:permission="com.google.android.c2dm.permission.SEND" >
-            <intent-filter>
-                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
-                <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
-                <category android:name="com.polycube.st200" />
-            </intent-filter>
-        </receiver>
-        <service android:name="com.kskkbys.unitygcmplugin.UnityGCMIntentService" />
-		
-        <activity
-            android:name="com.kskkbys.unitygcmplugin.showMsg"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Translucent" >
-            <intent-filter>
-                <action android:name="android.intent.action.AlertDialogs" />
-                <!--category android:name="android.intent.category.LAUNCHER" / -->
-            </intent-filter>
-        </activity>
-        
-        <service android:name="com.kskkbys.unitygcmplugin.AlarmPushService"
-        		android:enabled="true">
-        		</service>
-		<receiver android:name="com.kskkbys.unitygcmplugin.AlarmPushReceiver">
-			<intent-filter>
-			<category android:name="com.polycube.st200" />
-			</intent-filter>
-		</receiver>      
-        	
-        <!-- Android GCM Plugin -->
-		<activity android:name="com.prime31.GoogleIABProxyActivity" android:configChanges="orientation"></activity>
-		
-        <!--
+  <!-- - Naver InApp - End -->
+  <!-- TapJoy     -->
+  <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+  <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+  <!-- TapJoy end-->
+  <application android:allowBackup="true" android:icon="@drawable/ic_launcher" android:label="@string/app_name">
+    <activity android:name="com.polycube.st200.MainActivity" android:launchMode="singleTop" android:multiprocess="true" android:screenOrientation="portrait" android:configChanges="locale|mcc|mnc|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale">
+      <data android:scheme="@string/kakao_scheme" android:host="@string/kakaolink_host" />
+      <intent-filter>
+        <action android:name="android.intent.action.MAIN" />
+        <category android:name="android.intent.category.LAUNCHER" />
+      </intent-filter>
+      <intent-filter>
+        <data android:scheme="kakao90928241260711424" />
+        <action android:name="android.intent.action.VIEW" />
+        <category android:name="android.intent.category.BROWSABLE" />
+        <category android:name="android.intent.category.DEFAULT" />
+      </intent-filter>
+    </activity>
+    <meta-data android:name="com.kakao.sdk.AppKey" android:value="@string/kakao_app_key" />
+    <activity android:name="com.kakao.unity.plugin.ThirdPartyPostStoryActivity" android:theme="@android:style/Theme.Translucent.NoTitleBar" android:windowSoftInputMode="stateAlwaysVisible" />
+    <!-- Android GCM Plugin -->
+    <!-- Rewite app package name! -->
+    <receiver android:name="com.kskkbys.unitygcmplugin.UnityGCMBroadcastReceiver" android:permission="com.google.android.c2dm.permission.SEND">
+      <intent-filter>
+        <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+        <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
+        <category android:name="com.polycube.st200" />
+      </intent-filter>
+    </receiver>
+    <service android:name="com.kskkbys.unitygcmplugin.UnityGCMIntentService" />
+    <activity android:name="com.kskkbys.unitygcmplugin.showMsg" android:launchMode="singleTask" android:screenOrientation="portrait" android:theme="@android:style/Theme.Translucent">
+      <intent-filter>
+        <action android:name="android.intent.action.AlertDialogs" />
+        <!--category android:name="android.intent.category.LAUNCHER" / -->
+      </intent-filter>
+    </activity>
+    <service android:name="com.kskkbys.unitygcmplugin.AlarmPushService" android:enabled="true">
+    </service>
+    <receiver android:name="com.kskkbys.unitygcmplugin.AlarmPushReceiver">
+      <intent-filter>
+        <category android:name="com.polycube.st200" />
+      </intent-filter>
+    </receiver>
+    <!-- Android GCM Plugin -->
+    <activity android:name="com.prime31.GoogleIABProxyActivity" android:configChanges="orientation">
+    </activity>
+    <!--
 		<activity android:name="com.kakao.sample.kakaolink.KakaoLinkMainActivity">
 			<intent-filter>
 				<action android:name="android.intent.action.VIEW"/>
@@ -144,18 +100,19 @@ Tstore 용과 Google용 kakaolink 키가 다르기 때문에 kakao_strings의 �
                 <data android:scheme="@string/kakao_scheme" android:host="@string/kakaolink_host" />
  			</intent-filter>
  		</activity> -->
- 		
- 		<activity android:name="com.tnkfactory.ad.AdWallActivity" android:screenOrientation="portrait"/><!-- Tnk -->
-        <activity android:name="com.tnkfactory.ad.AdMediaActivity" android:screenOrientation="landscape"/><!-- Tnk -->
- 		 		
- 		<meta-data android:name="tnkad_app_id" android:value="f0d070a0-d091-5438-8345-190d080e0a06" /><!-- Tnk -->
- 		
- 		<meta-data android:name="unityplayer.UnityActivity" android:value="true" /> <!-- Tnk -->
-        <meta-data android:name="unityplayer.ForwardNativeEventsToDalvik" android:value="true" /> <!-- set true --><!-- Tnk -->
-        
-        <!-- Tnk -->
-        		
-	<!--- TStore plugin
+    <activity android:name="com.tnkfactory.ad.AdWallActivity" android:screenOrientation="portrait" />
+    <!-- Tnk -->
+    <activity android:name="com.tnkfactory.ad.AdMediaActivity" android:screenOrientation="landscape" />
+    <!-- Tnk -->
+    <meta-data android:name="tnkad_app_id" android:value="f0d070a0-d091-5438-8345-190d080e0a06" />
+    <!-- Tnk -->
+    <meta-data android:name="unityplayer.UnityActivity" android:value="true" />
+    <!-- Tnk -->
+    <meta-data android:name="unityplayer.ForwardNativeEventsToDalvik" android:value="true" />
+    <!-- set true -->
+    <!-- Tnk -->
+    <!-- Tnk -->
+    <!--- TStore plugin
 		<meta-data
             android:name="iap:api_version"
             android:value="2" />
@@ -168,9 +125,8 @@ Tstore 용과 Google용 kakaolink 키가 다르기 때문에 kakao_strings의 �
             android:windowSoftInputMode="stateHidden" >
         </activity>   
         -->
-		<!--- TStore plugin -->
-
-      <!-- - Naver InApp - Start 
+    <!--- TStore plugin -->
+    <!-- - Naver InApp - Start 
         <activity android:name="com.nhn.android.appstore.iap.sample.PaymentActivity">
         </activity>
         <activity android:name="com.nhn.android.appstore.iap.sample.RestorePaymentActivity" >
@@ -179,52 +135,35 @@ Tstore 용과 Google용 kakaolink 키가 다르기 때문에 kakao_strings의 �
             android:name="com.nhn.android.appstore.iap.cpa.NIAPCPAActivity"
             android:configChanges="keyboardHidden|orientation|screenSize" />
             -->
-      <!-- - Naver InApp - End -->
-		
-            <!-- Admob -->
-            
-            
- 			<activity
-            android:name="com.pfp.pfpadmoblib.PFPAdmobPluginActivity"
-            android:label="@string/app_name" >
-        	</activity>
-        	
-        	<activity android:name="com.google.android.gms.ads.AdActivity"
-             android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"/>
-             
-        	<meta-data android:name="com.google.android.gms.version"
-               android:value="@integer/google_play_services_version"/>
-            <!-- admob end -->
-           
-
- 		<!-- Tapjoy -->
- 		<activity android:name="com.tapjoy.easyapp.TapjoyEasyApp"></activity>
-		<meta-data android:name="com.google.android.gms.version" android:value="4452000" />
-        <activity
-            android:name="com.tapjoy.TJCOffersWebView"
-            android:configChanges="keyboardHidden|orientation|screenSize" />
-        <activity
-            android:name="com.tapjoy.TapjoyFullScreenAdWebView"
-            android:configChanges="keyboardHidden|orientation|screenSize" />
-        <activity
-            android:name="com.tapjoy.TapjoyDailyRewardAdWebView"
-            android:configChanges="keyboardHidden|orientation|screenSize" />
-        <activity
-            android:name="com.tapjoy.TapjoyVideoView"
-            android:configChanges="keyboardHidden|orientation|screenSize" />
-        <activity
-            android:name="com.tapjoy.TJAdUnitView"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen"
-            android:hardwareAccelerated="true" />
-        <activity
-            android:name="com.tapjoy.mraid.view.ActionHandler"
-            android:configChanges="keyboardHidden|orientation|screenSize" />
-        <activity
-            android:name="com.tapjoy.mraid.view.Browser"
-            android:configChanges="keyboardHidden|orientation|screenSize" />
-            
-    	<!-- Tapjoy end-->
-    </application>
-
+    <!-- - Naver InApp - End -->
+    <!-- Admob -->
+    <activity android:name="com.pfp.pfpadmoblib.PFPAdmobPluginActivity" android:label="@string/app_name">
+    </activity>
+    <activity android:name="com.google.android.gms.ads.AdActivity" android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize" />
+    <meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version" />
+    <!-- admob end -->
+    <!-- Tapjoy -->
+    <activity android:name="com.tapjoy.easyapp.TapjoyEasyApp">
+    </activity>
+    <meta-data android:name="com.google.android.gms.version" android:value="4452000" />
+    <activity android:name="com.tapjoy.TJCOffersWebView" android:configChanges="keyboardHidden|orientation|screenSize" />
+    <activity android:name="com.tapjoy.TapjoyFullScreenAdWebView" android:configChanges="keyboardHidden|orientation|screenSize" />
+    <activity android:name="com.tapjoy.TapjoyDailyRewardAdWebView" android:configChanges="keyboardHidden|orientation|screenSize" />
+    <activity android:name="com.tapjoy.TapjoyVideoView" android:configChanges="keyboardHidden|orientation|screenSize" />
+    <activity android:name="com.tapjoy.TJAdUnitView" android:configChanges="keyboardHidden|orientation|screenSize" android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen" android:hardwareAccelerated="true" />
+    <activity android:name="com.tapjoy.mraid.view.ActionHandler" android:configChanges="keyboardHidden|orientation|screenSize" />
+    <activity android:name="com.tapjoy.mraid.view.Browser" android:configChanges="keyboardHidden|orientation|screenSize" />
+    <!-- Tapjoy end-->
+    
+    <!-- Facebook start -->
+    <activity android:name="com.facebook.unity.FBUnityLoginActivity" android:configChanges="fontScale|keyboard|keyboardHidden|locale|mnc|mcc|navigation|orientation|screenLayout|screenSize|smallestScreenSize|uiMode|touchscreen" android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen">
+    </activity>
+    <activity android:name="com.facebook.LoginActivity" android:configChanges="keyboardHidden|orientation" android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen">
+    </activity>
+    <activity android:name="com.facebook.unity.FBUnityDeepLinkingActivity" android:exported="true">
+    </activity>
+    <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="\ 726077704152461" />
+    
+    <!-- Facebook end -->
+  </application>
 </manifest>

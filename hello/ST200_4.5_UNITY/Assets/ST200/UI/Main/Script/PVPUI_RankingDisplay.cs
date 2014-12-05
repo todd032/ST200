@@ -32,6 +32,37 @@ public class PVPUI_RankingDisplay : MonoBehaviour {
 		m_CurScrollPointer = m_CurScrollPointer + (m_DestScrollPointer - m_CurScrollPointer) * 0.5f;
 		
 		UpdateFriendUIList();
+		UpdateLoadingImage();
+	}
+
+	public UISprite m_LoadingSprite;
+	public int m_LoadingCurFrame = 0;
+	public int m_LoadingUpdateframe = 3;
+	public void UpdateLoadingImage()
+	{
+		m_LoadingCurFrame++;
+		if(m_LoadingCurFrame % m_LoadingUpdateframe == 0)
+		{
+			m_LoadingSprite.transform.Rotate(Vector3.forward, -24f);
+		}
+
+		if(m_RankInfoDataList.Count == 0)
+		{
+			ShowLoadingUI();
+		}else
+		{
+			HideLoadingUI();
+		}
+	}
+
+	public void ShowLoadingUI()
+	{
+		NGUITools.SetActive(m_LoadingSprite.gameObject, true);
+	}
+	
+	public void HideLoadingUI()
+	{
+		NGUITools.SetActive(m_LoadingSprite.gameObject, false);
 	}
 	
 	public void OnClickSearchPlayer()

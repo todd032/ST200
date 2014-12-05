@@ -18,7 +18,6 @@ public class GameMainLoadingPanel : MonoBehaviour {
 		if ( Managers.Audio != null) Managers.Audio.PlayBGMSound(AudioManager.BGM_SOUND.BGM_Main,true);
 		m_LoadingTipSprite.spriteName = ImageResourceManager.Instance.GetRandomLoadingTipSpriteName();
 		SetSubmarineInfo() ;
-		
 	}
 	
 	 // Use this for initialization

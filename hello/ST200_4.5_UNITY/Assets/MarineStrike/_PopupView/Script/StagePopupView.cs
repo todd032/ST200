@@ -271,9 +271,10 @@ public class StagePopupView : MonoBehaviour {
 		}
 		
 		if(Managers.GameBalanceData != null){
-			
-			ItemShop_ItemName_Label.text = Managers.GameBalanceData.GetGameItemName(selectItemType, languageCode) ;
-			ItemShop_ItemInfo_Label.text = Managers.GameBalanceData.GetGameItemMessage(selectItemType, languageCode) ;
+
+			GameBalanceDataManager.GameItemMessageData messagedata = Managers.GameBalanceData.GetGameItemMessage(selectItemType);
+			ItemShop_ItemName_Label.text = TextManager.Instance.GetString(messagedata.ItemNameTextIndex);
+			ItemShop_ItemInfo_Label.text = TextManager.Instance.GetString(messagedata.ItemDescriptionTextIndex);
 			
 			GameBalanceDataManager.GameItemBalance gameItemBalance = Managers.GameBalanceData.GetGameItemBalance(selectItemType) ;
 			

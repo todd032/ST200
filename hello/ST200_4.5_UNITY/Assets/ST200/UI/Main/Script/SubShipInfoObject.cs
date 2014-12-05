@@ -42,7 +42,7 @@ public class SubShipInfoObject : MonoBehaviour {
 		                                                                                  usersubshipdata.Level + 1);
 
 		m_ShipImage.spriteName = ImageResourceManager.Instance.GetMainUISubShipImageName(_index);
-		m_ShipNameLabel.text = descriptionifo.ShipName;
+		m_ShipNameLabel.text = TextManager.Instance.GetString (descriptionifo.ShipNameTextIndex);
 		for(int i = 0; i < m_GradeMarkObjectList.Count; i++)
 		{
 			if(descriptionifo.Grade == i + 1)
@@ -55,8 +55,8 @@ public class SubShipInfoObject : MonoBehaviour {
 		}
 
 		m_ShipLevelLabel.text = "Lv." + usersubshipdata.Level.ToString();
-		m_DescriptionLabel.text = Constant.COLOR_SUBSHIP_UPGRADE_DESCRIPTION + TextManager.Instance.GetReplacedString(descriptionifo.ShipDescription);
-		m_SpecialDescriptionLabel.text = Constant.COLOR_RED + TextManager.Instance.GetReplacedString(descriptionifo.ShipSpecialDescription);
+		m_DescriptionLabel.text = Constant.COLOR_SUBSHIP_UPGRADE_DESCRIPTION + TextManager.Instance.GetString(descriptionifo.ShipDescriptionTextIndex);
+		m_SpecialDescriptionLabel.text = Constant.COLOR_RED + TextManager.Instance.GetString(descriptionifo.ShipSpecialDescriptionTextIndex);
 
 		if(usersubshipdata.IsSelect != 0)
 		{

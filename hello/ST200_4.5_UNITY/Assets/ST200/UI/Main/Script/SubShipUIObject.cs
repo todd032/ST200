@@ -27,7 +27,7 @@ public class SubShipUIObject : MonoBehaviour {
 		UserSubShipData usersubshipdata = Managers.UserData.GetUserSubShipData(CurSubShipIndex);
 		SubShipDescriptionInfo description = Managers.GameBalanceData.GetSubShipDescriptionInfo(CurSubShipIndex);
 
-		m_NameLabel.text = Constant.COLOR_SUBSHIP_SHIPNAME + description.ShipName;
+		m_NameLabel.text = Constant.COLOR_SUBSHIP_SHIPNAME + TextManager.Instance.GetString (description.ShipNameTextIndex);
 
 		if(usersubshipdata.IsSelect == 0)
 		{

@@ -25,7 +25,7 @@ public class StageSelectUI_Object : MonoBehaviour {
 		m_StageSelectUI = _stageselectui;
 		m_StageData = _stagedata;
 
-		m_StageNameLabel.text = m_StageData.StageName;
+		m_StageNameLabel.text = TextManager.Instance.GetReplaceString(309, m_StageData.Index.ToString());
 		UpdateUI();
 	}
 	

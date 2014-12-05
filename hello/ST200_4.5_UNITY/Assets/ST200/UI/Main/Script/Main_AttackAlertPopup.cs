@@ -34,7 +34,9 @@ public class Main_AttackAlertPopup : MonoBehaviour {
 		m_UserInfoData = _userinfodata;
 		
 		m_NickNameLabel.text = Constant.COLOR_WHITE + _userinfodata.m_UserInfoData.UserNickName;
-		m_ShipLabel.text = Constant.COLOR_GOLD	+ Managers.GameBalanceData.GetShipDescriptionInfo(m_UserInfoData.m_UserInfoData.ShipIndex).ShipName + " Lv. " + m_UserInfoData.m_UserInfoData.ShipLevel;
+
+		ShipDescriptionInfo description = Managers.GameBalanceData.GetShipDescriptionInfo(m_UserInfoData.m_UserInfoData.ShipIndex);
+		m_ShipLabel.text = Constant.COLOR_GOLD	+ TextManager.Instance.GetString(description.ShipNameTextIndex) + "\nLv. " + m_UserInfoData.m_UserInfoData.ShipLevel;
 		
 		m_CharacterSprite.spriteName = ImageResourceManager.Instance.GetWorldRankingCharacterImage(m_UserInfoData.m_UserInfoData.CharacterIndex.ToString());
 		m_ShipSprite.spriteName = ImageResourceManager.Instance.GetMainUIShipImageName(m_UserInfoData.m_UserInfoData.ShipIndex);

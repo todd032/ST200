@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+<string name="app_name">명량대첩</string>
     <string name="story_title">카카오 스토리</string>
     <string name="story_thumbnail">이미지 섬네일</string>
     <string name="story_upload">올리기</string>

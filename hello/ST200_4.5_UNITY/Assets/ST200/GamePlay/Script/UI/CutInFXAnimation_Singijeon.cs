@@ -38,7 +38,9 @@ public class CutInFXAnimation_Singijeon : MonoBehaviour {
 		NGUITools.SetActive(m_Sprite3.gameObject, true);
 		m_Sprite.spriteName = ImageResourceManager.Instance.GetCutInFX_SkillImageName(_character);
 		m_Sprite.MakePixelPerfect();
-		
+		m_Sprite2.MakePixelPerfect();
+		m_Sprite3.MakePixelPerfect();
+
 		m_IsPlaying = true;
 		StartCoroutine(IEPlayAnimation());
 		
