@@ -200,6 +200,7 @@ public class PFPFileManager : MonoBehaviour {
 	{
 		if(PlayerPrefs.HasKey(LanguageSelect))
 		{
+			//SetLanguage(LANGUAGE_KOR);
 			SetLanguage(PlayerPrefs.GetString(LanguageSelect));
 		}else
 		{

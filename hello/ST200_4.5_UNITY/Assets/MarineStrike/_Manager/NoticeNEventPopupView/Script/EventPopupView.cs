@@ -72,7 +72,7 @@ public class EventPopupView : MonoBehaviour {
 		int intIndex_Input,
 		string strImageURL_Input,
 		string strLink_Input) {
-
+		//Debug.Log ("IMAGE URL: " + strImageURL_Input);
 		yield return new WaitForSeconds(0.1f);
 
 		NGUITools.SetActive(gameObject, true) ;
@@ -105,7 +105,7 @@ public class EventPopupView : MonoBehaviour {
 	}
 	
 	private IEnumerator DownloadURLImage(string urlString){
-		
+		Debug.Log("load texture: " + urlString);
 		_noticeNEventIndicatorView.LoadNoticeNEventIndicatorView() ;
 		
 		WWW www = new WWW(urlString);

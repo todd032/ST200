@@ -377,7 +377,7 @@ public class PFPFileSaveLoader : MonoBehaviour {
 	protected IEnumerator IELoadURL(string _url, string _name)
 	{
 		string path = _url;
-		Debug.Log("TRY LOAD FROM URL: " + _url);
+		//Debug.Log("TRY LOAD FROM URL: " + _url);
 		WWW www = new WWW(path);
 		yield return  null;
 		
