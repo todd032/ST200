@@ -77,6 +77,21 @@ public class Managers : MonoBehaviour
 		}
 	}
 
+	private static string m_CountryCode = "us";
+	public static string CountryCode
+	{
+		get
+		{
+			if(Constant.CONNECTFROMUS)
+			{
+				return "us";
+			}
+		
+			return m_CountryCode.ToLower();
+		}
+	}
+	public static string LanguageCode = "KO";
+
 	private static bool m_AcceptIOSPush = false;
 	public static bool IOSPushAccept
 	{
@@ -131,6 +146,12 @@ public class Managers : MonoBehaviour
 		
 	}
 
+	public void SetiOSCountryCode( string countryCode )
+	{
+		Debug.Log( "countryCode = " + countryCode );
+		m_CountryCode = countryCode;
+	}
+
 	public void SetDeviceToken( string deviceToken )
 	{
 		m_IOSDeviceToken = deviceToken;
@@ -141,12 +162,21 @@ public class Managers : MonoBehaviour
 
 		Debug.Log("ST110 Managers.Start() Run!!!");
 
+#if !UNITY_EDITOR && UNITY_ANDROID
+		AndroidJavaObject activity;
+		AndroidJavaClass androidJavaClass = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
+		activity = androidJavaClass.GetStatic<AndroidJavaObject>("currentActivity");
+		m_CountryCode = activity.Call<string>("GetCountryCode");
+#endif
+
 		#if UNITY_IPHONE && !UNITY_EDITOR
 		/*
 		NotificationServices.RegisterForRemoteNotificationTypes(RemoteNotificationType.Alert | 
 		                                                        RemoteNotificationType.Badge | 
 		                                                        RemoteNotificationType.Sound);
 		                                                        */
+
+		iOSCountrySetting.Instance.GetCountryCode();
 
 		#elif UNITY_ANDROID && !UNITY_EDITOR
 

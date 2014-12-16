@@ -164,6 +164,16 @@ public class ImageResourceManager : MonoBehaviour {
 		return name;
 	}
 
+	public string GetFlagSpriteName(string _country)
+	{
+		string name = "flag_" + _country;
+		if(_country == "")
+		{
+			name = "flag_kr";
+		}
+		return name;
+	}
+
 	public string GetAttendDayImageName(int _itemcode)
 	{
 		string name = "";

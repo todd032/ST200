@@ -13,7 +13,8 @@ public class PVPUI_Rank_InfoObject : MonoBehaviour {
 	public UILabel m_ShipLabel;
 	public UILabel m_RateLabel;
 
-	public void InitUI(bool _ismine, int _rank, string _nickname, int _characterindex, int _shipindex, int _shiplevel, int _win, int _lose)
+	public void InitUI(bool _ismine, int _rank, string _nickname, int _characterindex, int _shipindex, int _shiplevel, int _win, int _lose,
+	                   string _country)
 	{
 		if(_ismine)
 		{
@@ -23,7 +24,7 @@ public class PVPUI_Rank_InfoObject : MonoBehaviour {
 		{
 			m_BackgroundSprite.spriteName = "pvp_list_bg";
 		}
-
+		m_FlagSprite.spriteName = ImageResourceManager.Instance.GetFlagSpriteName(_country);
 		m_CharacterSprite.spriteName = ImageResourceManager.Instance.GetWorldRankingCharacterImage(_characterindex.ToString());
 		//m_CharacterSprite.MakePixelPerfect();
 		m_NickNameLabel.text = _nickname;

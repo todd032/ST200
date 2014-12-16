@@ -188,11 +188,22 @@ public class SettingPopupView : MonoBehaviour {
 
 		if ( Managers.Audio != null) Managers.Audio.PlayFXSound(AudioManager.FX_SOUND.FX_Button_Common,false);
 
+
 		#if UNITY_IPHONE && !UNITY_EDITOR
 
 		string strQnA_Url = "mailto:master@polycube.co.kr";
-		string strQnA_Subject = "?subject=%EA%B2%8C%EC%9E%84%EB%AC%B8%EC%9D%98(" +  Managers.UserData.UserNickName + ")";
-		string strQnA_Body = "&body=%EA%B2%8C%EC%9E%84ID:" + Managers.UserData.UserNickName;
+
+		string strQnA_Subject ="";
+		string strQnA_Body = "";
+		if(PFPFileManager.Instance.m_SelectedLanguage == PFPFileManager.LANGUAGE_KOR)
+		{
+			strQnA_Subject = "?subject=%EA%B2%8C%EC%9E%84%EB%AC%B8%EC%9D%98(" +  Managers.UserData.UserNickName + ")";
+			strQnA_Body = "&body=%EA%B2%8C%EC%9E%84ID:" + Managers.UserData.UserNickName;
+		}else
+		{
+			strQnA_Subject = Constant.QNA_Subject_STR_ENG + Managers.UserData.UserNickName + ")";
+			strQnA_Body = Constant.QNA_Body_STR_ENG + Managers.UserData.UserNickName + "\n\n\n";
+		}
 
 		Application.OpenURL(strQnA_Url + strQnA_Subject + strQnA_Body);
 
@@ -201,9 +212,18 @@ public class SettingPopupView : MonoBehaviour {
 		#elif UNITY_ANDROID && !UNITY_EDITOR
 
 		string strQnA_Url = "mailto:master@polycube.co.kr";
-		string strQnA_Subject = Constant.QNA_Subject_STR + Managers.UserData.UserNickName + ")";
-		string strQnA_Body = Constant.QNA_Body_STR + Managers.UserData.UserNickName + "\n\n\n";
-		
+		string strQnA_Subject ="";
+		string strQnA_Body = "";
+		if(PFPFileManager.Instance.m_SelectedLanguage == PFPFileManager.LANGUAGE_KOR)
+		{
+			strQnA_Subject = Constant.QNA_Subject_STR + Managers.UserData.UserNickName + ")";
+			strQnA_Body = Constant.QNA_Body_STR + Managers.UserData.UserNickName + "\n\n\n";
+		}else
+		{
+			strQnA_Subject = Constant.QNA_Subject_STR_ENG + Managers.UserData.UserNickName + ")";
+			strQnA_Body = Constant.QNA_Body_STR_ENG + Managers.UserData.UserNickName + "\n\n\n";
+		}
+
 		Application.OpenURL(strQnA_Url + strQnA_Subject + strQnA_Body);
 
 		#endif

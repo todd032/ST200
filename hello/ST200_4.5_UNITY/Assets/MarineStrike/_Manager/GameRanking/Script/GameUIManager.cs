@@ -57,7 +57,7 @@ public class GameUIManager : MonoBehaviour {
 #if UNITY_IPHONE
 		NGUITools.SetActive(m_FreeGoldButton.gameObject, false);
 #endif
-		if(Managers.UserData.CountryString != "kr")
+		if(Managers.CountryCode != "kr")
 		{
 			NGUITools.SetActive(m_FreeGoldButton.gameObject, false);
 		}

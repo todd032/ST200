@@ -338,7 +338,8 @@ public class MainTitleManager : MonoBehaviour {
 				Data_PopupListData_PopupNotice_Set(strResultDataJson_Input);
 				Data_PopupListData_PopupEvent_Set(strResultDataJson_Input);
 				PlayerPrefs.SetString(Constant.PREFKEY_NetworkResult_GetConData_STR, strResultDataJson_Input);
-				
+
+				//Debug.Log("HI AM I CALLED?");
 				Process_Main_03_Network_Popup_Info();
 				
 			} else if (intNetworkResultCode_Input == Constant.NETWORK_RESULTCODE_Error_Network){
@@ -444,7 +445,7 @@ public class MainTitleManager : MonoBehaviour {
 
 		if (intAgreement == Constant.INT_False){
 
-			if(PFPFileManager.Instance.m_SelectedLanguage == PFPFileManager.LANGUAGE_KOR)
+			if(Managers.LanguageCode == PFPFileManager.LANGUAGE_KOR)
 			{
 				_agreementPopupView_KR.LoadAgreementPopupView();
 			}else
@@ -1110,14 +1111,11 @@ public class MainTitleManager : MonoBehaviour {
 		m_PostData_PushInfo.Service = "ST200";
 		m_PostData_PushInfo.Ostype = "1";
 		m_PostData_PushInfo.Mtype = "1";
-		m_PostData_PushInfo.Language = "ko";
-		string strCountryCode = "us";//r100 webview something code
-		m_PostData_PushInfo.Country = strCountryCode;
+		m_PostData_PushInfo.Language = Managers.LanguageCode;
+		//string strCountryCode = "us";//r100 webview something code
+		m_PostData_PushInfo.Country = Managers.CountryCode;
 
 		m_PostData_PushInfo.AppVersion = Constant.AppVersionInfo;
-
-
-		Managers.UserData.CountryString = strCountryCode;
 
 		#elif UNITY_ANDROID && !UNITY_EDITOR
 		m_PostData_PushInfo.Deviceid = SystemInfo.deviceUniqueIdentifier;
@@ -1125,26 +1123,19 @@ public class MainTitleManager : MonoBehaviour {
 		m_PostData_PushInfo.Service = "ST200";
 		m_PostData_PushInfo.Ostype = "2";
 		m_PostData_PushInfo.Mtype = Constant.CURRENT_MARKET;
-		m_PostData_PushInfo.Language = "ko";
-		
-		AndroidJavaObject activity;
-		AndroidJavaClass androidJavaClass = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
-		activity = androidJavaClass.GetStatic<AndroidJavaObject>("currentActivity");
-		string strCountryCode = activity.Call<string>("GetCountryCode");
-		m_PostData_PushInfo.Country = strCountryCode;
+		m_PostData_PushInfo.Language = Managers.LanguageCode;
+
+		m_PostData_PushInfo.Country = Managers.CountryCode;
 		
 		m_PostData_PushInfo.AppVersion = Constant.AppVersionInfo;
-
-		Managers.UserData.CountryString = strCountryCode;
-
 		# else
 		m_PostData_PushInfo.Deviceid = SystemInfo.deviceUniqueIdentifier;
 		m_PostData_PushInfo.ADID = "";
 		m_PostData_PushInfo.Service = "ST200";
 		m_PostData_PushInfo.Ostype = "2";
 		m_PostData_PushInfo.Mtype = "2";
-		m_PostData_PushInfo.Language = "ko";
-		m_PostData_PushInfo.Country = "KR";
+		m_PostData_PushInfo.Language = Managers.LanguageCode;
+		m_PostData_PushInfo.Country = "kr";
 		m_PostData_PushInfo.AppVersion = Constant.AppVersionInfo;
 		
 		#endif

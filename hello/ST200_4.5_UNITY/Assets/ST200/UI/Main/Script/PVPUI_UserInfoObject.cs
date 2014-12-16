@@ -31,7 +31,7 @@ public class PVPUI_UserInfoObject : MonoBehaviour {
 		m_CharacterSprite.spriteName = ImageResourceManager.Instance.GetWorldRankingCharacterImage(m_UserInfoData.CharacterIndex.ToString());
 		m_ShipSprite.spriteName = ImageResourceManager.Instance.GetMainUIShipImageName(m_UserInfoData.ShipIndex);
 		m_RewardLabel.text = m_UserInfoData.RewardAmount.ToString();
-
+		m_FlagSprite.spriteName = ImageResourceManager.Instance.GetFlagSpriteName(m_UserInfoData.Country);
 		if(m_UserInfoData.RepairSecond > 0)
 		{
 			NGUITools.SetActive(m_FightButton.gameObject, false);

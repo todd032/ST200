@@ -198,7 +198,8 @@ public class WorldRankingUI : MonoBehaviour {
 				
 				WorldRankUIObject curuiobject = m_WorldRankUIObjectList[i];
 				curuiobject.Init(worldrankdata.UserNickName, worldrankdata.UserRank, worldrankdata.UserScore, worldrankdata.UserStage, worldrankdata.UserCharacter,
-				                 (i + currankpeoplenumb) == 0);
+				                 (i + currankpeoplenumb) == 0,
+				                 worldrankdata.Country);
 				//m_Grid.GetChildList().Remove(curuiobject.transform);
 				//m_Grid.GetChildList().Insert(i + 1, curuiobject.transform);
 			}

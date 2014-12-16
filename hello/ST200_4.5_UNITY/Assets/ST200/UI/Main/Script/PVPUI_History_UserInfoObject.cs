@@ -31,7 +31,7 @@ public class PVPUI_History_UserInfoObject : MonoBehaviour {
 		
 		m_CharacterSprite.spriteName = ImageResourceManager.Instance.GetWorldRankingCharacterImage(m_UserInfoData.m_UserInfoData.CharacterIndex.ToString());
 		m_ShipSprite.spriteName = ImageResourceManager.Instance.GetMainUIShipImageName(m_UserInfoData.m_UserInfoData.ShipIndex);
-
+		m_FlagSprite.spriteName = ImageResourceManager.Instance.GetFlagSpriteName(m_UserInfoData.m_UserInfoData.Country);
 		if(m_UserInfoData.Win)
 		{
 			m_ResultLabel.text = TextManager.Instance.GetString(262);

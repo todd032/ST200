@@ -153,7 +153,8 @@ public class PVPUI_RankingDisplay : MonoBehaviour {
 					userdata.ShipIndex,
 					userdata.ShipLevel,
 					userdata.WinCount,
-					userdata.LoseCount
+					userdata.LoseCount,
+					userdata.Country
 					);
 			}else
 			{

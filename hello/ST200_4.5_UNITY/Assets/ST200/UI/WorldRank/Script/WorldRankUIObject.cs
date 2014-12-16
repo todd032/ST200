@@ -10,8 +10,9 @@ public class WorldRankUIObject : MonoBehaviour {
 	public UILabel m_ScoreLabel;
 	public UILabel m_StageNameLabel;
 	public UISprite m_MyFrameSprite;
+	public UISprite m_FlagSprite;
 
-	public void Init(string _username, int _rank, int _userscore, int _stage, string _characterindex, bool _checkasmine)
+	public void Init(string _username, int _rank, int _userscore, int _stage, string _characterindex, bool _checkasmine, string _country)
 	{
 		NGUITools.SetActive(m_MyFrameSprite.gameObject, _checkasmine);
 
@@ -44,5 +45,6 @@ public class WorldRankUIObject : MonoBehaviour {
 		m_StageNameLabel.text = Constant.COLOR_RANKING_INFOLABEL + TextManager.Instance.GetReplaceString(309, Managers.GameBalanceData.GetStageData(_stage).Index.ToString());
 		m_CharacterSprite.spriteName = ImageResourceManager.Instance.GetWorldRankingCharacterImage (_characterindex);
 		m_CharacterSprite.MakePixelPerfect();
+		m_FlagSprite.spriteName = ImageResourceManager.Instance.GetFlagSpriteName(_country);
 	}
 }

@@ -977,23 +977,16 @@ public class DataStreamManager : MonoBehaviour {
 		msgHeader.Mtype = mType;
 		msgHeader.Loginid = loginid;
 		msgHeader.Os = SystemInfo.operatingSystem;
-		msgHeader.Language = Application.systemLanguage.ToString();
+		msgHeader.Language = Managers.LanguageCode;//Application.systemLanguage.ToString();
 		msgHeader.Model = SystemInfo.deviceModel;
 		msgHeader.AppVersion = ver;
 		msgHeader.CodeName = codeName;
 
-		string countrycode = "us";
+		msgHeader.Country = Managers.CountryCode;
+		Debug.Log( "countryCode123123 = " + Managers.CountryCode);
 
-#if !UNITY_EDITOR && UNITY_ANDROID
-		AndroidJavaObject activity;
-		AndroidJavaClass androidJavaClass = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
-		activity = androidJavaClass.GetStatic<AndroidJavaObject>("currentActivity");
-		countrycode = activity.Call<string>("GetCountryCode");
-#elif !UNITY_EDITOR && UNITY_IOS
-		countrycode = "us";//webviewsomething
-#endif
-		msgHeader.Country = countrycode;
 		addMessageBuffer("DataStream Init. OK...");
+
 		
 //		  Debug.Log ("ST200k DataStreamManager.SetInitDataStream().msgHeader.Loginid = " + msgHeader.Loginid);
 		ST200KLogManager.Instance.Init(loginid,
@@ -1003,7 +996,6 @@ public class DataStreamManager : MonoBehaviour {
 		                               mType,
 		                               codeName);
 	}
-	
 	
 	#if UNITY_IPHONE
 	//---- IAP
@@ -1045,11 +1037,10 @@ public class DataStreamManager : MonoBehaviour {
 		
 		if (Constant.PROJECTMODE_Develop) {
 			
-			m_strURL = Constant.URL_DEVELOP_AppCharge;
-			
+			m_strURL = Constant.URL_DEVELOP_SERVER_URL + Constant.URL_DEVELOP_AppCharge;
 		} else {
 			
-			m_strURL = Constant.URL_RELEASE_AppCharge;
+			m_strURL = Constant.URL_RELEASE_SERVER_URL + Constant.URL_RELEASE_AppCharge;
 		}
 		
 		WWW www = new WWW(m_strURL, form);
@@ -1144,11 +1135,10 @@ public class DataStreamManager : MonoBehaviour {
 		
 		if (Constant.PROJECTMODE_Develop) {
 			
-			m_strURL = Constant.URL_DEVELOP_AppCharge;
-			
+			m_strURL = Constant.URL_DEVELOP_SERVER_URL + Constant.URL_DEVELOP_AppCharge;
 		} else {
 			
-			m_strURL = Constant.URL_RELEASE_AppCharge;
+			m_strURL = Constant.URL_RELEASE_SERVER_URL + Constant.URL_RELEASE_AppCharge;
 		}
 		
 		WWW www = new WWW(m_strURL, form);
@@ -1240,11 +1230,10 @@ public class DataStreamManager : MonoBehaviour {
 		
 		if (Constant.PROJECTMODE_Develop) {
 			
-			m_strURL = Constant.URL_DEVELOP_AppCharge;
-			
+			m_strURL = Constant.URL_DEVELOP_SERVER_URL + Constant.URL_DEVELOP_AppCharge;
 		} else {
 			
-			m_strURL = Constant.URL_RELEASE_AppCharge;
+			m_strURL = Constant.URL_RELEASE_SERVER_URL + Constant.URL_RELEASE_AppCharge;
 		}
 		
 		WWW www = new WWW(m_strURL, form);
@@ -1372,11 +1361,13 @@ public class DataStreamManager : MonoBehaviour {
 		
 		if (Constant.PROJECTMODE_Develop) {
 			
-			m_strURL = Constant.URL_DEVELOP_Connect;
-			
+			m_strURL = Constant.URL_DEVELOP_SERVER_URL + Constant.URL_DEVELOP_Connect;
+			m_strURL = "http://14.63.165.28/st200/connect.php";
+			Debug.Log("connect: " + m_strURL);
+
 		} else {
 			
-			m_strURL = Constant.URL_RELEASE_Connect;
+			m_strURL = Constant.URL_RELEASE_SERVER_URL + Constant.URL_RELEASE_Connect;
 		}
 		
 		WWW www = new WWW(m_strURL, form);
@@ -1389,7 +1380,7 @@ public class DataStreamManager : MonoBehaviour {
 //		Debug.Log("ST200k DataStreamManager.Network_GetConData().www.text = " + www.text);
 		
 		if (www.error == null) {
-			
+			//Debug.Log("???: " + www.text);
 			addMessageBuffer("RESPONSE OK: " + www.text);
 			
 			clsReturn.init();  //초기화..
@@ -1422,7 +1413,7 @@ public class DataStreamManager : MonoBehaviour {
 					}
 					
 				} else {
-					
+					Debug.Log("CHECK SUM ERROR?");
 					if (_delegate_DataStreamManager_GetConData != null) {
 						_delegate_DataStreamManager_GetConData(null, Constant.NETWORK_RESULTCODE_Error_CheckSum);   
 					}
@@ -1438,7 +1429,7 @@ public class DataStreamManager : MonoBehaviour {
 		} else {
 			
 			addMessageBuffer("RESPONSE ERROR: " + www.error);
-			
+			Debug.Log("ERROR CONNECT: " + www.error);
 			if (_delegate_DataStreamManager_GetConData != null) {
 				_delegate_DataStreamManager_GetConData(null, Constant.NETWORK_RESULTCODE_Error_Network);   
 			}
@@ -1473,11 +1464,11 @@ public class DataStreamManager : MonoBehaviour {
 		
 		if (Constant.PROJECTMODE_Develop) {
 			
-			m_strURL = Constant.URL_DEVELOP_ConfigData;
-			
+			m_strURL = Constant.URL_DEVELOP_SERVER_URL + Constant.URL_DEVELOP_ConfigData;
+			Debug.Log("connect: " + m_strURL);
 		} else {
 			
-			m_strURL = Constant.URL_RELEASE_ConfigData;
+			m_strURL = Constant.URL_RELEASE_SERVER_URL + Constant.URL_RELEASE_ConfigData;
 		}
 		
 		WWW www = new WWW(m_strURL, form);
@@ -1552,11 +1543,11 @@ public class DataStreamManager : MonoBehaviour {
 		
 		if (Constant.PROJECTMODE_Develop) {
 			
-			m_strURL = Constant.URL_DEVELOP_ConfigData;
-			
+			m_strURL = Constant.URL_DEVELOP_SERVER_URL + Constant.URL_DEVELOP_ConfigData;
+			//Debug.Log("BALANCE: " + m_strURL);
 		} else {
 			
-			m_strURL = Constant.URL_RELEASE_ConfigData;
+			m_strURL = Constant.URL_RELEASE_SERVER_URL + Constant.URL_RELEASE_ConfigData;
 		}
 		
 		WWW www = new WWW(m_strURL, form);
@@ -1571,7 +1562,7 @@ public class DataStreamManager : MonoBehaviour {
 		if (www.error == null) {
 			
 			addMessageBuffer("RESPONSE OK: " + www.text);
-			
+			//Debug.Log("RESPONSE: " + www.text);
 			clsReturn.init();  //초기화..
 			clsReturn = JsonMapper.ToObject<ClsReturn>(www.text);
 			
@@ -1650,11 +1641,11 @@ public class DataStreamManager : MonoBehaviour {
 		
 		if (Constant.PROJECTMODE_Develop) {
 			
-			m_strURL = Constant.URL_DEVELOP_Message;
-			
+			m_strURL = Constant.URL_DEVELOP_SERVER_URL + Constant.URL_DEVELOP_Message;
+			//Debug.Log("connect: " + m_strURL);
 		} else {
 			
-			m_strURL = Constant.URL_RELEASE_Message;
+			m_strURL = Constant.URL_RELEASE_SERVER_URL + Constant.URL_RELEASE_Message;
 		}
 		
 		WWW www = new WWW(m_strURL, form);
@@ -1745,11 +1736,11 @@ public class DataStreamManager : MonoBehaviour {
 		
 		if (Constant.PROJECTMODE_Develop) {
 			
-			m_strURL = Constant.URL_DEVELOP_Message;
+			m_strURL = Constant.URL_DEVELOP_SERVER_URL + Constant.URL_DEVELOP_Message;
 			
 		} else {
 			
-			m_strURL = Constant.URL_RELEASE_Message;
+			m_strURL = Constant.URL_RELEASE_SERVER_URL + Constant.URL_RELEASE_Message;
 		}
 		
 		WWW www = new WWW(m_strURL, form);
@@ -1874,9 +1865,9 @@ public class DataStreamManager : MonoBehaviour {
 		form.AddField("check", check);
 		
 		if (Constant.PROJECTMODE_Develop) {			
-			m_strURL = Constant.URL_DEVELOP_Message;			
+			m_strURL = Constant.URL_DEVELOP_SERVER_URL + Constant.URL_DEVELOP_Message;			
 		} else {			
-			m_strURL = Constant.URL_RELEASE_Message;
+			m_strURL = Constant.URL_RELEASE_SERVER_URL + Constant.URL_RELEASE_Message;
 		}
 		
 		WWW www = new WWW(m_strURL, form);
@@ -1966,11 +1957,11 @@ public class DataStreamManager : MonoBehaviour {
 		
 		if (Constant.PROJECTMODE_Develop) {
 			
-			m_strURL = Constant.URL_DEVELOP_Message;
+			m_strURL = Constant.URL_DEVELOP_SERVER_URL + Constant.URL_DEVELOP_Message;
 			
 		} else {
 			
-			m_strURL = Constant.URL_RELEASE_Message;
+			m_strURL = Constant.URL_RELEASE_SERVER_URL + Constant.URL_RELEASE_Message;
 		}
 		
 		WWW www = new WWW(m_strURL, form);
@@ -2088,11 +2079,11 @@ public class DataStreamManager : MonoBehaviour {
 		
 		if (Constant.PROJECTMODE_Develop) {
 			
-			m_strURL = Constant.URL_DEVELOP_Message;
+			m_strURL = Constant.URL_DEVELOP_SERVER_URL + Constant.URL_DEVELOP_Message;
 			
 		} else {
 			
-			m_strURL = Constant.URL_RELEASE_Message;
+			m_strURL = Constant.URL_RELEASE_SERVER_URL + Constant.URL_RELEASE_Message;
 		}
 		
 		WWW www = new WWW(m_strURL, form);
@@ -2210,11 +2201,11 @@ public class DataStreamManager : MonoBehaviour {
 		
 		if (Constant.PROJECTMODE_Develop) {
 			
-			m_strURL = Constant.URL_DEVELOP_Message;
+			m_strURL = Constant.URL_DEVELOP_SERVER_URL + Constant.URL_DEVELOP_Message;
 			
 		} else {
 			
-			m_strURL = Constant.URL_RELEASE_Message;
+			m_strURL = Constant.URL_RELEASE_SERVER_URL + Constant.URL_RELEASE_Message;
 		}
 		
 		WWW www = new WWW(m_strURL, form);
@@ -2305,11 +2296,11 @@ public class DataStreamManager : MonoBehaviour {
 		
 		if (Constant.PROJECTMODE_Develop) {
 			
-			m_strURL = Constant.URL_DEVELOP_Message;
+			m_strURL = Constant.URL_DEVELOP_SERVER_URL + Constant.URL_DEVELOP_Message;
 			
 		} else {
 			
-			m_strURL = Constant.URL_RELEASE_Message;
+			m_strURL = Constant.URL_RELEASE_SERVER_URL + Constant.URL_RELEASE_Message;
 		}
 		
 		WWW www = new WWW(m_strURL, form);
@@ -2400,11 +2391,11 @@ public class DataStreamManager : MonoBehaviour {
 		
 		if (Constant.PROJECTMODE_Develop) {
 			
-			m_strURL = Constant.URL_DEVELOP_Message;
+			m_strURL = Constant.URL_DEVELOP_SERVER_URL + Constant.URL_DEVELOP_Message;
 			
 		} else {
 			
-			m_strURL = Constant.URL_RELEASE_Message;
+			m_strURL = Constant.URL_RELEASE_SERVER_URL + Constant.URL_RELEASE_Message;
 		}
 		
 		WWW www = new WWW(m_strURL, form);
@@ -2497,11 +2488,11 @@ public class DataStreamManager : MonoBehaviour {
 		
 		if (Constant.PROJECTMODE_Develop) {
 			
-			m_strURL = Constant.URL_DEVELOP_BannerTouch;
-			
+			m_strURL = Constant.URL_DEVELOP_SERVER_URL + Constant.URL_DEVELOP_BannerTouch;
+			Debug.Log("connect: " + m_strURL);
 		} else {
 			
-			m_strURL = Constant.URL_RELEASE_BannerTouch;
+			m_strURL = Constant.URL_RELEASE_SERVER_URL + Constant.URL_RELEASE_BannerTouch;
 		}
 		
 		WWW www = new WWW(m_strURL, form);
@@ -2620,11 +2611,11 @@ public class DataStreamManager : MonoBehaviour {
 		
 		if (Constant.PROJECTMODE_Develop) {
 			
-			m_strURL = Constant.URL_DEVELOP_ClanBattle;
-			
+			m_strURL = Constant.URL_DEVELOP_SERVER_URL + Constant.URL_DEVELOP_ClanBattle;
+			Debug.Log("connect: " + m_strURL);
 		} else {
 			
-			m_strURL = Constant.URL_RELEASE_ClanBattle;
+			m_strURL = Constant.URL_RELEASE_SERVER_URL + Constant.URL_RELEASE_ClanBattle;
 		}
 		
 		WWW www = new WWW(m_strURL, form);
@@ -2717,11 +2708,11 @@ public class DataStreamManager : MonoBehaviour {
 		
 		if (Constant.PROJECTMODE_Develop) {
 			
-			m_strURL = Constant.URL_DEVELOP_ClanBattle;
+			m_strURL = Constant.URL_DEVELOP_SERVER_URL + Constant.URL_DEVELOP_ClanBattle;
 			
 		} else {
 			
-			m_strURL = Constant.URL_RELEASE_ClanBattle;
+			m_strURL = Constant.URL_RELEASE_SERVER_URL + Constant.URL_RELEASE_ClanBattle;
 		}
 		
 		WWW www = new WWW(m_strURL, form);
@@ -2816,7 +2807,7 @@ public class DataStreamManager : MonoBehaviour {
 	public IEnumerator Network_SaveToken() {
 		
 		//http://14.49.41.8/st100/token.php?mode=SaveToken&service=ST100&ostype=2&mtype=2&udid=db4c3a4f8f1d1f54ceae4981d6e3672c&token=APA91bEDE_94TUNouLbv7WTD342ayYzwf-llPQgTMGi1JeL3uR4pX161zvX5ypAWCJwFz3V6g9S44XQ8-ehKF5t3xUUq73F0UuDeqdK-w2lLY5-LQXaBaijd7H6L09lBJ1_OBTlnXmROktgVtfLhNZd7K_Q6n7fHwuU00nvqAK5-q_MxKh8gxuc
-		
+		GCM.GetRegistrationId();
 		string urlStr = "";
 		//Managers.IOSDeviceToken
 		//Debug.Log( "token = " + token );
@@ -2835,11 +2826,11 @@ public class DataStreamManager : MonoBehaviour {
 
 			if (Constant.PROJECTMODE_Develop) {
 				
-				m_strURL = Constant.URL_DEVELOP_Token;
-				
+				m_strURL = Constant.URL_DEVELOP_SERVER_URL + Constant.URL_DEVELOP_Token;
+				Debug.Log("connect: " + m_strURL);
 			} else {
 				
-				m_strURL = Constant.URL_RELEASE_Token;
+				m_strURL = Constant.URL_RELEASE_SERVER_URL + Constant.URL_RELEASE_Token;
 			}
 			
 			urlStr = m_strURL+"?" + 
@@ -2865,11 +2856,11 @@ public class DataStreamManager : MonoBehaviour {
 			
 			if (Constant.PROJECTMODE_Develop) {
 				
-				m_strURL = Constant.URL_DEVELOP_Token;
+				m_strURL = Constant.URL_DEVELOP_SERVER_URL + Constant.URL_DEVELOP_Token;
 				
 			} else {
 				
-				m_strURL = Constant.URL_RELEASE_Token;
+				m_strURL = Constant.URL_RELEASE_SERVER_URL + Constant.URL_RELEASE_Token;
 			}
 			
 			urlStr = m_strURL+"?"+ 
@@ -2908,11 +2899,11 @@ public class DataStreamManager : MonoBehaviour {
 		
 		if (Constant.PROJECTMODE_Develop) {
 			
-			m_strURL = Constant.URL_DEVELOP_Token;
+			m_strURL = Constant.URL_DEVELOP_SERVER_URL + Constant.URL_DEVELOP_Token;
 			
 		} else {
 			
-			m_strURL = Constant.URL_RELEASE_Token;
+			m_strURL = Constant.URL_RELEASE_SERVER_URL + Constant.URL_RELEASE_Token;
 		}
 		
 		string urlStr = m_strURL + "?" + 
@@ -2963,11 +2954,11 @@ public class DataStreamManager : MonoBehaviour {
 		
 		if (Constant.PROJECTMODE_Develop) {
 			
-			m_strURL = Constant.URL_DEVELOP_Token;
+			m_strURL = Constant.URL_DEVELOP_SERVER_URL + Constant.URL_DEVELOP_Token;
 			
 		} else {
 			
-			m_strURL = Constant.URL_RELEASE_Token;
+			m_strURL = Constant.URL_RELEASE_SERVER_URL + Constant.URL_RELEASE_Token;
 		}
 		
 		string urlStr = m_strURL + "?" + 
@@ -3228,11 +3219,11 @@ public class DataStreamManager : MonoBehaviour {
 		
 		if (Constant.PROJECTMODE_Develop) {
 			
-			m_strURL = Constant.URL_DEVELOP_UserData;
-			
+			m_strURL = Constant.URL_DEVELOP_SERVER_URL + Constant.URL_DEVELOP_UserData;
+			Debug.Log("connect: " + m_strURL);
 		} else {
 			
-			m_strURL = Constant.URL_RELEASE_UserData;
+			m_strURL = Constant.URL_RELEASE_SERVER_URL + Constant.URL_RELEASE_UserData;
 		}
 		
 		WWW www = new WWW(m_strURL, form);
@@ -3344,11 +3335,11 @@ public class DataStreamManager : MonoBehaviour {
 		
 		if (Constant.PROJECTMODE_Develop) {
 			
-			m_strURL = Constant.URL_DEVELOP_UserData;
+			m_strURL = Constant.URL_DEVELOP_SERVER_URL + Constant.URL_DEVELOP_UserData;
 			
 		} else {
 			
-			m_strURL = Constant.URL_RELEASE_UserData;
+			m_strURL = Constant.URL_RELEASE_SERVER_URL + Constant.URL_RELEASE_UserData;
 		}
 		
 		WWW www = new WWW(m_strURL, form);
@@ -3468,11 +3459,11 @@ public class DataStreamManager : MonoBehaviour {
 		
 		if (Constant.PROJECTMODE_Develop) {
 			
-			m_strURL = Constant.URL_DEVELOP_UserData;
+			m_strURL = Constant.URL_DEVELOP_SERVER_URL + Constant.URL_DEVELOP_UserData;
 			
 		} else {
 			
-			m_strURL = Constant.URL_RELEASE_UserData;
+			m_strURL = Constant.URL_RELEASE_SERVER_URL + Constant.URL_RELEASE_UserData;
 		}
 		
 		WWW www = new WWW(m_strURL, form);
@@ -3577,11 +3568,11 @@ public class DataStreamManager : MonoBehaviour {
 		
 		if (Constant.PROJECTMODE_Develop) {
 			
-			m_strURL = Constant.URL_DEVELOP_UserData;
+			m_strURL = Constant.URL_DEVELOP_SERVER_URL + Constant.URL_DEVELOP_UserData;
 			
 		} else {
 			
-			m_strURL = Constant.URL_RELEASE_UserData;
+			m_strURL = Constant.URL_RELEASE_SERVER_URL + Constant.URL_RELEASE_UserData;
 		}
 		
 		WWW www = new WWW(m_strURL, form);
@@ -3655,11 +3646,11 @@ public class DataStreamManager : MonoBehaviour {
 		
 		if (Constant.PROJECTMODE_Develop) {
 			
-			m_strURL = Constant.URL_DEVELOP_ItemLog;
-			
+			m_strURL = Constant.URL_DEVELOP_SERVER_URL + Constant.URL_DEVELOP_ItemLog;
+			Debug.Log("connect: " + m_strURL);
 		} else {
 			
-			m_strURL = Constant.URL_RELEASE_ItemLog;
+			m_strURL = Constant.URL_RELEASE_SERVER_URL + Constant.URL_RELEASE_ItemLog;
 		}
 		
 		WWW www = new WWW(m_strURL, form);
@@ -3784,16 +3775,16 @@ public class DataStreamManager : MonoBehaviour {
 		WWWForm form = new WWWForm();
 		form.AddField("data", data);
 		form.AddField("check", check);
-		
+
 		m_strURL = Constant.URL_Popup_Info;
 		
 		WWW www = new WWW(m_strURL, form);
 		yield return www;
 		
-//		Debug.Log ("ST200k DataStreamManager.Network_Popup_Info().data = " + data);
-//		Debug.Log ("ST200k DataStreamManager.Network_Popup_Info().check = " + check);
-//		Debug.Log ("ST200k DataStreamManager.Network_Popup_Info().www = " + www.text);
-		
+		//Debug.Log ("ST200k DataStreamManager.Network_Popup_Info().data = " + data);
+		//Debug.Log ("ST200k DataStreamManager.Network_Popup_Info().check = " + check);
+		//Debug.Log ("ST200k DataStreamManager.Network_Popup_Info().www = " + www.text);
+
 		if (www.error == null || www.error.Equals("")){
 			
 			JSONNode root = JSON.Parse(www.text);
@@ -3855,24 +3846,23 @@ public class DataStreamManager : MonoBehaviour {
 		
 		if (Constant.PROJECTMODE_Develop) {
 			
-			m_strURL = Constant.URL_DEVELOP_AppCharge;
-			
+			m_strURL = Constant.URL_DEVELOP_SERVER_URL + Constant.URL_DEVELOP_AppCharge;
 		} else {
 			
-			m_strURL = Constant.URL_RELEASE_AppCharge;
+			m_strURL = Constant.URL_RELEASE_SERVER_URL + Constant.URL_RELEASE_AppCharge;
 		}
 
-		Debug.Log ("ST200k DataStreamManager.Network_SaveChargeData_Naver().Constant.PROJECTMODE_Develop = " + Constant.PROJECTMODE_Develop.ToString());
-		Debug.Log ("ST200k DataStreamManager.Network_SaveChargeData_Naver().m_strURL = " + m_strURL);
+		//Debug.Log ("ST200k DataStreamManager.Network_SaveChargeData_Naver().Constant.PROJECTMODE_Develop = " + Constant.PROJECTMODE_Develop.ToString());
+		//Debug.Log ("ST200k DataStreamManager.Network_SaveChargeData_Naver().m_strURL = " + m_strURL);
 
 		WWW www = new WWW(m_strURL, form);
 		yield return www;
 
-		Debug.Log ("ST200k DataStreamManager.Network_SaveChargeData_Naver().sendMode = " + sendMode);
-		Debug.Log ("ST200k DataStreamManager.Network_SaveChargeData_Naver().header = " + header);
-		Debug.Log ("ST200k DataStreamManager.Network_SaveChargeData_Naver().body = " + body);
-		Debug.Log ("ST200k DataStreamManager.Network_SaveChargeData_Naver().check = " + check);
-		Debug.Log ("ST200k DataStreamManager.Network_SaveChargeData_Naver().www = " + www.text.ToString());
+		//Debug.Log ("ST200k DataStreamManager.Network_SaveChargeData_Naver().sendMode = " + sendMode);
+		//Debug.Log ("ST200k DataStreamManager.Network_SaveChargeData_Naver().header = " + header);
+		//Debug.Log ("ST200k DataStreamManager.Network_SaveChargeData_Naver().body = " + body);
+		//Debug.Log ("ST200k DataStreamManager.Network_SaveChargeData_Naver().check = " + check);
+		//Debug.Log ("ST200k DataStreamManager.Network_SaveChargeData_Naver().www = " + www.text.ToString());
 		
 		if(www.error == null){
 			addMessageBuffer("RESPONSE OK: "+www.text);
@@ -3976,11 +3966,11 @@ public class DataStreamManager : MonoBehaviour {
 		
 		if (Constant.PROJECTMODE_Develop) {
 			
-			m_strURL = Constant.URL_DEVELOP_PvpInfo;
+			m_strURL = Constant.URL_DEVELOP_SERVER_URL + Constant.URL_DEVELOP_PvpInfo;
 			
 		} else {
 			
-			m_strURL = Constant.URL_RELEASE_PvpInfo;
+			m_strURL = Constant.URL_RELEASE_SERVER_URL + Constant.URL_RELEASE_PvpInfo;
 		}
 		
 		WWW www = new WWW(m_strURL, form);
@@ -4026,7 +4016,7 @@ public class DataStreamManager : MonoBehaviour {
 					for(int i = 0; i < recommend.Count; i++)
 					{
 						JSONNode recommenddata = recommend[i];
-						//Debug.Log("TOTAL: " + recommenddata.ToString());
+						//Debug.Log("recommend: " + recommenddata.ToString());
 
 						int recommenduserindex = recommenddata["pvp_user_index"].AsInt;
 						string recommendnickname = recommenddata["nickname"];
@@ -4041,6 +4031,7 @@ public class DataStreamManager : MonoBehaviour {
 						JSONArray recommendsubshipindex = armdata["SubShipIndexList"].AsArray;
 						JSONArray recommendsubshiplevel = armdata["SubShipLeveList"].AsArray;
 						int recommendreward = recommenddata["winning_reward"].AsInt;
+						string recommendcountry = recommenddata["country"];
 
 						UserInfoData recommendinfodata = new UserInfoData();
 						recommendinfodata.UserIndex = recommenduserindex;
@@ -4049,6 +4040,7 @@ public class DataStreamManager : MonoBehaviour {
 						recommendinfodata.TacticIndex = recommendtacticindex;
 						recommendinfodata.ShipIndex = recommendshipindex;
 						recommendinfodata.ShipLevel = recommendshiplevel;
+						recommendinfodata.Country = recommendcountry;
 						int[] subshipindexlist = new int[]{0,0,0,0};
 						int[] subshiplevellist = new int[]{0,0,0,0};
 						for(int j = 0; j < subshipindexlist.Length; j++)
@@ -4154,11 +4146,11 @@ public class DataStreamManager : MonoBehaviour {
 		
 		if (Constant.PROJECTMODE_Develop) {
 			
-			m_strURL = Constant.URL_DEVELOP_PvpInfo;
-			
+			m_strURL = Constant.URL_DEVELOP_SERVER_URL + Constant.URL_DEVELOP_PvpInfo;
+			//Debug.Log("DEVELOP HI: " + m_strURL);
 		} else {
 			
-			m_strURL = Constant.URL_RELEASE_PvpInfo;
+			m_strURL = Constant.URL_RELEASE_SERVER_URL + Constant.URL_RELEASE_PvpInfo;
 		}
 		
 		WWW www = new WWW(m_strURL, form);
@@ -4172,7 +4164,7 @@ public class DataStreamManager : MonoBehaviour {
 		//Debug.Log ("ST200k DataStreamManager SaveUserData www.text = " + www.text);
 		
 		if (www.error == null) {
-			
+			//Debug.Log("FRIEND: " + www.text);
 			clsReturn.init();  //초기화..
 			clsReturn = JsonMapper.ToObject<ClsReturn>(www.text);
 			
@@ -4192,7 +4184,7 @@ public class DataStreamManager : MonoBehaviour {
 					JSONNode root = JSON.Parse(returndata);
 
 					JSONNode friendlist = root["FriendsList"];
-					//Debug.Log("TOTAL: " + friendlist.Count);
+					//Debug.Log("friend TOTAL: " + friendlist.ToString());
 
 					PVPDataManager.Instance.IsLoadingFriendInfoList = false;
 					PVPDataManager.Instance.m_FriendInfoList.Clear();
@@ -4215,6 +4207,7 @@ public class DataStreamManager : MonoBehaviour {
 						JSONArray subshiplevel = armdata["SubShipLeveList"].AsArray;
 						int reward = userdata["winning_reward"].AsInt;
 						int repairsec = userdata["sec_under_repair"].AsInt;
+						string country = userdata["country"];
 
 						UserInfoData infodata = new UserInfoData();
 						infodata.UserIndex = userindex;
@@ -4223,6 +4216,7 @@ public class DataStreamManager : MonoBehaviour {
 						infodata.TacticIndex = tacticindex;
 						infodata.ShipIndex = shipindex;
 						infodata.ShipLevel = shiplevel;
+						infodata.Country = country;
 						int[] subshipindexlist = new int[]{0,0,0,0};
 						int[] subshiplevellist = new int[]{0,0,0,0};
 						for(int j = 0; j < subshipindexlist.Length; j++)
@@ -4330,11 +4324,11 @@ public class DataStreamManager : MonoBehaviour {
 		
 		if (Constant.PROJECTMODE_Develop) {
 			
-			m_strURL = Constant.URL_DEVELOP_PvpInfo;
+			m_strURL = Constant.URL_DEVELOP_SERVER_URL + Constant.URL_DEVELOP_PvpInfo;
 			
 		} else {
 			
-			m_strURL = Constant.URL_RELEASE_PvpInfo;
+			m_strURL = Constant.URL_RELEASE_SERVER_URL + Constant.URL_RELEASE_PvpInfo;
 		}
 		
 		WWW www = new WWW(m_strURL, form);
@@ -4374,7 +4368,7 @@ public class DataStreamManager : MonoBehaviour {
 					for(int friendindexno = 0; friendindexno < friendlist.Count; friendindexno++)
 					{
 						JSONNode userdata = friendlist[friendindexno];
-						//Debug.Log("TOTAL: " + userdata.ToString());
+						//Debug.Log("friend search: " + userdata.ToString());
 						
 						int userindex = userdata["pvp_user_index"].AsInt;
 						string nickname = userdata["nickname"];
@@ -4390,6 +4384,7 @@ public class DataStreamManager : MonoBehaviour {
 						JSONArray subshiplevel = armdata["SubShipLeveList"].AsArray;
 						int reward = userdata["winning_reward"].AsInt;
 						int repairsec = userdata["sec_under_repair"].AsInt;
+						string country = userdata["country"];
 
 						UserInfoData infodata = new UserInfoData();
 						infodata.UserIndex = userindex;
@@ -4398,6 +4393,7 @@ public class DataStreamManager : MonoBehaviour {
 						infodata.TacticIndex = tacticindex;
 						infodata.ShipIndex = shipindex;
 						infodata.ShipLevel = shiplevel;
+						infodata.Country = country;
 						int[] subshipindexlist = new int[]{0,0,0,0};
 						int[] subshiplevellist = new int[]{0,0,0,0};
 						for(int j = 0; j < subshipindexlist.Length; j++)
@@ -4503,11 +4499,11 @@ public class DataStreamManager : MonoBehaviour {
 		
 		if (Constant.PROJECTMODE_Develop) {
 			
-			m_strURL = Constant.URL_DEVELOP_PvpInfo;
+			m_strURL = Constant.URL_DEVELOP_SERVER_URL + Constant.URL_DEVELOP_PvpInfo;
 			
 		} else {
 			
-			m_strURL = Constant.URL_RELEASE_PvpInfo;
+			m_strURL = Constant.URL_RELEASE_SERVER_URL + Constant.URL_RELEASE_PvpInfo;
 		}
 		
 		WWW www = new WWW(m_strURL, form);
@@ -4597,11 +4593,11 @@ public class DataStreamManager : MonoBehaviour {
 		
 		if (Constant.PROJECTMODE_Develop) {
 			
-			m_strURL = Constant.URL_DEVELOP_PvpInfo;
+			m_strURL = Constant.URL_DEVELOP_SERVER_URL + Constant.URL_DEVELOP_PvpInfo;
 			
 		} else {
 			
-			m_strURL = Constant.URL_RELEASE_PvpInfo;
+			m_strURL = Constant.URL_RELEASE_SERVER_URL + Constant.URL_RELEASE_PvpInfo;
 		}
 		
 		WWW www = new WWW(m_strURL, form);
@@ -4698,11 +4694,11 @@ public class DataStreamManager : MonoBehaviour {
 		
 		if (Constant.PROJECTMODE_Develop) {
 			
-			m_strURL = Constant.URL_DEVELOP_PvpInfo;
+			m_strURL = Constant.URL_DEVELOP_SERVER_URL + Constant.URL_DEVELOP_PvpInfo;
 			
 		} else {
 			
-			m_strURL = Constant.URL_RELEASE_PvpInfo;
+			m_strURL = Constant.URL_RELEASE_SERVER_URL + Constant.URL_RELEASE_PvpInfo;
 		}
 		
 		WWW www = new WWW(m_strURL, form);
@@ -4815,11 +4811,11 @@ public class DataStreamManager : MonoBehaviour {
 		
 		if (Constant.PROJECTMODE_Develop) {
 			
-			m_strURL = Constant.URL_DEVELOP_PvpInfo;
+			m_strURL = Constant.URL_DEVELOP_SERVER_URL + Constant.URL_DEVELOP_PvpInfo;
 			
 		} else {
 			
-			m_strURL = Constant.URL_RELEASE_PvpInfo;
+			m_strURL = Constant.URL_RELEASE_SERVER_URL + Constant.URL_RELEASE_PvpInfo;
 		}
 		
 		WWW www = new WWW(m_strURL, form);
@@ -4862,6 +4858,7 @@ public class DataStreamManager : MonoBehaviour {
 					int myshipindex = myarmdata["ShipIndex"].AsInt;
 					int myshiplevel = myarmdata["ShipLevel"].AsInt;
 					int myrankno = myrank["rank"].AsInt;
+					string country = myrank["country"];
 					UserPVPRankInfoData myrankinfodata = new UserPVPRankInfoData();
 					myrankinfodata.Rank = myrankno;
 					myrankinfodata.CharacterIndex = mycharacter;
@@ -4871,6 +4868,7 @@ public class DataStreamManager : MonoBehaviour {
 					myrankinfodata.ShipLevel = myshiplevel;
 					myrankinfodata.UserIndex = myuserindex;
 					myrankinfodata.UserNickName = Managers.UserData.UserNickName;
+					myrankinfodata.Country = country;
 
 					PVPDataManager.Instance.m_WorldRankList.Add(myrankinfodata);
 
@@ -4881,7 +4879,7 @@ public class DataStreamManager : MonoBehaviour {
 					for(int friendindexno = 0; friendindexno < friendlist.Count; friendindexno++)
 					{
 						JSONNode userdata = friendlist[friendindexno];
-						//Debug.Log("TOTAL: " + userdata.ToString());
+						//Debug.Log("worldrank: " + userdata.ToString());
 						
 						int userindex = userdata["pvp_user_index"].AsInt;
 						string nickname = userdata["nickname"];
@@ -4893,6 +4891,7 @@ public class DataStreamManager : MonoBehaviour {
 						int shipindex = armdata["ShipIndex"].AsInt;
 						int shiplevel = armdata["ShipLevel"].AsInt;
 						int rank = userdata["rank"].AsInt;
+						string rankcountry = userdata["country"];
 
 						UserPVPRankInfoData infodata = new UserPVPRankInfoData();
 						infodata.UserIndex = userindex;
@@ -4903,7 +4902,7 @@ public class DataStreamManager : MonoBehaviour {
 						infodata.LoseCount = losecount;
 						infodata.WinCount = wincount;
 						infodata.Rank = rank;
-
+						infodata.Country = rankcountry;
 						
 						PVPDataManager.Instance.m_WorldRankList.Add(infodata);
 						
@@ -4999,13 +4998,13 @@ public class DataStreamManager : MonoBehaviour {
 		
 		if (Constant.PROJECTMODE_Develop) {
 			
-			m_strURL = Constant.URL_DEVELOP_PvpInfo;
+			m_strURL = Constant.URL_DEVELOP_SERVER_URL + Constant.URL_DEVELOP_PvpInfo;
 			
 		} else {
 			
-			m_strURL = Constant.URL_RELEASE_PvpInfo;
+			m_strURL = Constant.URL_RELEASE_SERVER_URL + Constant.URL_RELEASE_PvpInfo;
 		}
-		
+
 		WWW www = new WWW(m_strURL, form);
 		yield return www;
 		
@@ -5065,7 +5064,7 @@ public class DataStreamManager : MonoBehaviour {
 					for(int friendindexno = 0; friendindexno < friendlist.Count; friendindexno++)
 					{
 						JSONNode userdata = friendlist[friendindexno];
-						Debug.Log("TOTAL: " + userdata.ToString());
+						Debug.Log("friend rank: " + userdata.ToString());
 						
 						int userindex = userdata["pvp_user_index"].AsInt;
 						string nickname = userdata["nickname"];
@@ -5190,11 +5189,11 @@ public class DataStreamManager : MonoBehaviour {
 		
 		if (Constant.PROJECTMODE_Develop) {
 			
-			m_strURL = Constant.URL_DEVELOP_PvpInfo;
+			m_strURL = Constant.URL_DEVELOP_SERVER_URL + Constant.URL_DEVELOP_PvpInfo;
 			
 		} else {
 			
-			m_strURL = Constant.URL_RELEASE_PvpInfo;
+			m_strURL = Constant.URL_RELEASE_SERVER_URL + Constant.URL_RELEASE_PvpInfo;
 		}
 		
 		WWW www = new WWW(m_strURL, form);
@@ -5240,7 +5239,7 @@ public class DataStreamManager : MonoBehaviour {
 					for(int friendindexno = 0; friendindexno < friendlist.Count; friendindexno++)
 					{
 						JSONNode userdata = friendlist[friendindexno];
-						//Debug.Log("TOTAL: " + userdata.ToString());
+						//Debug.Log("history: " + userdata.ToString());
 						
 						int userindex = userdata["pvp_user_index"].AsInt;
 						string nickname = userdata["nickname"];
@@ -5256,7 +5255,8 @@ public class DataStreamManager : MonoBehaviour {
 						JSONArray subshiplevel = armdata["SubShipLeveList"].AsArray;
 						int reward = userdata["winning_reward"].AsInt;
 						int repairsec = userdata["sec_under_repair"].AsInt;
-						
+						string country = userdata["country"];
+
 						UserInfoData infodata = new UserInfoData();
 						infodata.UserIndex = userindex;
 						infodata.UserNickName = nickname;
@@ -5264,6 +5264,7 @@ public class DataStreamManager : MonoBehaviour {
 						infodata.TacticIndex = tacticindex;
 						infodata.ShipIndex = shipindex;
 						infodata.ShipLevel = shiplevel;
+						infodata.Country = country;
 						int[] subshipindexlist = new int[]{0,0,0,0};
 						int[] subshiplevellist = new int[]{0,0,0,0};
 						for(int j = 0; j < subshipindexlist.Length; j++)
@@ -5383,11 +5384,11 @@ public class DataStreamManager : MonoBehaviour {
 		
 		if (Constant.PROJECTMODE_Develop) {
 			
-			m_strURL = Constant.URL_DEVELOP_PvpInfo;
+			m_strURL = Constant.URL_DEVELOP_SERVER_URL + Constant.URL_DEVELOP_PvpInfo;
 			
 		} else {
 			
-			m_strURL = Constant.URL_RELEASE_PvpInfo;
+			m_strURL = Constant.URL_RELEASE_SERVER_URL + Constant.URL_RELEASE_PvpInfo;
 		}
 		
 		WWW www = new WWW(m_strURL, form);
@@ -5487,13 +5488,13 @@ public class DataStreamManager : MonoBehaviour {
 		
 		if (Constant.PROJECTMODE_Develop) {
 			
-			m_strURL = Constant.URL_DEVELOP_PvpInfo;
+			m_strURL = Constant.URL_DEVELOP_SERVER_URL + Constant.URL_DEVELOP_PvpInfo;
 			
 		} else {
 			
-			m_strURL = Constant.URL_RELEASE_PvpInfo;
+			m_strURL = Constant.URL_RELEASE_SERVER_URL + Constant.URL_RELEASE_PvpInfo;
 		}
-		
+
 		WWW www = new WWW(m_strURL, form);
 		yield return www;
 		

@@ -8,6 +8,7 @@ public class Constant : MonoBehaviour {
 	/// </summary>
 	/// 
 	public readonly static bool VALTEST1 = true;
+	public readonly static bool CONNECTFROMUS = true;
     // 프로젝트 정보 ----------------------------------------------------------------------------------------------------------------
     public readonly static string AppVersionInfo = "1.3.2";
     public readonly static string DefalutAppName = "defalut_app_name" ;
@@ -18,10 +19,10 @@ public class Constant : MonoBehaviour {
     
     // 개발 or 상용 모드 ----------------------------------------------------------------------------------------------------------------
 #if UNITY_EDITOR
-	public static readonly bool PROJECTMODE_Develop = true; //상용시 false로..
-	public static readonly bool PROJECTMODE_BalanceTest = true; //상용시 false, 테스트용 벨런스 데이터를 가지고 옴..
-	public static readonly bool PROJECTMODE_OutDebugMessage = true; //상용시 false로..
-	public static readonly bool PROJECTMODE_IabTest = true; //상용시 false로..
+	public static readonly bool PROJECTMODE_Develop = false; //상용시 false로..
+	public static readonly bool PROJECTMODE_BalanceTest = false; //상용시 false, 테스트용 벨런스 데이터를 가지고 옴..
+	public static readonly bool PROJECTMODE_OutDebugMessage = false; //상용시 false로..
+	public static readonly bool PROJECTMODE_IabTest = false; //상용시 false로..
 #else
 	public static readonly bool PROJECTMODE_Develop = true; //상용시 false로..
 	public static readonly bool PROJECTMODE_BalanceTest = true; //상용시 false, 테스트용 벨런스 데이터를 가지고 옴..
@@ -78,35 +79,37 @@ public class Constant : MonoBehaviour {
     // 통신 관련 --------------------------------------------------------------------------------------------------------------------------------------------
     public static readonly string CHECKSUM_Key = "tjralsthsqkqh";
     
-    public static readonly string URL_RELEASE_Connect = "http://st200.polycube.co.kr/st200/connect.php";
-    public static readonly string URL_RELEASE_ConfigData = "http://st200.polycube.co.kr/st200/config_data.php";
-    public static readonly string URL_RELEASE_UserData = "http://st200.polycube.co.kr/st200/user_data.php";
-    public static readonly string URL_RELEASE_Message = "http://st200.polycube.co.kr/st200/message.php";
-    public static readonly string URL_RELEASE_BannerTouch = "http://st200.polycube.co.kr/st200/banner_touch.php";
-    public static readonly string URL_RELEASE_ClanBattle = "http://st200.polycube.co.kr/st200/clan_battle.php";
-    public static readonly string URL_RELEASE_Token = "http://st200.polycube.co.kr/st200/token.php";
-    public static readonly string URL_RELEASE_ItemLog = "http://st200.polycube.co.kr/st200/item_log.php";
-    public static readonly string URL_RELEASE_AppCharge = "http://st200.polycube.co.kr/st200/appcharge.php";
+	public static string URL_RELEASE_SERVER_URL = "http://st200.polycube.co.kr/";
+    public static readonly string URL_RELEASE_Connect = "st200/connect.php";
+    public static readonly string URL_RELEASE_ConfigData = "st200/config_data.php";
+    public static readonly string URL_RELEASE_UserData = "st200/user_data.php";
+    public static readonly string URL_RELEASE_Message = "st200/message.php";
+    public static readonly string URL_RELEASE_BannerTouch = "st200/banner_touch.php";
+    public static readonly string URL_RELEASE_ClanBattle = "st200/clan_battle.php";
+    public static readonly string URL_RELEASE_Token = "st200/token.php";
+    public static readonly string URL_RELEASE_ItemLog = "st200/item_log.php";
+    public static readonly string URL_RELEASE_AppCharge = "st200/appcharge.php";
 	public static readonly string URL_RELEASE_WorldRanking_Get = "https://wrank.polycube.co.kr/st200/get_ranking.php";
 	public static readonly string URL_RELEASE_WorldRanking_Update = "https://wrank.polycube.co.kr/st200/update_result.php";
 	public static readonly string URL_RELEASE_NICKNAME = "https://wrank.polycube.co.kr/st200/check_nickname.php";
 	public static readonly string URL_RELEASE_PushInfo = "http://14.63.165.28/st200/push.php";
-	public static readonly string URL_RELEASE_PvpInfo = "http://st200.polycube.co.kr/st200/pvp.php";
+	public static readonly string URL_RELEASE_PvpInfo = "st200/pvp.php";
 
-	public static readonly string URL_DEVELOP_Connect = "http://14.63.165.28/st200/connect.php";
-	public static readonly string URL_DEVELOP_ConfigData = "http://14.63.165.28/st200/config_data.php";
-	public static readonly string URL_DEVELOP_UserData = "http://14.63.165.28/st200/user_data.php";
-	public static readonly string URL_DEVELOP_Message = "http://14.63.165.28/st200/message.php";
-	public static readonly string URL_DEVELOP_BannerTouch = "http://14.63.165.28/st200/banner_touch.php";
-	public static readonly string URL_DEVELOP_ClanBattle = "http://14.63.165.28/st200/clan_battle.php";
-	public static readonly string URL_DEVELOP_Token = "http://14.63.165.28/st200/token.php";
-	public static readonly string URL_DEVELOP_ItemLog = "http://14.63.165.28/st200/item_log.php";
-	public static readonly string URL_DEVELOP_AppCharge = "http://14.63.165.28/st200/appcharge.php";
+	public static string URL_DEVELOP_SERVER_URL = "http://14.63.165.28/";
+	public static readonly string URL_DEVELOP_Connect = "st200/connect.php";
+	public static readonly string URL_DEVELOP_ConfigData = "st200/config_data.php";
+	public static readonly string URL_DEVELOP_UserData = "st200/user_data.php";
+	public static readonly string URL_DEVELOP_Message = "st200/message.php";
+	public static readonly string URL_DEVELOP_BannerTouch = "st200/banner_touch.php";
+	public static readonly string URL_DEVELOP_ClanBattle = "st200/clan_battle.php";
+	public static readonly string URL_DEVELOP_Token = "st200/token.php";
+	public static readonly string URL_DEVELOP_ItemLog = "st200/item_log.php";
+	public static readonly string URL_DEVELOP_AppCharge = "st200/appcharge.php";
 	public static readonly string URL_DEVELOP_WorldRanking_Get = "https://wrank.polycube.co.kr/st200/get_ranking.php";
 	public static readonly string URL_DEVELOP_WorldRanking_Update = "https://wrank.polycube.co.kr/st200/update_result.php";
 	public static readonly string URL_DEVELOP_NICKNAME = "https://wrank.polycube.co.kr/st200/check_nickname.php";
 	public static readonly string URL_DEVELOP_PushInfo = "http://14.63.165.28/st200/push.php";
-	public static readonly string URL_DEVELOP_PvpInfo = "http://14.63.165.28/st200/pvp.php";
+	public static readonly string URL_DEVELOP_PvpInfo = "st200/pvp.php";
 
 	// 크로스광고 팝업 기능 추가(by 최원석 14.04.30) ----- Start.
 	public static readonly string URL_Popup_Info = "http://gamehub.polycube.co.kr/cross_popup/popup_info.php";
@@ -263,6 +266,9 @@ public class Constant : MonoBehaviour {
 	// 카카오 모듈 수정 작업. (by 최원석 14.04.19) ======== Start.
 	public static readonly string QNA_Subject_STR = "?subject=게임 문의(";
 	public static readonly string QNA_Body_STR = "&body=앱 ID : ";
+
+	public static readonly string QNA_Subject_STR_ENG = "?subject=Game Questions(";
+	public static readonly string QNA_Body_STR_ENG = "?body=APP ID: ";
 	// 카카오 모듈 수정 작업. (by 최원석 14.04.19) ======== End.
 
     

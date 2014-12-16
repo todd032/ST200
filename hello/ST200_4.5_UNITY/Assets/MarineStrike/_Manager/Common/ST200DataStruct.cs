@@ -2634,13 +2634,15 @@ public struct UserInfoData
 			return gradelist;
 		}
 	}
+
+	public string Country;
 }
 
 public struct UserPVPRankInfoData
 {
 	public int UserIndex;
 	public string UserNickName;
-
+	public string Country;
 	private string m_Rank;
 	public int Rank {
 		set { 

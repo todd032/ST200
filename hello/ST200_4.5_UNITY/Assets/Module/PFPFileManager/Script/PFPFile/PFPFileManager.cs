@@ -32,6 +32,8 @@ public class PFPFileManager : MonoBehaviour {
 	public static string OS_TYPE_ANDROID				= "ANDROID";
 	public static string OS_TYPE_IOS					= "IOS";
 
+	public IPGetter m_IPGetter;
+
 	private static PFPFileManager instance;
 	public static PFPFileManager Instance
 	{
@@ -209,7 +211,7 @@ public class PFPFileManager : MonoBehaviour {
 	{
 		m_SelectedLanguage = _string;		
 		PlayerPrefs.SetString(LanguageSelect, m_SelectedLanguage);
-
+		Managers.LanguageCode = m_SelectedLanguage;
 		if(m_SelectedLanguage == LANGUAGE_KOR)
 		{
 			TEXT_LOADING = TEXT_LOADING_KOR;
@@ -224,7 +226,7 @@ public class PFPFileManager : MonoBehaviour {
 			TEXT_LOADING = TEXT_LOADING_ENG;			
 		}
 
-		InitConfigFile(m_ServerURL);
+		CheckIPGetter();
 	}
 
 	protected int TotalDownLoadCount = 0;
@@ -365,6 +367,39 @@ public class PFPFileManager : MonoBehaviour {
 		Application.LoadLevel(2);
 	}
 
+	public void CheckIPGetter()
+	{
+		ShowIPGetterUI();
+		m_IPGetter.Init();
+		m_IPGetter.GetIP();
+		StartCoroutine(IEIPGet());
+	}
+
+	protected IEnumerator IEIPGet()
+	{
+		while(m_IPGetter.NetworkState == IPGetter.NETWORK_STATE_READY)
+		{
+			yield return null;
+		}
+
+		if(m_IPGetter.NetworkState == IPGetter.NETWORK_STATE_ERROR)
+		{
+			ShowNetworkErrorUI();
+		}
+		if(m_IPGetter.NetworkState == IPGetter.NETWORK_STATE_SUCCESS)
+		{
+			if(Constant.PROJECTMODE_Develop)
+			{
+				m_ServerURL = Constant.URL_DEVELOP_SERVER_URL + "st200/res/";
+			}else
+			{
+				m_ServerURL = Constant.URL_RELEASE_SERVER_URL + "st200/res/";
+			}
+			InitConfigFile(m_ServerURL);
+		}
+		yield break;
+	}
+
 	#region UI functions 
 	public GameObject m_LanguageSelectUI;
 	public PFPFileLoadingUI m_LoadingUI;
@@ -400,6 +435,14 @@ public class PFPFileManager : MonoBehaviour {
 		NGUITools.SetActive(m_LoadingUI.gameObject, false);
 		NGUITools.SetActive(m_NetworkErrorLabel.gameObject, true);
 		m_NetworkErrorLabel.text = TEXT_DOWNLOADING_NETWORK_ERROR;
+	}
+
+	public void ShowIPGetterUI()
+	{
+		NGUITools.SetActive(m_LanguageSelectUI.gameObject, false);
+		NGUITools.SetActive(m_LoadingUI.gameObject, false);
+		NGUITools.SetActive(m_NetworkErrorLabel.gameObject, true);
+		m_NetworkErrorLabel.text = TEXT_DOWNLOADING;
 	}
 	#endregion
 }

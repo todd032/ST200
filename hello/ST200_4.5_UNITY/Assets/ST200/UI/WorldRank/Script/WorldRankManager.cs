@@ -136,7 +136,7 @@ public class WorldRankManager : MonoBehaviour {
 	
 	public void setWorldRankingData(string _json) {
 
-		//Debug.Log("SET WORLD RANK CALLED: " + _json);
+		Debug.Log("SET WORLD RANK CALLED: " + _json);
 		m_WorldRankingData.Clear();
 
 		SimpleJSON.JSONNode root = SimpleJSON.JSON.Parse(_json);
@@ -150,6 +150,7 @@ public class WorldRankManager : MonoBehaviour {
 			myrankdata.UserScore = data["best_score"].AsInt;
 			myrankdata.UserStage = data["stage"].AsInt;
 			myrankdata.UserCharacter = Managers.UserData.GetCurrentGameCharacter().IndexNumber.ToString();// data["public_data"].Value;
+			myrankdata.Country = Managers.CountryCode;
 		}
 		m_WorldRankingData.Add(myrankdata);
 		Debug.Log("MYRANK: " + myrankdata.UserRank);
@@ -169,6 +170,7 @@ public class WorldRankManager : MonoBehaviour {
 			worldrankdata.UserScore = data["best_score"].AsInt;
 			worldrankdata.UserStage = data["stage"].AsInt;
 			worldrankdata.UserCharacter = data["public_data"].Value;
+			worldrankdata.Country = data["profile_image_url"];
 			if(worldrankdata.UserId != "")
 			{
 				m_WorldRankingData.Add(worldrankdata);
@@ -186,4 +188,5 @@ public struct WorldRankData
 	public int UserScore;
 	public int UserStage;
 	public string UserCharacter;
+	public string Country;
 }

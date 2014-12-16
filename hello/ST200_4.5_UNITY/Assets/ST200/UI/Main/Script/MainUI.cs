@@ -62,7 +62,7 @@ public class MainUI : MonoBehaviour {
 		m_SubShipSelectUI.Init();
 		UpdateUI();
 
-		if(Managers.UserData.CountryString == "kr")
+		if(Managers.CountryCode == "kr")
 		{
 			NGUITools.SetActive(m_KakaoInviteButton.gameObject, true);
 			NGUITools.SetActive(m_FacebookInviteButton.gameObject, false);

@@ -306,7 +306,7 @@ public class PFPFileSaveLoader : MonoBehaviour {
 		#endif
 
 		WWW www = new WWW(path);
-		Debug.Log("TRY LOAD AT: " + path + " EXIST?: " + File.Exists(GetAppPath() + _localpath));
+		//Debug.Log("TRY LOAD AT: " + path + " EXIST?: " + File.Exists(GetAppPath() + _localpath));
 		//if(File.Exists(GetAppPath() + _localpath))
 		{
 
@@ -346,7 +346,7 @@ public class PFPFileSaveLoader : MonoBehaviour {
 		#endif
 		
 		WWW www = new WWW(path);
-		Debug.Log("TRY LOAD AT: " + path + " EXIST?: " + File.Exists(GetLocalPath() + _localpath));
+		//Debug.Log("TRY LOAD AT: " + path + " EXIST?: " + File.Exists(GetLocalPath() + _localpath));
 		if(File.Exists(GetLocalPath() + _localpath))
 		{		
 			while(!www.isDone)
