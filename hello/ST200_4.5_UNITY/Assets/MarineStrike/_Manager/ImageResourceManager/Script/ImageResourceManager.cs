@@ -167,7 +167,7 @@ public class ImageResourceManager : MonoBehaviour {
 	public string GetFlagSpriteName(string _country)
 	{
 		string name = "flag_" + _country;
-		if(_country == "")
+		if(_country == null || _country == "" || name == "flag_")
 		{
 			name = "flag_kr";
 		}

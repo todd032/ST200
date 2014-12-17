@@ -983,7 +983,7 @@ public class DataStreamManager : MonoBehaviour {
 		msgHeader.CodeName = codeName;
 
 		msgHeader.Country = Managers.CountryCode;
-		Debug.Log( "countryCode123123 = " + Managers.CountryCode);
+		Debug.Log("language: " + msgHeader.Language + " countryCode123123 = " + Managers.CountryCode);
 
 		addMessageBuffer("DataStream Init. OK...");
 
@@ -1362,7 +1362,6 @@ public class DataStreamManager : MonoBehaviour {
 		if (Constant.PROJECTMODE_Develop) {
 			
 			m_strURL = Constant.URL_DEVELOP_SERVER_URL + Constant.URL_DEVELOP_Connect;
-			m_strURL = "http://14.63.165.28/st200/connect.php";
 			Debug.Log("connect: " + m_strURL);
 
 		} else {
@@ -3780,7 +3779,7 @@ public class DataStreamManager : MonoBehaviour {
 		
 		WWW www = new WWW(m_strURL, form);
 		yield return www;
-		
+
 		//Debug.Log ("ST200k DataStreamManager.Network_Popup_Info().data = " + data);
 		//Debug.Log ("ST200k DataStreamManager.Network_Popup_Info().check = " + check);
 		//Debug.Log ("ST200k DataStreamManager.Network_Popup_Info().www = " + www.text);
@@ -3788,7 +3787,8 @@ public class DataStreamManager : MonoBehaviour {
 		if (www.error == null || www.error.Equals("")){
 			
 			JSONNode root = JSON.Parse(www.text);
-			
+			Debug.Log("POPUP INFO: " + root.ToString());
+
 			if ( root["status"].AsInt == 1 ){
 				
 				if (_delegate_DataStreamManager_Popup_Info != null) {

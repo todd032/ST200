@@ -7,8 +7,8 @@ public class Constant : MonoBehaviour {
 	/// CHEATING MODE ON/OFF
 	/// </summary>
 	/// 
-	public readonly static bool VALTEST1 = true;
-	public readonly static bool CONNECTFROMUS = false;
+	public readonly static bool VALTEST1 = false;
+	public readonly static bool CONNECTFROMUS = true;
     // 프로젝트 정보 ----------------------------------------------------------------------------------------------------------------
     public readonly static string AppVersionInfo = "1.3.2";
     public readonly static string DefalutAppName = "defalut_app_name" ;

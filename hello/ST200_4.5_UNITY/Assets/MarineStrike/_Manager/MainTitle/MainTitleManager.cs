@@ -45,7 +45,8 @@ public class MainTitleManager : MonoBehaviour {
 		public string Mtype{ get { return strMtype; } set { strMtype = value; } }
 		
 		private string strLanguage;
-		public string Language{ get { return strLanguage; } set { strLanguage = value; } }
+		public string Language{ get { return strLanguage; } set { strLanguage = value; 
+			} }
 		
 		private string strCountry;
 		public string Country{ get { return strCountry; } set { strCountry = value; } }
@@ -443,7 +444,8 @@ public class MainTitleManager : MonoBehaviour {
 		//intAgreement = Constant.INT_False;
 #endif
 
-		if (intAgreement == Constant.INT_False){
+		if (intAgreement == Constant.INT_False)
+		{
 
 			if(Managers.LanguageCode == PFPFileManager.LANGUAGE_KOR)
 			{
@@ -452,8 +454,9 @@ public class MainTitleManager : MonoBehaviour {
 			{
 				m_AgreementPopupView_ENG.LoadAgreementPopupView();
 			}
-			
-		} else {
+		}
+		else 
+		{
 			
 			Process_Main_12_Check_Updata();
 		}
@@ -1111,7 +1114,13 @@ public class MainTitleManager : MonoBehaviour {
 		m_PostData_PushInfo.Service = "ST200";
 		m_PostData_PushInfo.Ostype = "1";
 		m_PostData_PushInfo.Mtype = "1";
-		m_PostData_PushInfo.Language = Managers.LanguageCode;
+		if(Managers.LanguageCode == PFPFileManager.LANGUAGE_KOR)
+		{
+			m_PostData_PushInfo.Language = "ko";
+		}else
+		{
+			m_PostData_PushInfo.Language = "en";
+		}
 		//string strCountryCode = "us";//r100 webview something code
 		m_PostData_PushInfo.Country = Managers.CountryCode;
 
@@ -1123,8 +1132,13 @@ public class MainTitleManager : MonoBehaviour {
 		m_PostData_PushInfo.Service = "ST200";
 		m_PostData_PushInfo.Ostype = "2";
 		m_PostData_PushInfo.Mtype = Constant.CURRENT_MARKET;
-		m_PostData_PushInfo.Language = Managers.LanguageCode;
-
+		if(Managers.LanguageCode == PFPFileManager.LANGUAGE_KOR)
+		{
+			m_PostData_PushInfo.Language = "ko";
+		}else
+		{
+			m_PostData_PushInfo.Language = "en";
+		}
 		m_PostData_PushInfo.Country = Managers.CountryCode;
 		
 		m_PostData_PushInfo.AppVersion = Constant.AppVersionInfo;
@@ -1134,7 +1148,13 @@ public class MainTitleManager : MonoBehaviour {
 		m_PostData_PushInfo.Service = "ST200";
 		m_PostData_PushInfo.Ostype = "2";
 		m_PostData_PushInfo.Mtype = "2";
-		m_PostData_PushInfo.Language = Managers.LanguageCode;
+		if(Managers.LanguageCode == PFPFileManager.LANGUAGE_KOR)
+		{
+			m_PostData_PushInfo.Language = "ko";
+		}else
+		{
+			m_PostData_PushInfo.Language = "en";
+		}
 		m_PostData_PushInfo.Country = "kr";
 		m_PostData_PushInfo.AppVersion = Constant.AppVersionInfo;
 		

@@ -20,7 +20,10 @@ public class AgreementPopupView : MonoBehaviour {
 		}
 	}
 
-	
+	public GameObject m_SmallWindow;
+	public GameObject m_LargeWindow1;
+	public GameObject m_LargeWindow2;
+
 	public AgreementPopupAgreeButton _serviceTermsOkButton ;
 	public AgreementPopupAgreeButton _individualTermsOkButton ;
 	
@@ -49,7 +52,9 @@ public class AgreementPopupView : MonoBehaviour {
 	
 	public void LoadAgreementPopupView() {
 		NGUITools.SetActive(gameObject, true) ;
-		
+		NGUITools.SetActive(m_SmallWindow.gameObject, true);
+		NGUITools.SetActive(m_LargeWindow1.gameObject, false);
+		NGUITools.SetActive(m_LargeWindow2.gameObject, false);
 		SetAgreementPopupView() ;
 	}
 	
@@ -63,7 +68,7 @@ public class AgreementPopupView : MonoBehaviour {
 	}
 	
 	
-	private void OnClickIndividualTermsOkButton() {
+	public void OnClickIndividualTermsOkButton() {
 		
 		if ( Managers.Audio != null) Managers.Audio.PlayFXSound(AudioManager.FX_SOUND.FX_Button_Common,false);
 		
@@ -93,7 +98,7 @@ public class AgreementPopupView : MonoBehaviour {
 		
 	}
 	
-	private void OnClickServiceTermsOkButton() {
+	public void OnClickServiceTermsOkButton() {
 		
 		if ( Managers.Audio != null) Managers.Audio.PlayFXSound(AudioManager.FX_SOUND.FX_Button_Common,false);
 		
@@ -120,5 +125,48 @@ public class AgreementPopupView : MonoBehaviour {
 		}
 		
 	}
-	
+
+	public void OnClickLargeWindowShow1()
+	{
+		NGUITools.SetActive(m_SmallWindow.gameObject, false);
+		NGUITools.SetActive(m_LargeWindow1.gameObject, true);
+		NGUITools.SetActive(m_LargeWindow2.gameObject, false);
+	}
+
+	public void OnClickLargeWindowShow2()
+	{
+		NGUITools.SetActive(m_SmallWindow.gameObject, false);
+		NGUITools.SetActive(m_LargeWindow1.gameObject, false);
+		NGUITools.SetActive(m_LargeWindow2.gameObject, true);
+	}
+
+	public void OnClickLargeWindowAgree1()
+	{
+		NGUITools.SetActive(m_SmallWindow.gameObject, true);
+		NGUITools.SetActive(m_LargeWindow1.gameObject, false);
+		NGUITools.SetActive(m_LargeWindow2.gameObject, false);
+		OnClickServiceTermsOkButton();
+	}
+
+	public void OnClickLargeWindowClose1()
+	{
+		NGUITools.SetActive(m_SmallWindow.gameObject, true);
+		NGUITools.SetActive(m_LargeWindow1.gameObject, false);
+		NGUITools.SetActive(m_LargeWindow2.gameObject, false);
+	}
+
+	public void OnClickLargeWindowAgree2()
+	{
+		NGUITools.SetActive(m_SmallWindow.gameObject, true);
+		NGUITools.SetActive(m_LargeWindow1.gameObject, false);
+		NGUITools.SetActive(m_LargeWindow2.gameObject, false);
+		OnClickIndividualTermsOkButton();
+	}
+
+	public void OnClickLargeWindowClose2()
+	{
+		NGUITools.SetActive(m_SmallWindow.gameObject, true);
+		NGUITools.SetActive(m_LargeWindow1.gameObject, false);
+		NGUITools.SetActive(m_LargeWindow2.gameObject, false);
+	}
 }
