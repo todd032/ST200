@@ -895,7 +895,16 @@ public class MainTitleManager : MonoBehaviour {
 		//
 		ST200KLogManager.Instance.SaveLogin();
 
-		Application.LoadLevel("Ranking");
+		if(!PlayerPrefs.HasKey("EXPLAIN"))
+		{
+			PlayerPrefs.SetString("EXPLAIN", "hi");
+			PlayerPrefs.Save();
+			Application.LoadLevel(Constant.SCENE_Explain);
+		}else
+		{
+			//Application.LoadLevel(Constant.SCENE_Explain);
+			Application.LoadLevel(Constant.SCENE_Ranking);
+		}
 		
 	}
 
