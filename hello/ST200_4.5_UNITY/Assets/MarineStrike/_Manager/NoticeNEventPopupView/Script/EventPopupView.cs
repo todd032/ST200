@@ -168,22 +168,24 @@ public class EventPopupView : MonoBehaviour {
 	
 	public void OnTouch_Image(){
 		
-		Debug.Log("ST110 EventPopupView.OnTouch_Image() Run !!!: " + m_strLink);
+		Debug.Log("ST200 EventPopupView.OnTouch_Image() Run !!!: " + m_strLink);
 
 		if (m_strLink != null
 		    && !m_strLink.Equals("")){
 
-			if(m_strLink == Constant.POPUPEVENT_TO_CHARACTER)
-			{
-				Managers.UserData.ToShopIndex = 2;
-				OnClick_Close();
-			}else if(m_strLink == Constant.POPUPEVENT_TO_SUBMARINE)
-			{
-				Managers.UserData.ToShopIndex = 1;
-				OnClick_Close();
-			}else if(m_strLink == Constant.POPUPEVENT_TO_CASH)
+			//if(m_strLink == Constant.POPUPEVENT_TO_CHARACTER)
+			//{
+			//	Managers.UserData.ToShopIndex = 2;
+			//	OnClick_Close();
+			//}else if(m_strLink == Constant.POPUPEVENT_TO_SUBMARINE)
+			//{
+			//	Managers.UserData.ToShopIndex = 1;
+			//	OnClick_Close();
+			//}else 
+			if(m_strLink == Constant.POPUPEVENT_TO_CASH)
 			{
 				Managers.UserData.ToShopIndex = 3;
+				Application.LoadLevel(Constant.SCENE_Ranking);
 				OnClick_Close();
 			}else
 			{

@@ -194,6 +194,9 @@ public class PFPFileSaveLoader : MonoBehaviour {
 	protected void SaveToLocal(string _filepath, byte[] _data)
 	{
 		//Directory.CreateDirectory(_filepath);
+#if IPHONE
+		iPhone.SetNoBackupFlag(GetLocalPath() + _filepath);
+#endif
 
 		File.WriteAllBytes(GetLocalPath() + _filepath, _data);
 	}

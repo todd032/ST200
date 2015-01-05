@@ -1379,7 +1379,7 @@ public class DataStreamManager : MonoBehaviour {
 //		Debug.Log("ST200k DataStreamManager.Network_GetConData().www.text = " + www.text);
 		
 		if (www.error == null) {
-			//Debug.Log("???: " + www.text);
+			Debug.Log("???: " + www.text);
 			addMessageBuffer("RESPONSE OK: " + www.text);
 			
 			clsReturn.init();  //초기화..

@@ -9,18 +9,24 @@ public class FacebookLink : MonoBehaviour {
 
 	void Start()
 	{
-		PFPFacebookManager.Instance.OnInitEvent += Init;
-		PFPFacebookManager.Instance.OnLogInEvent += LogIn;
-		PFPFacebookManager.Instance.OnHideUnityEvent += HideUnity;
-		PFPFacebookManager.Instance.OnRequestEvent += OnRequest;
+		if(PFPFacebookManager.Instance != null)
+		{
+			PFPFacebookManager.Instance.OnInitEvent += Init;
+			PFPFacebookManager.Instance.OnLogInEvent += LogIn;
+			PFPFacebookManager.Instance.OnHideUnityEvent += HideUnity;
+			PFPFacebookManager.Instance.OnRequestEvent += OnRequest;
+		}
 	}
 
 	void OnDestroy()
 	{
-		PFPFacebookManager.Instance.OnInitEvent -= Init;
-		PFPFacebookManager.Instance.OnLogInEvent -= LogIn;
-		PFPFacebookManager.Instance.OnHideUnityEvent -= HideUnity;
-		PFPFacebookManager.Instance.OnRequestEvent -= OnRequest;
+		if(PFPFacebookManager.Instance != null)
+		{
+			PFPFacebookManager.Instance.OnInitEvent -= Init;
+			PFPFacebookManager.Instance.OnLogInEvent -= LogIn;
+			PFPFacebookManager.Instance.OnHideUnityEvent -= HideUnity;
+			PFPFacebookManager.Instance.OnRequestEvent -= OnRequest;
+		}
 	}
 
 	public void SetData(string _title, string _message, string _data)

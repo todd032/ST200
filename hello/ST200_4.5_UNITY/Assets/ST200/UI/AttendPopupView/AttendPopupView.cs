@@ -125,7 +125,12 @@ public class AttendPopupView : MonoBehaviour {
 			GameUIManager.Instance.LoadGameGoldAndGameJewelInfo();
 			Hide_AttendPopupView ();
 
-			if(!Managers.UserData.TutorialFlagV119)
+			if(Managers.UserData.ToShopIndex == 3)
+			{
+				//SwitchToGameShopManager();
+				Managers.UserData.ToShopIndex = 0;
+				GameUIManager.Instance._paymentPopupView.LoadPaymentPopupView(Constant.ST200_POPUP_RECHARGE_JEWEL);
+			}else if(!Managers.UserData.TutorialFlagV119)
 			{
 				GameUIManager.Instance.m_MainTutorial.StartTutorial();
 			}

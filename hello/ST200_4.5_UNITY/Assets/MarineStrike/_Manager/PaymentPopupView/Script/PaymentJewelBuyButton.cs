@@ -133,7 +133,8 @@ public class PaymentJewelBuyButton : MonoBehaviour {
 			paymentItemValueString = "$" + paymentItemValueString;
 			#endif
 
-			_cashValueInfoLabel.text = Constant.COLOR_STORE_ITEMCOST + paymentItemValueString ;
+			_cashValueInfoLabel.text = Constant.COLOR_STORE_ITEMCOST + Managers.Payment.GetProductCost(paymentBuyInfoBalance.PaymentItemIndex,
+			                                                                                           paymentItemValueString); ;
 			
 
 			float productValue = paymentBuyInfoBalance.ProductValue ;

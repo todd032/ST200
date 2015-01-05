@@ -321,7 +321,7 @@ public class GameUIManager : MonoBehaviour {
 	}
 
 	public UIPanel _paymentPopupViewObject ;
-	private PaymentPopupView _paymentPopupView ;
+	public PaymentPopupView _paymentPopupView ;
 
 	public void OnClickPurchaseTorpedoButton() {
 		

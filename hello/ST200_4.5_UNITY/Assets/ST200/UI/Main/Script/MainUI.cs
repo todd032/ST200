@@ -314,11 +314,18 @@ public class MainUI : MonoBehaviour {
 			
 			m_AttendPopupView.Hide_AttendPopupView();
 			m_EventPopupView.PopupView_Remove();
-			if(!Managers.UserData.TutorialFlagV119)
+
+			if(Managers.UserData.ToShopIndex == 3)
+			{
+				//SwitchToGameShopManager();
+				Managers.UserData.ToShopIndex = 0;
+				GameUIManager.Instance._paymentPopupView.LoadPaymentPopupView(Constant.ST200_POPUP_RECHARGE_JEWEL);
+			}else if(!Managers.UserData.TutorialFlagV119)
 			{
 				GameUIManager.Instance.m_MainTutorial.StartTutorial();
 			}else
 			{
+				
 				//m_AttackAlertPopup show
 				CheckAttackHistoryPopup();
 			}
@@ -361,7 +368,13 @@ public class MainUI : MonoBehaviour {
 		} else {
 			
 			m_AttendPopupView.Hide_AttendPopupView();
-			if(!Managers.UserData.TutorialFlagV119)
+
+			if(Managers.UserData.ToShopIndex == 3)
+			{
+				//SwitchToGameShopManager();
+				Managers.UserData.ToShopIndex = 0;
+				GameUIManager.Instance._paymentPopupView.LoadPaymentPopupView(Constant.ST200_POPUP_RECHARGE_JEWEL);
+			}else if(!Managers.UserData.TutorialFlagV119)
 			{
 				GameUIManager.Instance.m_MainTutorial.StartTutorial();
 			}else

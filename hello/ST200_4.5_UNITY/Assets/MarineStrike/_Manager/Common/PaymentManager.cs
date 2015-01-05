@@ -4,7 +4,12 @@ using System.Collections.Generic ;
 using Prime31;
 
 public class PaymentManager : MonoBehaviour {
-	
+
+	protected Dictionary<int, string> GoogleBalanceToSkuID = new Dictionary<int, string>();
+	protected Dictionary<string, string> GoogleSkuList = new Dictionary<string, string>();
+	protected Dictionary<string, string> iOSSkuList = new Dictionary<string, string>();
+	//protected Dictionary<string, 
+
 	[HideInInspector]
 	public delegate void PaymentManagerOkDelegate(string returnProductIdentifier); 
 	protected PaymentManagerOkDelegate _paymentManagerOkDelegate ;
@@ -123,6 +128,7 @@ public class PaymentManager : MonoBehaviour {
 #endif	
 	
 	private void Awake(){
+		Initialize();
 #if UNITY_IPHONE
 		// IAP Module..
 		var productIdentifiers = new string[] { "com.polycube.st200.Bullion.10", "com.polycube.st200.Bullion.33", "com.polycube.st200.Bullion.60", "com.polycube.st200.Bullion.130", "com.polycube.st200.Bullion.420", "com.polycube.st200.Bullion.750" };
@@ -199,7 +205,18 @@ public class PaymentManager : MonoBehaviour {
 		GoogleIABManager.consumePurchaseFailedEvent -= consumePurchaseFailedEvent;
 #endif
 	}
-	
+	void Initialize()
+	{
+		GoogleBalanceToSkuID = new Dictionary<int, string>();
+		GoogleBalanceToSkuID.Add(1, "st200_gold_10");
+		GoogleBalanceToSkuID.Add(2, "st200_gold_30");
+		GoogleBalanceToSkuID.Add(3, "st200_gold_50");
+		GoogleBalanceToSkuID.Add(4, "st200_gold_100");
+		GoogleBalanceToSkuID.Add(5, "st200_gold_300");
+		GoogleBalanceToSkuID.Add(6, "st200_gold_500");
+
+
+	}
 	
 #if UNITY_IPHONE
 	//-- Deleagate
@@ -308,7 +325,14 @@ public class PaymentManager : MonoBehaviour {
 		//Debug.Log( string.Format( "queryInventorySucceededEvent. total purchases: {0}, total skus: {1}", purchases.Count, skus.Count ) );
 		Prime31.Utils.logObject( purchases );
 		Prime31.Utils.logObject( skus );
-		
+
+		GoogleSkuList = new Dictionary<string, string>();
+		for(int i = 0; i < skus.Count; i++)
+		{
+			GoogleSkuInfo curinfo = skus[i];
+			GoogleSkuList.Add(curinfo.productId, curinfo.price);
+		}
+
 		if(_paymentManagerQueryInventoryOkDelegate != null){
 			_paymentManagerQueryInventoryOkDelegate(purchases) ;
 		}
@@ -526,7 +550,26 @@ public class PaymentManager : MonoBehaviour {
 #endif
 		
 	}
-	
+
+	public string GetProductCost(int _balanceindex, string _balanceprice)
+	{
+		//string price = "";
+
+#if UNITY_ANDROID
+		if(Constant.CURRENT_MARKET == "2")
+		{
+			if(GoogleSkuList.ContainsKey(GoogleBalanceToSkuID[_balanceindex]))
+			{			  
+				return GoogleSkuList[GoogleBalanceToSkuID[_balanceindex]];
+			}else
+			{
+				return "no data";
+			}
+		}
+#endif
+
+		return _balanceprice;
+	}
 }
 
 
