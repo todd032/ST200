@@ -53,6 +53,8 @@ public class MainTitleManager : MonoBehaviour {
 		
 		private string strAppversion;
 		public string AppVersion{ get { return strAppversion; } set { strAppversion = value; } }
+
+		public int OptionKey;
 	}
 	private PostData_PushInfo m_PostData_PushInfo;
 	// ==================== PushInfo 통신 Data 관련 변수 선언 - End ====================
@@ -317,7 +319,7 @@ public class MainTitleManager : MonoBehaviour {
 		//Debug.Log("ST110 MainTitleManager.Process_Main_02_Network_GetConData() Run!!");
 		
 		// EventDelegate 정의 - GetConData.
-		Managers.DataStream.Event_Delegate_DataStreamManager_GetConData += (strResultDataJson_Input, intNetworkResultCode_Input) => {
+		Managers.DataStream.Event_Delegate_DataStreamManager_GetConData += (strResultDataJson_Input, extended, intNetworkResultCode_Input) => {
 			
 			_indicatorPopupView.RemoveIndicatorPopupView() ;
 			
@@ -335,6 +337,14 @@ public class MainTitleManager : MonoBehaviour {
 				boolBanner_Link_Enable = jsonDataRoot["ImageBannerLinkEnable"].AsBool ; //터치 활성화 여부.
 				intBanner_Type = jsonDataRoot["ImageBannerType"].AsInt ; // 1:nomal, 2:event, event의경우 아래 보상 interface를 호출하여야 함.
 				strBanner_EventIndex = jsonDataRoot["ImageBannerEventIndex"] ; //배너 유니크 인덱스, 아래 보상 interface를 통해 서버로 전송해야 함.
+
+				Debug.Log("GetCondata extended: " + extended);
+				if(extended != null && extended != "")
+				{
+					JSONNode extendedroot = JSON.Parse(extended);
+					int crosspopupoptionkey = extendedroot["CrossPopOptionKey"].AsInt;
+					m_PostData_PushInfo.OptionKey = crosspopupoptionkey;
+				}
 
 				Data_PopupListData_PopupNotice_Set(strResultDataJson_Input);
 				Data_PopupListData_PopupEvent_Set(strResultDataJson_Input);

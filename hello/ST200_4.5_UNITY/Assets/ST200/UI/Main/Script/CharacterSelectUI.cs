@@ -224,7 +224,11 @@ public class CharacterSelectUI : MonoBehaviour {
 					if(spendState == 1) {
 						
 						if ( Managers.Audio != null) Managers.Audio.PlayFXSound(AudioManager.FX_SOUND.FX_Button_Purchase,false);
-						
+
+						int itemcode = gameCharacter.IndexNumber + Constant.ST200_ITEM_CHARACTER_STARTCODE - 1;
+						Managers.UserData.AddPurchaseList(itemcode);
+						//send
+
 						ST200KLogManager.Instance.SaveShopCharacterPurchase(gameCharacter.IndexNumber, 1, characterValue);
 						
 						Managers.UserData.SetPurchaseGameCharacter(gameCharacter.IndexNumber) ;
@@ -263,7 +267,10 @@ public class CharacterSelectUI : MonoBehaviour {
 					if(spendState == 1) {
 						
 						if ( Managers.Audio != null) Managers.Audio.PlayFXSound(AudioManager.FX_SOUND.FX_Button_Purchase,false);
-						
+
+						int itemcode = gameCharacter.IndexNumber + Constant.ST200_ITEM_CHARACTER_STARTCODE - 1;
+						Managers.UserData.AddPurchaseList(itemcode);
+
 						ST200KLogManager.Instance.SaveShopCharacterPurchase(gameCharacter.IndexNumber, 2, characterValue);
 						
 						Managers.UserData.SetPurchaseGameCharacter(gameCharacter.IndexNumber) ;

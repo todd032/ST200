@@ -142,7 +142,7 @@ public class ShipSelectUI_Object : MonoBehaviour {
 		if(Managers.UserData != null && Managers.GameBalanceData != null){
 			
 			UserShipData selectshipdata = Managers.UserData.GetUserShipData(m_CurShipIndex);
-			
+
 			if(selectshipdata.IsLocked)
 			{
 				if(selectshipdata.IndexNumber == 4)
@@ -159,7 +159,7 @@ public class ShipSelectUI_Object : MonoBehaviour {
 			}else if(!selectshipdata.IsPurchase){
 				
 				ShipStatInfo shipinfo = Managers.GameBalanceData.GetShipStatInfo(m_CurShipIndex, 1);
-				
+
 				int valueType = shipinfo.ValueType ;
 				int submarineValue = shipinfo.Cost ;
 				
@@ -175,7 +175,11 @@ public class ShipSelectUI_Object : MonoBehaviour {
 						ST200KLogManager.Instance.SaveShopSubmarinePurchase(m_CurShipIndex, valueType, submarineValue);
 						selectshipdata.IsPurchase = true;
 						Managers.UserData.SetSelectedUserShipData(selectshipdata);
-						
+
+						int itemcode = m_CurShipIndex + Constant.ST200_ITEM_SHIP_STARTCODE - 1;
+						Managers.UserData.AddPurchaseList(itemcode);
+						//send
+
 						//ReLoad...
 						
 						if (Managers.DataStream != null){
@@ -217,7 +221,11 @@ public class ShipSelectUI_Object : MonoBehaviour {
 						selectshipdata.IsPurchase = true;
 						Managers.UserData.SetSelectedUserShipData(selectshipdata);
 						//ReLoad...
-						
+
+						int itemcode = m_CurShipIndex + Constant.ST200_ITEM_SHIP_STARTCODE - 1;
+						Managers.UserData.AddPurchaseList(itemcode);
+						//send
+
 						if(Managers.DataStream != null){
 							if(Managers.UserData != null){
 

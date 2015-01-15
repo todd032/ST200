@@ -476,6 +476,10 @@ public class GameShopManager : MonoBehaviour {
 				{
 					//Debug.Log("SET PURCHASE:" + gameitem.ItemType);
 					Managers.UserData.SetPurchaseGameItem(gameitem.ItemType, 1);
+
+					int itemcode = gameitem.ItemType;
+					Managers.UserData.AddPurchaseList(itemcode);
+					//
 				}
 			}
 			//end 

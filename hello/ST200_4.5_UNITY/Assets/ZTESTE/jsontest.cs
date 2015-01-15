@@ -13,6 +13,22 @@ public class jsontest : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		if(Input.GetKeyDown(KeyCode.D))
+		{
+			histruct st = new histruct();
+			st.items = new int[]{1,2,3,4,5};
+			
+			string tojson = JsonMapper.ToJson(st);
+			Debug.Log("tojson: " + tojson);
+		}
+
+		if(Input.GetKeyDown(KeyCode.A))
+		{			
+			int[] hi = new int[]{1,23,4,5,6};
+			string tojson = JsonMapper.ToJson(hi);
+			Debug.Log("hi: " + tojson);
+		}
+
 		if(Input.GetKeyDown(KeyCode.Space))
 		{
 			Parse();
@@ -105,4 +121,11 @@ public class jsontest : MonoBehaviour {
 			//Debug.Log("hmm: " + recommenduserindex + " subship: " + recommendsubshiplevel[0].AsInt);
 		}
 	}
+
+	public struct histruct
+	{
+		public int[] items;
+	}
 }
+
+

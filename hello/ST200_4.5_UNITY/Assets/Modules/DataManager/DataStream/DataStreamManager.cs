@@ -501,7 +501,7 @@ public class DataStreamManager : MonoBehaviour {
 	// Delegate & Event 인터페이스 정의 ===============================================================================
 	// Delegate & Event 인터페이스 정의 - GetConData.
 	[HideInInspector]
-	public delegate void Delegate_DataStreamManager_GetConData(string strResultDataJson_Input, int intNetworkResultCode_Input);
+	public delegate void Delegate_DataStreamManager_GetConData(string strResultDataJson_Input, string _extended, int intNetworkResultCode_Input);
 	protected Delegate_DataStreamManager_GetConData _delegate_DataStreamManager_GetConData ;
 	public event Delegate_DataStreamManager_GetConData Event_Delegate_DataStreamManager_GetConData {
 		add {
@@ -1394,34 +1394,34 @@ public class DataStreamManager : MonoBehaviour {
 						if (clsReturn.data != null && !clsReturn.data.Equals("")) {
 							
 							if (_delegate_DataStreamManager_GetConData != null) {
-								_delegate_DataStreamManager_GetConData(clsReturn.data, Constant.NETWORK_RESULTCODE_OK);     
+								_delegate_DataStreamManager_GetConData(clsReturn.data, clsReturn.extend, Constant.NETWORK_RESULTCODE_OK);     
 							}   
 							
 						} else {
 							
 							if (_delegate_DataStreamManager_GetConData != null) {
-								_delegate_DataStreamManager_GetConData(null, Constant.NETWORK_RESULTCODE_Error_Result_Data);   
+								_delegate_DataStreamManager_GetConData(null, null, Constant.NETWORK_RESULTCODE_Error_Result_Data);   
 							}
 						}
 						
 					} else {
 						
 						if (_delegate_DataStreamManager_GetConData != null) {
-							_delegate_DataStreamManager_GetConData(null, Constant.NETWORK_RESULTCODE_Error_UserData);   
+							_delegate_DataStreamManager_GetConData(null, null, Constant.NETWORK_RESULTCODE_Error_UserData);   
 						}
 					}
 					
 				} else {
 					Debug.Log("CHECK SUM ERROR?");
 					if (_delegate_DataStreamManager_GetConData != null) {
-						_delegate_DataStreamManager_GetConData(null, Constant.NETWORK_RESULTCODE_Error_CheckSum);   
+						_delegate_DataStreamManager_GetConData(null, null, Constant.NETWORK_RESULTCODE_Error_CheckSum);   
 					}
 				}
 				
 			} else if (clsReturn.result == false) {
 				
 				if (_delegate_DataStreamManager_GetConData != null) {
-					_delegate_DataStreamManager_GetConData(null, Constant.NETWORK_RESULTCODE_Error_Result_False);   
+					_delegate_DataStreamManager_GetConData(null,null,  Constant.NETWORK_RESULTCODE_Error_Result_False);   
 				}
 			}
 			
@@ -1430,7 +1430,7 @@ public class DataStreamManager : MonoBehaviour {
 			addMessageBuffer("RESPONSE ERROR: " + www.error);
 			Debug.Log("ERROR CONNECT: " + www.error);
 			if (_delegate_DataStreamManager_GetConData != null) {
-				_delegate_DataStreamManager_GetConData(null, Constant.NETWORK_RESULTCODE_Error_Network);   
+				_delegate_DataStreamManager_GetConData(null, null, Constant.NETWORK_RESULTCODE_Error_Network);   
 			}
 		}
 		
@@ -3196,7 +3196,10 @@ public class DataStreamManager : MonoBehaviour {
 			strAhaEnglish = "\"AhaCouponAction\":\"False\"";
 		}
 
-		extend = "{" + strProfileBlock + "," + strAttendance + "," + strAhaEnglish + "}";
+		extend = "{" + strProfileBlock + "," + strAttendance + "," + strAhaEnglish + "},";
+
+		string itemboughtlist = JsonMapper.ToJson(Managers.UserData.GetPurchaseData());
+		extend += itemboughtlist;
 
 		string check = getParameterCheckSum(header + body + extend);   //checksum 코드 생성...
 		
@@ -3253,7 +3256,8 @@ public class DataStreamManager : MonoBehaviour {
 					int serverTime = int.Parse(receiveServerTime);
 					
 					if (serverTime >= (Managers.UserData.GetSyncServerTime() - 30) && serverTime <= (Managers.UserData.GetSyncServerTime() + 30)) {
-						
+
+						Managers.UserData.PurchaseList.Clear();
 						Managers.UserData.SetServerTime(clsReturn.extend);
 						Managers.UserData.SetMessageCount(clsReturn.extend);
 						Managers.UserData.SetMessageNewCount(clsReturn.extend);
