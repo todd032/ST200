@@ -1362,7 +1362,7 @@ public class DataStreamManager : MonoBehaviour {
 		if (Constant.PROJECTMODE_Develop) {
 			
 			m_strURL = Constant.URL_DEVELOP_SERVER_URL + Constant.URL_DEVELOP_Connect;
-			Debug.Log("connect: " + m_strURL);
+			//Debug.Log("connect: " + m_strURL);
 
 		} else {
 			
@@ -1379,7 +1379,7 @@ public class DataStreamManager : MonoBehaviour {
 //		Debug.Log("ST200k DataStreamManager.Network_GetConData().www.text = " + www.text);
 		
 		if (www.error == null) {
-			Debug.Log("???: " + www.text);
+			//Debug.Log("???: " + www.text);
 			addMessageBuffer("RESPONSE OK: " + www.text);
 			
 			clsReturn.init();  //초기화..
@@ -3195,11 +3195,10 @@ public class DataStreamManager : MonoBehaviour {
 
 			strAhaEnglish = "\"AhaCouponAction\":\"False\"";
 		}
-
-		extend = "{" + strProfileBlock + "," + strAttendance + "," + strAhaEnglish + "},";
-
 		string itemboughtlist = JsonMapper.ToJson(Managers.UserData.GetPurchaseData());
-		extend += itemboughtlist;
+		string[] parsed = itemboughtlist.Split(':');
+
+		extend = "{" + strProfileBlock + "," + strAttendance + "," + strAhaEnglish + ",\"PurchaseList\": " + parsed[1];
 
 		string check = getParameterCheckSum(header + body + extend);   //checksum 코드 생성...
 		
@@ -3791,7 +3790,7 @@ public class DataStreamManager : MonoBehaviour {
 		if (www.error == null || www.error.Equals("")){
 			
 			JSONNode root = JSON.Parse(www.text);
-			Debug.Log("POPUP INFO: " + root.ToString());
+			//Debug.Log("POPUP INFO: " + root.ToString());
 
 			if ( root["status"].AsInt == 1 ){
 				

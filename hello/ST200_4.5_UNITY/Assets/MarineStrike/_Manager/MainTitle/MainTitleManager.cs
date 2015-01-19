@@ -338,7 +338,7 @@ public class MainTitleManager : MonoBehaviour {
 				intBanner_Type = jsonDataRoot["ImageBannerType"].AsInt ; // 1:nomal, 2:event, event의경우 아래 보상 interface를 호출하여야 함.
 				strBanner_EventIndex = jsonDataRoot["ImageBannerEventIndex"] ; //배너 유니크 인덱스, 아래 보상 interface를 통해 서버로 전송해야 함.
 
-				Debug.Log("GetCondata extended: " + extended);
+				//Debug.Log("GetCondata extended: " + extended);
 				if(extended != null && extended != "")
 				{
 					JSONNode extendedroot = JSON.Parse(extended);

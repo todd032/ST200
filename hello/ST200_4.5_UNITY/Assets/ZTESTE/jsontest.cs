@@ -19,7 +19,10 @@ public class jsontest : MonoBehaviour {
 			st.items = new int[]{1,2,3,4,5};
 			
 			string tojson = JsonMapper.ToJson(st);
-			Debug.Log("tojson: " + tojson);
+
+			string[] parsed = tojson.Split(':');
+
+			Debug.Log("tojson: " + tojson + " root: " + parsed[1]);
 		}
 
 		if(Input.GetKeyDown(KeyCode.A))

@@ -24,7 +24,7 @@ public class AttendPopupViewObject : MonoBehaviour {
 	{
 		m_DaySprite.spriteName = ImageResourceManager.Instance.GetAttendDayImageName(_day);
 		m_ItemSprite.spriteName = ImageResourceManager.Instance.GetAttendPresentImageName(_itemcode);
-		m_ItemSprite.MakePixelPerfect();
+		m_ItemSprite.MarkAsChanged();
 		m_AmountLabel.text = Constant.COLOR_ATTEND_ITEMNAMELABEL + _amount.ToString("#,#");
 		if(_showstate == 0)
 		{
