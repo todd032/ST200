@@ -128,7 +128,7 @@ public class EventPopupView : MonoBehaviour {
 	}
 	
 	// ===========  버튼 클릭 관련 함수 Start =========== 
-	private void OnClick_Close() {
+	public void OnClick_Close() {
 		
 		if ( Managers.Audio != null) Managers.Audio.PlayFXSound(AudioManager.FX_SOUND.FX_Button_Common,false);
 		

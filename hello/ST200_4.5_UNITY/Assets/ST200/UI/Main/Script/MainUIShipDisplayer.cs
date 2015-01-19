@@ -30,6 +30,7 @@ public class MainUIShipDisplayer : MonoBehaviour {
 		m_DisplayTacticIndex = Managers.UserData.GetCurrentGameCharacter().SelectedTactic;
 		
 		UpdateUI();
+		Invoke("UpdateUI", 0.5f);
 	}
 	
 	public void UpdateUI()
