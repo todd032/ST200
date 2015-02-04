@@ -56,6 +56,7 @@ public class PaymentPopupAlertView : MonoBehaviour {
 	public void InitLoadPaymentPopupAlertView(){
 		NGUITools.SetActive(gameObject, false) ;
 	}
+
 	
 	public void LoadPaymentPopupAlertView(int alertType) {
 		
@@ -63,7 +64,17 @@ public class PaymentPopupAlertView : MonoBehaviour {
 		
 		NGUITools.SetActive(gameObject, true) ;
 		
-		SetPaymentPopupAlertView(alertType) ;
+		SetPaymentPopupAlertView(alertType, new string[]{}) ;
+		
+	}
+
+	public void LoadPaymentPopupAlertView(int alertType, string[] _params) {
+		
+		_alertType = alertType ;
+		
+		NGUITools.SetActive(gameObject, true) ;
+		
+		SetPaymentPopupAlertView(alertType, _params) ;
 		
 	}
 	
@@ -71,7 +82,7 @@ public class PaymentPopupAlertView : MonoBehaviour {
 		NGUITools.SetActive(gameObject, false) ;
 	}
 	
-	private void SetPaymentPopupAlertView(int alertType){
+	private void SetPaymentPopupAlertView(int alertType, string[] _params){
 		
 		if(alertType == Constant.ST200_POPUP_PURCHASE_OK){ //1:Purchase Ok...   11://Purchase Ok after ChocolateAlertView
 
@@ -133,6 +144,21 @@ public class PaymentPopupAlertView : MonoBehaviour {
 				string languageCode = Managers.UserData.LanguageCode ;
 				
 				_paymentPopupAlertViewMessageLabel.text = TextManager.Instance.GetString(1); 
+				
+			}
+			
+		}else if(alertType == Constant.ST200_POPUP_MESSAGE_INAPP_NAVER_ERROR) {  //naver inapp purchase error
+			
+			NGUITools.SetActive(_paymentPopupAlertViewCancelButton.gameObject, false) ;
+			NGUITools.SetActive(_paymentPopupAlertViewOkButton.gameObject, false) ;
+			NGUITools.SetActive(_paymentPopupAlertViewConfirmButton.gameObject, true) ;
+			//_paymentPopupAlertViewOkButton.transform.localPosition = new Vector3(0f, _paymentPopupAlertViewOkButton.transform.localPosition.y, _paymentPopupAlertViewOkButton.transform.localPosition.z) ;
+			
+			if(Managers.UserData != null){
+				
+				string languageCode = Managers.UserData.LanguageCode ;
+				
+				_paymentPopupAlertViewMessageLabel.text = _params[0];
 				
 			}
 			

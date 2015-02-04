@@ -60,6 +60,9 @@ public class GameUIManager : MonoBehaviour {
 		if(Managers.CountryCode != "kr")
 		{
 			NGUITools.SetActive(m_FreeGoldButton.gameObject, false);
+		}else if(Constant.CURRENT_MARKET == "4")
+		{
+			NGUITools.SetActive(m_FreeGoldButton.gameObject, false);
 		}
 
 		if(Managers.UserData.SelectedGameType == Constant.ST200_GAMEMODE_PVP)

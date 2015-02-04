@@ -13,7 +13,7 @@ public class PaymentBuyConfirmView : MonoBehaviour {
 	protected int m_PaymentButtonIndex;
 
 	public void LoadView(PaymentGoldBuyButton paymentGoldBuyButton, PaymentJewelBuyButton paymentJewelBuyButton, 
-	                     PaymentTorpedoBuyButton paymentTorpedoBuyButton, int paymentBuyButtonIndexNumber)
+	                     PaymentTorpedoBuyButton paymentTorpedoBuyButton, int paymentBuyButtonIndexNumber, bool _show = true)
 	{
 		m_PaymentGoldButton = paymentGoldBuyButton;
 		m_PaymentJewelButton = paymentJewelBuyButton;
@@ -54,7 +54,13 @@ public class PaymentBuyConfirmView : MonoBehaviour {
 			m_DescriptionLabel.text = TextManager.Instance.GetReplaceString(174, strings);
 		}
 
-		ShowView();
+		if(_show)
+		{
+			ShowView();
+		}else
+		{
+			OnClickOkButton();
+		}
 	}
 
 	public void OnClickOkButton()

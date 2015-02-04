@@ -30,7 +30,7 @@ public class MainUIShipDisplayer : MonoBehaviour {
 		m_DisplayTacticIndex = Managers.UserData.GetCurrentGameCharacter().SelectedTactic;
 		
 		UpdateUI();
-		Invoke("UpdateUI", 0.5f);
+		Invoke("UpdateUI", 0.1f);
 	}
 	
 	public void UpdateUI()
@@ -41,7 +41,7 @@ public class MainUIShipDisplayer : MonoBehaviour {
 		GameCharacterInfoBalance characterbalance = Managers.GameBalanceData.GetGameCharacterInfoBalance(curusercharacter.IndexNumber);
 
 		m_PlayerShipSprite.MakePixelPerfect();
-		
+		//m_PlayerShipSprite.MarkAsChanged();
 		for(int i = 1; i <= Managers.GameBalanceData.SubShipEquipAvailableMaxCount; i++)
 		{
 			if(Managers.UserData.SubShipEquipAvailableSlotCount < i)

@@ -1,11 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections;
+using LitJson;
+using SimpleJSON;
 
 public class NaverAndroidBridgeManager : MonoBehaviour {
 
 	// ==================== Delegate 선언 - Start ====================
 	[HideInInspector]
-	public delegate void Delegate_NaverAndroidBridgeManager(bool boolSuccess_Input); 
+	public delegate void Delegate_NaverAndroidBridgeManager(bool boolSuccess_Input, string responsemessage); 
 	protected Delegate_NaverAndroidBridgeManager _delegate_NaverAndroidBridgeManager;
 	public event Delegate_NaverAndroidBridgeManager EventDelegate_NaverAndroidBridgeManager {
 		add{
@@ -45,12 +47,12 @@ public class NaverAndroidBridgeManager : MonoBehaviour {
 
 	public void NaverInApp_requestPayment(string strInAppCode_Input, int intInAppPrice_Input, string strInAppExtra_Input) {	
 
-		Debug.Log ("ST110 NaverAndroidBridgeManager.NaverInApp_requestPayment.strInAppCode_Input = " + strInAppCode_Input);
-		Debug.Log ("ST110 NaverAndroidBridgeManager.NaverInApp_requestPayment.intInAppPrice_Input = " + intInAppPrice_Input.ToString());
-		Debug.Log ("ST110 NaverAndroidBridgeManager.NaverInApp_requestPayment.strInAppExtra_Input = " + strInAppExtra_Input);
+		//Debug.Log ("ST110 NaverAndroidBridgeManager.NaverInApp_requestPayment.strInAppCode_Input = " + strInAppCode_Input);
+		//Debug.Log ("ST110 NaverAndroidBridgeManager.NaverInApp_requestPayment.intInAppPrice_Input = " + intInAppPrice_Input.ToString());
+		//Debug.Log ("ST110 NaverAndroidBridgeManager.NaverInApp_requestPayment.strInAppExtra_Input = " + strInAppExtra_Input);
 	#if UNITY_ANDROID && !UNITY_EDITOR
-		if (m_androidJavaObject != null) {
-
+		if (m_androidJavaObject != null) 
+		{
 			m_androidJavaObject.Call("naverInApp_CallAction_RequestPayment", strInAppCode_Input, intInAppPrice_Input, strInAppExtra_Input);
 		}
 #endif
@@ -58,20 +60,20 @@ public class NaverAndroidBridgeManager : MonoBehaviour {
 
 	public void NaverInApp_PurchaseComplete(string strParam_Input) {
 
-		Debug.Log ("ST110 NaverAndroidBridgeManager.NaverInApp_PurchaseComplete.strParam_Input = " + strParam_Input);
+		//Debug.Log ("ST110 NaverAndroidBridgeManager.NaverInApp_PurchaseComplete.strParam_Input = " + strParam_Input);
 
 		Managers.DataStream.Event_Delegate_DataStreamManager_SaveChargeData_Naver += (intNetworkResultCode_Input, strNetworkResultData_Input) => {
 
 			if (intNetworkResultCode_Input == Constant.NETWORK_RESULTCODE_OK){
 
 				if (_delegate_NaverAndroidBridgeManager != null){
-					_delegate_NaverAndroidBridgeManager(true);
+					_delegate_NaverAndroidBridgeManager(true, "");
 				}
 
 			} else {
 
 				if (_delegate_NaverAndroidBridgeManager != null){
-					_delegate_NaverAndroidBridgeManager(false);
+					_delegate_NaverAndroidBridgeManager(false, "");
 				}
 			}
 
@@ -84,10 +86,17 @@ public class NaverAndroidBridgeManager : MonoBehaviour {
 
 	public void NaverInApp_PurchaseError(string strParam_Input) {
 
+		string errormessage = "";
+		if(strParam_Input != null)
+		{
+			JSONNode jsonDataRoot = JSON.Parse(strParam_Input);
+			errormessage = jsonDataRoot["message"];
+		}
+
 		Debug.Log ("ST110 NaverAndroidBridgeManager.NaverInApp_PurchaseError.strParam_Input = " + strParam_Input);
 
 		if (_delegate_NaverAndroidBridgeManager != null){
-			_delegate_NaverAndroidBridgeManager(false);
+			_delegate_NaverAndroidBridgeManager(false, errormessage);
 		}
 
 	}

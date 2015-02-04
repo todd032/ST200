@@ -198,12 +198,12 @@ public class PFPFileManager : MonoBehaviour {
 
 	public void GetLangaugeSelect()
 	{
-		if(PlayerPrefs.HasKey(LanguageSelect))
-		{
-			//SetLanguage(LANGUAGE_ENG);
-			//SetLanguage(LANGUAGE_KOR);
-			SetLanguage(PlayerPrefs.GetString(LanguageSelect));
-		}else
+		//if(PlayerPrefs.HasKey(LanguageSelect))
+		//{
+		//	//SetLanguage(LANGUAGE_ENG);
+		//	//SetLanguage(LANGUAGE_KOR);
+		//	SetLanguage(PlayerPrefs.GetString(LanguageSelect));
+		//}else
 		{
 			ShowLanguageSelectUI();
 		}
@@ -293,6 +293,7 @@ public class PFPFileManager : MonoBehaviour {
 
 	protected void StartDownLoadAsset()
 	{		
+		m_LoadingUI.ShowGaugeUI();
 		m_LoadingUI.SetDownLoadPercent(0f);
 		m_LoadingUI.SetDescriptionLabel(TEXT_DOWNLOADING);
 		m_LoadingUI.SetTotalCountLabel((TotalDownLoadCount - DownLoadFiles.Count), TotalDownLoadCount);
@@ -327,6 +328,7 @@ public class PFPFileManager : MonoBehaviour {
 
 	protected void StartLoadAsset()
 	{
+		m_LoadingUI.ShowLoadingUI();
 		m_LoadingUI.SetDownLoadPercent(0f);
 		m_LoadingUI.SetDescriptionLabel(TEXT_LOADING);
 		m_LoadingUI.SetTotalCountLabel((TotalLoadCount - LoadFiles.Count), TotalLoadCount);
@@ -419,15 +421,29 @@ public class PFPFileManager : MonoBehaviour {
 
 	public void ShowLanguageSelectUI()
 	{
-		NGUITools.SetActive(m_LanguageSelectUI.gameObject, true);
-		NGUITools.SetActive(m_LoadingUI.gameObject, false);
-		NGUITools.SetActive(m_NetworkErrorLabel.gameObject, false);
+		//NGUITools.SetActive(m_LanguageSelectUI.gameObject, true);
+		//NGUITools.SetActive(m_LoadingUI.gameObject, false);
+		//NGUITools.SetActive(m_NetworkErrorLabel.gameObject, false);
+
+		if(Application.systemLanguage == SystemLanguage.Korean)
+		{
+			OnClickKoreanButton();
+		}else
+		{
+			OnClickEnglishButton();
+		}
 	}
 
+	bool calledfirst = true;
 	public void ShowLoadingUI()
 	{
 		NGUITools.SetActive(m_LanguageSelectUI.gameObject, false);
 		NGUITools.SetActive(m_LoadingUI.gameObject, true);
+		if(calledfirst)
+		{
+			calledfirst = false;
+			m_LoadingUI.ShowLoadingUI();
+		}
 		NGUITools.SetActive(m_NetworkErrorLabel.gameObject, false);
 	}
 

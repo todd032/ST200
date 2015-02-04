@@ -7,6 +7,15 @@ public class PFPFileLoadingUI : MonoBehaviour {
 	public UILabel m_DownLoadLabel;
 	public UILabel m_DescriptionLabel;
 
+	public GameObject m_GaugeUI;
+	public GameObject m_LoadingUI;
+
+	void Awake()
+	{
+		NGUITools.SetActive(m_GaugeUI.gameObject, false);
+		NGUITools.SetActive(m_LoadingUI.gameObject, false);
+	}
+
 	public void SetDownLoadPercent(float _curval)
 	{
 		int displaynumb = Mathf.Min(((int)(_curval * 100f)), 100);
@@ -26,5 +35,33 @@ public class PFPFileLoadingUI : MonoBehaviour {
 	{
 		TotalCountString = _cur.ToString() + "/" + _max.ToString();
 		m_DescriptionLabel.text = DescriptionString + "\n" + TotalCountString;
+	}
+
+	protected bool showgaugeui = false;
+	protected bool showloadingui = false;
+	public void ShowGaugeUI()
+	{
+		showgaugeui = true;
+		showloadingui = false;
+
+		//NGUITools.SetActive(m_GaugeUI.gameObject, false);
+		NGUITools.SetActive(m_LoadingUI.gameObject, false);
+		Invoke("ShowUIDelay",0.5f);
+	}
+
+	public void ShowLoadingUI()
+	{
+		showgaugeui = false;
+		showloadingui = true;
+
+		NGUITools.SetActive(m_GaugeUI.gameObject, false);
+		//NGUITools.SetActive(m_LoadingUI.gameObject, false);
+		Invoke("ShowUIDelay",0.5f);
+	}
+
+	protected void ShowUIDelay()
+	{
+		NGUITools.SetActive(m_GaugeUI.gameObject, showgaugeui);
+		NGUITools.SetActive(m_LoadingUI.gameObject, showloadingui);
 	}
 }

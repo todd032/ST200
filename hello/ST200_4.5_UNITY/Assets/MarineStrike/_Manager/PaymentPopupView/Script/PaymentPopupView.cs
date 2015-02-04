@@ -82,7 +82,21 @@ public class PaymentPopupView : MonoBehaviour {
 
 	public void JewelInfoViewDelegate(PaymentJewelBuyButton _paymentButton, int _paymentBuyButtonIndexNumber) {
 
-		m_PaymentConfirmView.LoadView(null, _paymentButton, null, _paymentBuyButtonIndexNumber);
+#if UNITY_ANDROID
+		if(Constant.CURRENT_MARKET == "2")
+		{
+			m_PaymentConfirmView.LoadView(null, _paymentButton, null, _paymentBuyButtonIndexNumber, false);
+		}else if(Constant.CURRENT_MARKET == "3")
+		{
+			m_PaymentConfirmView.LoadView(null, _paymentButton, null, _paymentBuyButtonIndexNumber, true);
+		}else if(Constant.CURRENT_MARKET == "4")
+		{
+			m_PaymentConfirmView.LoadView(null, _paymentButton, null, _paymentBuyButtonIndexNumber, true);
+		}
+#else
+		m_PaymentConfirmView.LoadView(null, _paymentButton, null, _paymentBuyButtonIndexNumber, false);
+#endif
+
 	}
 
 	public void TorpedoInfoViewDelegate(PaymentTorpedoBuyButton _paymentButton, int _paymentBuyButtonIndexNumber) {
@@ -1178,7 +1192,7 @@ public class PaymentPopupView : MonoBehaviour {
 			
 			_indicatorPopupView.RemoveIndicatorPopupView() ;
 			
-			Managers.NaverAndroidBridge.EventDelegate_NaverAndroidBridgeManager += (boolSuccess_Input) => {
+			Managers.NaverAndroidBridge.EventDelegate_NaverAndroidBridgeManager += (boolSuccess_Input, responsemessage) => {
 
 				Debug.Log ("st200 PaymentPopupView.InApp_CallIAP_Naver.EventDelegate_NaverAndroidBridgeManager.boolSuccess_Input = " + boolSuccess_Input.ToString());
 
@@ -1215,7 +1229,13 @@ public class PaymentPopupView : MonoBehaviour {
 				} else {
 					
 					//1: 통신이 원활하지 않습니다. 다시 결제해주세요.
-					_paymentPopupAlertView.LoadPaymentPopupAlertView(Constant.ST200_POPUP_MESSAGE_INAPP_NO_GOOD_NETWORK) ;
+					if(responsemessage == "")
+					{
+						_paymentPopupAlertView.LoadPaymentPopupAlertView(Constant.ST200_POPUP_MESSAGE_INAPP_NO_GOOD_NETWORK) ;
+					}else
+					{
+						_paymentPopupAlertView.LoadPaymentPopupAlertView(Constant.ST200_POPUP_MESSAGE_INAPP_NAVER_ERROR,new string[]{responsemessage}) ;
+					}
 				}
 				
 				if(_paymentPopupViewDelegate != null) {

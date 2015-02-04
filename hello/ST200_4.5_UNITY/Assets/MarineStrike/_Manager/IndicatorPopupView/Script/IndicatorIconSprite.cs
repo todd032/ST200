@@ -4,7 +4,6 @@ using System.Collections;
 public class IndicatorIconSprite : MonoBehaviour {
 	
 	private Transform _thisTransform ;
-	
 	private bool _isPlaying ;
 	
 	private void Awake() {

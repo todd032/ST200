@@ -8,6 +8,9 @@ public class PaymentManager : MonoBehaviour {
 	protected Dictionary<int, string> GoogleBalanceToSkuID = new Dictionary<int, string>();
 	protected Dictionary<string, string> GoogleSkuList = new Dictionary<string, string>();
 	protected Dictionary<string, string> iOSSkuList = new Dictionary<string, string>();
+	protected Dictionary<string, string> PaymentInfoPriceDictionary_US = new Dictionary<string, string>();
+	protected Dictionary<string, string> PaymentInfoPriceDictionary_KR = new Dictionary<string, string>();
+	protected Dictionary<string, string> PaymentInfoPriceDictionary_JA = new Dictionary<string, string>();
 	//protected Dictionary<string, 
 
 	[HideInInspector]
@@ -215,7 +218,19 @@ public class PaymentManager : MonoBehaviour {
 		GoogleBalanceToSkuID.Add(5, "st200_gold_300");
 		GoogleBalanceToSkuID.Add(6, "st200_gold_500");
 
-
+		PaymentInfoPriceDictionary_US.Add("st200_gold_10", "$0.99");
+		PaymentInfoPriceDictionary_US.Add("st200_gold_30", "$2.99");
+		PaymentInfoPriceDictionary_US.Add("st200_gold_50", "$4.99");
+		PaymentInfoPriceDictionary_US.Add("st200_gold_100", "$9.99");
+		PaymentInfoPriceDictionary_US.Add("st200_gold_300", "$29.99");
+		PaymentInfoPriceDictionary_US.Add("st200_gold_500", "$49.99");
+		
+		PaymentInfoPriceDictionary_KR.Add("st200_gold_10", "₩1,100");
+		PaymentInfoPriceDictionary_KR.Add("st200_gold_30", "₩3,300");
+		PaymentInfoPriceDictionary_KR.Add("st200_gold_50", "₩5,500");
+		PaymentInfoPriceDictionary_KR.Add("st200_gold_100", "₩11,000");
+		PaymentInfoPriceDictionary_KR.Add("st200_gold_300", "₩33,000");
+		PaymentInfoPriceDictionary_KR.Add("st200_gold_500", "₩55,000");
 	}
 	
 #if UNITY_IPHONE
@@ -558,13 +573,26 @@ public class PaymentManager : MonoBehaviour {
 #if UNITY_ANDROID
 		if(Constant.CURRENT_MARKET == "2")
 		{
-			if(GoogleSkuList.ContainsKey(GoogleBalanceToSkuID[_balanceindex]))
-			{			  
-				return GoogleSkuList[GoogleBalanceToSkuID[_balanceindex]];
+			if(Managers.CountryCode == "kr")
+			{
+				if(PaymentInfoPriceDictionary_KR.ContainsKey(GoogleBalanceToSkuID[_balanceindex]))
+				{
+					return PaymentInfoPriceDictionary_KR[GoogleBalanceToSkuID[_balanceindex]];	
+				}
 			}else
 			{
-				return "no data";
+				if(PaymentInfoPriceDictionary_US.ContainsKey(GoogleBalanceToSkuID[_balanceindex]))
+				{
+					return PaymentInfoPriceDictionary_US[GoogleBalanceToSkuID[_balanceindex]];
+				}
 			}
+			//if(GoogleSkuList.ContainsKey(GoogleBalanceToSkuID[_balanceindex]))
+			//{			  
+			//	return GoogleSkuList[GoogleBalanceToSkuID[_balanceindex]];
+			//}else
+			//{
+			//	return "no data";
+			//}
 		}
 #endif
 

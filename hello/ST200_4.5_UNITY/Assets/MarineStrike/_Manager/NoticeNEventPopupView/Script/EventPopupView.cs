@@ -148,7 +148,7 @@ public class EventPopupView : MonoBehaviour {
 		PopupView_Remove() ;
 	}
 	
-	private void OnClick_ViewCheck(){
+	public void OnClick_ViewCheck(){
 		
 		if (m_boolTodayHide_Check){
 			
