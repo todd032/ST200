@@ -459,7 +459,7 @@ public class PFPFileManager : MonoBehaviour {
 	{
 		NGUITools.SetActive(m_LanguageSelectUI.gameObject, false);
 		NGUITools.SetActive(m_LoadingUI.gameObject, false);
-		NGUITools.SetActive(m_NetworkErrorLabel.gameObject, true);
+		NGUITools.SetActive(m_NetworkErrorLabel.gameObject, false);
 		m_NetworkErrorLabel.text = TEXT_DOWNLOADING;
 	}
 	#endregion
